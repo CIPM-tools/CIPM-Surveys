@@ -1,0 +1,2142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questionnaire id="314212">
+  <title>Survey on Performance Management</title>
+  <investigator/>
+  <dataCollector/>
+  <questionnaireInfo>
+    <position>before</position>
+    <text>&lt;p&gt;Welcome to this survey about performance management. It aims to gather information about the current state of performance management for future research and research directions.&lt;/p&gt;
+
+&lt;p&gt;We invite you to participate if you are working in the industry, are involved in software development, and at least 18 years old. The participation is voluntarily, and we treat all data confidental.&lt;/p&gt;
+
+&lt;p&gt;The survey takes approximately 15-20 minutes to complete with approximately 20 questions. It consists of two parts of which the following first part is about the current state of performance management.&lt;/p&gt;
+
+&lt;p&gt;We appreciate your participation and thank you in advance.&lt;/p&gt;
+
+&lt;p&gt;For any matter, you can contact us: [redacted].&lt;/p&gt;</text>
+    <administration>self</administration>
+  </questionnaireInfo>
+  <questionnaireInfo>
+    <position>after</position>
+    <text>&lt;p&gt;Thank you for your participation!&lt;/p&gt;
+
+&lt;p&gt;If you are interested in the results of this survey, you can bookmark our Wiki page about the survey where we will provide the results as soon as they are published.&lt;/p&gt;</text>
+    <administration>self</administration>
+  </questionnaireInfo>
+  <section id="49">
+    <sectionInfo>
+      <position>title</position>
+      <text>Demographic Information</text>
+      <administration>self</administration>
+    </sectionInfo>
+    <question>
+      <text>From which country do you come?</text>
+      <response varName="D1Country">
+        <fixed>
+          <category>
+            <label>Afghanistan</label>
+            <value>AO01</value>
+          </category>
+          <category>
+            <label>Albania</label>
+            <value>AO02</value>
+          </category>
+          <category>
+            <label>Algeria</label>
+            <value>AO03</value>
+          </category>
+          <category>
+            <label>Andorra</label>
+            <value>AO04</value>
+          </category>
+          <category>
+            <label>Angola</label>
+            <value>AO05</value>
+          </category>
+          <category>
+            <label>Antigua and Barbuda</label>
+            <value>AO06</value>
+          </category>
+          <category>
+            <label>Argentina</label>
+            <value>AO07</value>
+          </category>
+          <category>
+            <label>Armenia</label>
+            <value>AO08</value>
+          </category>
+          <category>
+            <label>Australia</label>
+            <value>AO09</value>
+          </category>
+          <category>
+            <label>Austria</label>
+            <value>AO10</value>
+          </category>
+          <category>
+            <label>Azerbaijan</label>
+            <value>AO11</value>
+          </category>
+          <category>
+            <label>The Bahamas</label>
+            <value>AO12</value>
+          </category>
+          <category>
+            <label>Bahrain</label>
+            <value>AO13</value>
+          </category>
+          <category>
+            <label>Bangladesh</label>
+            <value>AO14</value>
+          </category>
+          <category>
+            <label>Barbados</label>
+            <value>AO15</value>
+          </category>
+          <category>
+            <label>Belarus</label>
+            <value>AO16</value>
+          </category>
+          <category>
+            <label>Belgium</label>
+            <value>AO17</value>
+          </category>
+          <category>
+            <label>Belize</label>
+            <value>AO18</value>
+          </category>
+          <category>
+            <label>Benin</label>
+            <value>AO19</value>
+          </category>
+          <category>
+            <label>Bhutan</label>
+            <value>AO20</value>
+          </category>
+          <category>
+            <label>Bolivia</label>
+            <value>AO21</value>
+          </category>
+          <category>
+            <label>Bosnia and Herzegovina</label>
+            <value>AO22</value>
+          </category>
+          <category>
+            <label>Botswana</label>
+            <value>AO23</value>
+          </category>
+          <category>
+            <label>Brazil</label>
+            <value>AO24</value>
+          </category>
+          <category>
+            <label>Brunei</label>
+            <value>AO25</value>
+          </category>
+          <category>
+            <label>Bulgaria</label>
+            <value>AO26</value>
+          </category>
+          <category>
+            <label>Burkina Faso</label>
+            <value>AO27</value>
+          </category>
+          <category>
+            <label>Burundi</label>
+            <value>AO28</value>
+          </category>
+          <category>
+            <label>Cabo Verde</label>
+            <value>AO197</value>
+          </category>
+          <category>
+            <label>Cambodia</label>
+            <value>AO29</value>
+          </category>
+          <category>
+            <label>Cameroon</label>
+            <value>AO30</value>
+          </category>
+          <category>
+            <label>Canada</label>
+            <value>AO31</value>
+          </category>
+          <category>
+            <label>Central African Republic</label>
+            <value>AO33</value>
+          </category>
+          <category>
+            <label>Chad</label>
+            <value>AO34</value>
+          </category>
+          <category>
+            <label>Chile</label>
+            <value>AO35</value>
+          </category>
+          <category>
+            <label>China</label>
+            <value>AO36</value>
+          </category>
+          <category>
+            <label>Colombia</label>
+            <value>AO37</value>
+          </category>
+          <category>
+            <label>Comoros</label>
+            <value>AO38</value>
+          </category>
+          <category>
+            <label>Congo, Democratic Republic of the</label>
+            <value>AO39</value>
+          </category>
+          <category>
+            <label>Congo, Republic of the</label>
+            <value>AO40</value>
+          </category>
+          <category>
+            <label>Costa Rica</label>
+            <value>AO41</value>
+          </category>
+          <category>
+            <label>Côte d’Ivoire</label>
+            <value>AO198</value>
+          </category>
+          <category>
+            <label>Croatia</label>
+            <value>AO42</value>
+          </category>
+          <category>
+            <label>Cuba</label>
+            <value>AO43</value>
+          </category>
+          <category>
+            <label>Cyprus</label>
+            <value>AO44</value>
+          </category>
+          <category>
+            <label>Czech Republic</label>
+            <value>AO45</value>
+          </category>
+          <category>
+            <label>Denmark</label>
+            <value>AO46</value>
+          </category>
+          <category>
+            <label>Djibouti</label>
+            <value>AO47</value>
+          </category>
+          <category>
+            <label>Dominica</label>
+            <value>AO48</value>
+          </category>
+          <category>
+            <label>Dominican Republic</label>
+            <value>AO49</value>
+          </category>
+          <category>
+            <label>East Timor (Timor-Leste)</label>
+            <value>AO50</value>
+          </category>
+          <category>
+            <label>Ecuador</label>
+            <value>AO51</value>
+          </category>
+          <category>
+            <label>Egypt</label>
+            <value>AO52</value>
+          </category>
+          <category>
+            <label>El Salvador</label>
+            <value>AO53</value>
+          </category>
+          <category>
+            <label>Equatorial Guinea</label>
+            <value>AO54</value>
+          </category>
+          <category>
+            <label>Eritrea</label>
+            <value>AO55</value>
+          </category>
+          <category>
+            <label>Estonia</label>
+            <value>AO56</value>
+          </category>
+          <category>
+            <label>Eswatini</label>
+            <value>AO199</value>
+          </category>
+          <category>
+            <label>Ethiopia</label>
+            <value>AO57</value>
+          </category>
+          <category>
+            <label>Fiji</label>
+            <value>AO58</value>
+          </category>
+          <category>
+            <label>Finland</label>
+            <value>AO59</value>
+          </category>
+          <category>
+            <label>France</label>
+            <value>AO60</value>
+          </category>
+          <category>
+            <label>Gabon</label>
+            <value>AO61</value>
+          </category>
+          <category>
+            <label>The Gambia</label>
+            <value>AO62</value>
+          </category>
+          <category>
+            <label>Georgia</label>
+            <value>AO63</value>
+          </category>
+          <category>
+            <label>Germany</label>
+            <value>AO64</value>
+          </category>
+          <category>
+            <label>Ghana</label>
+            <value>AO65</value>
+          </category>
+          <category>
+            <label>Greece</label>
+            <value>AO66</value>
+          </category>
+          <category>
+            <label>Grenada</label>
+            <value>AO67</value>
+          </category>
+          <category>
+            <label>Guatemala</label>
+            <value>AO68</value>
+          </category>
+          <category>
+            <label>Guinea</label>
+            <value>AO69</value>
+          </category>
+          <category>
+            <label>Guinea-Bissau</label>
+            <value>AO70</value>
+          </category>
+          <category>
+            <label>Guyana</label>
+            <value>AO71</value>
+          </category>
+          <category>
+            <label>Haiti</label>
+            <value>AO72</value>
+          </category>
+          <category>
+            <label>Honduras</label>
+            <value>AO73</value>
+          </category>
+          <category>
+            <label>Hungary</label>
+            <value>AO74</value>
+          </category>
+          <category>
+            <label>Iceland</label>
+            <value>AO75</value>
+          </category>
+          <category>
+            <label>India</label>
+            <value>AO76</value>
+          </category>
+          <category>
+            <label>Indonesia</label>
+            <value>AO77</value>
+          </category>
+          <category>
+            <label>Iran</label>
+            <value>AO78</value>
+          </category>
+          <category>
+            <label>Iraq</label>
+            <value>AO79</value>
+          </category>
+          <category>
+            <label>Ireland</label>
+            <value>AO80</value>
+          </category>
+          <category>
+            <label>Israel</label>
+            <value>AO81</value>
+          </category>
+          <category>
+            <label>Italy</label>
+            <value>AO82</value>
+          </category>
+          <category>
+            <label>Jamaica</label>
+            <value>AO84</value>
+          </category>
+          <category>
+            <label>Japan</label>
+            <value>AO85</value>
+          </category>
+          <category>
+            <label>Jordan</label>
+            <value>AO86</value>
+          </category>
+          <category>
+            <label>Kazakhstan</label>
+            <value>AO87</value>
+          </category>
+          <category>
+            <label>Kenya</label>
+            <value>AO88</value>
+          </category>
+          <category>
+            <label>Kiribati</label>
+            <value>AO89</value>
+          </category>
+          <category>
+            <label>Korea, North</label>
+            <value>AO90</value>
+          </category>
+          <category>
+            <label>Korea, South</label>
+            <value>AO91</value>
+          </category>
+          <category>
+            <label>Kosovo</label>
+            <value>AO92</value>
+          </category>
+          <category>
+            <label>Kuwait</label>
+            <value>AO93</value>
+          </category>
+          <category>
+            <label>Kyrgyzstan</label>
+            <value>AO94</value>
+          </category>
+          <category>
+            <label>Laos</label>
+            <value>AO95</value>
+          </category>
+          <category>
+            <label>Latvia</label>
+            <value>AO96</value>
+          </category>
+          <category>
+            <label>Lebanon</label>
+            <value>AO97</value>
+          </category>
+          <category>
+            <label>Lesotho</label>
+            <value>AO98</value>
+          </category>
+          <category>
+            <label>Liberia</label>
+            <value>AO99</value>
+          </category>
+          <category>
+            <label>Libya</label>
+            <value>AO100</value>
+          </category>
+          <category>
+            <label>Liechtenstein</label>
+            <value>AO101</value>
+          </category>
+          <category>
+            <label>Lithuania</label>
+            <value>AO102</value>
+          </category>
+          <category>
+            <label>Luxembourg</label>
+            <value>AO103</value>
+          </category>
+          <category>
+            <label>Madagascar</label>
+            <value>AO105</value>
+          </category>
+          <category>
+            <label>Malawi</label>
+            <value>AO106</value>
+          </category>
+          <category>
+            <label>Malaysia</label>
+            <value>AO107</value>
+          </category>
+          <category>
+            <label>Maldives</label>
+            <value>AO108</value>
+          </category>
+          <category>
+            <label>Mali</label>
+            <value>AO109</value>
+          </category>
+          <category>
+            <label>Malta</label>
+            <value>AO110</value>
+          </category>
+          <category>
+            <label>Marshall Islands</label>
+            <value>AO111</value>
+          </category>
+          <category>
+            <label>Mauritania</label>
+            <value>AO112</value>
+          </category>
+          <category>
+            <label>Mauritius</label>
+            <value>AO113</value>
+          </category>
+          <category>
+            <label>Mexico</label>
+            <value>AO114</value>
+          </category>
+          <category>
+            <label>Micronesia, Federated States of</label>
+            <value>AO115</value>
+          </category>
+          <category>
+            <label>Moldova</label>
+            <value>AO116</value>
+          </category>
+          <category>
+            <label>Monaco</label>
+            <value>AO117</value>
+          </category>
+          <category>
+            <label>Mongolia</label>
+            <value>AO118</value>
+          </category>
+          <category>
+            <label>Montenegro</label>
+            <value>AO119</value>
+          </category>
+          <category>
+            <label>Morocco</label>
+            <value>AO120</value>
+          </category>
+          <category>
+            <label>Mozambique</label>
+            <value>AO121</value>
+          </category>
+          <category>
+            <label>Myanmar (Burma)</label>
+            <value>AO122</value>
+          </category>
+          <category>
+            <label>Namibia</label>
+            <value>AO123</value>
+          </category>
+          <category>
+            <label>Nauru</label>
+            <value>AO124</value>
+          </category>
+          <category>
+            <label>Nepal</label>
+            <value>AO125</value>
+          </category>
+          <category>
+            <label>Netherlands</label>
+            <value>AO126</value>
+          </category>
+          <category>
+            <label>New Zealand</label>
+            <value>AO127</value>
+          </category>
+          <category>
+            <label>Nicaragua</label>
+            <value>AO128</value>
+          </category>
+          <category>
+            <label>Niger</label>
+            <value>AO129</value>
+          </category>
+          <category>
+            <label>Nigeria</label>
+            <value>AO130</value>
+          </category>
+          <category>
+            <label>North Macedonia</label>
+            <value>AO200</value>
+          </category>
+          <category>
+            <label>Norway</label>
+            <value>AO131</value>
+          </category>
+          <category>
+            <label>Oman</label>
+            <value>AO132</value>
+          </category>
+          <category>
+            <label>Pakistan</label>
+            <value>AO133</value>
+          </category>
+          <category>
+            <label>Palau</label>
+            <value>AO134</value>
+          </category>
+          <category>
+            <label>Panama</label>
+            <value>AO135</value>
+          </category>
+          <category>
+            <label>Papua New Guinea</label>
+            <value>AO136</value>
+          </category>
+          <category>
+            <label>Paraguay</label>
+            <value>AO137</value>
+          </category>
+          <category>
+            <label>Peru</label>
+            <value>AO138</value>
+          </category>
+          <category>
+            <label>Philippines</label>
+            <value>AO139</value>
+          </category>
+          <category>
+            <label>Poland</label>
+            <value>AO140</value>
+          </category>
+          <category>
+            <label>Portugal</label>
+            <value>AO141</value>
+          </category>
+          <category>
+            <label>Qatar</label>
+            <value>AO142</value>
+          </category>
+          <category>
+            <label>Romania</label>
+            <value>AO143</value>
+          </category>
+          <category>
+            <label>Russia</label>
+            <value>AO144</value>
+          </category>
+          <category>
+            <label>Rwanda</label>
+            <value>AO145</value>
+          </category>
+          <category>
+            <label>Saint Kitts and Nevis</label>
+            <value>AO146</value>
+          </category>
+          <category>
+            <label>Saint Lucia</label>
+            <value>AO147</value>
+          </category>
+          <category>
+            <label>Saint Vincent and the Grenadines</label>
+            <value>AO148</value>
+          </category>
+          <category>
+            <label>Samoa</label>
+            <value>AO149</value>
+          </category>
+          <category>
+            <label>San Marino</label>
+            <value>AO150</value>
+          </category>
+          <category>
+            <label>Sao Tome and Principe</label>
+            <value>AO151</value>
+          </category>
+          <category>
+            <label>Saudi Arabia</label>
+            <value>AO152</value>
+          </category>
+          <category>
+            <label>Senegal</label>
+            <value>AO153</value>
+          </category>
+          <category>
+            <label>Serbia</label>
+            <value>AO154</value>
+          </category>
+          <category>
+            <label>Seychelles</label>
+            <value>AO155</value>
+          </category>
+          <category>
+            <label>Sierra Leone</label>
+            <value>AO156</value>
+          </category>
+          <category>
+            <label>Singapore</label>
+            <value>AO157</value>
+          </category>
+          <category>
+            <label>Slovakia</label>
+            <value>AO158</value>
+          </category>
+          <category>
+            <label>Slovenia</label>
+            <value>AO159</value>
+          </category>
+          <category>
+            <label>Solomon Islands</label>
+            <value>AO160</value>
+          </category>
+          <category>
+            <label>Somalia</label>
+            <value>AO161</value>
+          </category>
+          <category>
+            <label>South Africa</label>
+            <value>AO162</value>
+          </category>
+          <category>
+            <label>Spain</label>
+            <value>AO164</value>
+          </category>
+          <category>
+            <label>Sri Lanka</label>
+            <value>AO165</value>
+          </category>
+          <category>
+            <label>Sudan</label>
+            <value>AO166</value>
+          </category>
+          <category>
+            <label>Sudan, South</label>
+            <value>AO201</value>
+          </category>
+          <category>
+            <label>Suriname</label>
+            <value>AO167</value>
+          </category>
+          <category>
+            <label>Sweden</label>
+            <value>AO169</value>
+          </category>
+          <category>
+            <label>Switzerland</label>
+            <value>AO170</value>
+          </category>
+          <category>
+            <label>Syria</label>
+            <value>AO171</value>
+          </category>
+          <category>
+            <label>Taiwan</label>
+            <value>AO172</value>
+          </category>
+          <category>
+            <label>Tajikistan</label>
+            <value>AO173</value>
+          </category>
+          <category>
+            <label>Tanzania</label>
+            <value>AO174</value>
+          </category>
+          <category>
+            <label>Thailand</label>
+            <value>AO175</value>
+          </category>
+          <category>
+            <label>Togo</label>
+            <value>AO176</value>
+          </category>
+          <category>
+            <label>Tonga</label>
+            <value>AO177</value>
+          </category>
+          <category>
+            <label>Trinidad and Tobago</label>
+            <value>AO178</value>
+          </category>
+          <category>
+            <label>Tunisia</label>
+            <value>AO179</value>
+          </category>
+          <category>
+            <label>Turkey</label>
+            <value>AO180</value>
+          </category>
+          <category>
+            <label>Turkmenistan</label>
+            <value>AO181</value>
+          </category>
+          <category>
+            <label>Tuvalu</label>
+            <value>AO182</value>
+          </category>
+          <category>
+            <label>Uganda</label>
+            <value>AO183</value>
+          </category>
+          <category>
+            <label>Ukraine</label>
+            <value>AO184</value>
+          </category>
+          <category>
+            <label>United Arab Emirates</label>
+            <value>AO185</value>
+          </category>
+          <category>
+            <label>United Kingdom</label>
+            <value>AO186</value>
+          </category>
+          <category>
+            <label>United States</label>
+            <value>AO187</value>
+          </category>
+          <category>
+            <label>Uruguay</label>
+            <value>AO188</value>
+          </category>
+          <category>
+            <label>Uzbekistan</label>
+            <value>AO189</value>
+          </category>
+          <category>
+            <label>Vanuatu</label>
+            <value>AO190</value>
+          </category>
+          <category>
+            <label>Vatican City</label>
+            <value>AO191</value>
+          </category>
+          <category>
+            <label>Venezuela</label>
+            <value>AO192</value>
+          </category>
+          <category>
+            <label>Vietnam</label>
+            <value>AO193</value>
+          </category>
+          <category>
+            <label>Yemen</label>
+            <value>AO194</value>
+          </category>
+          <category>
+            <label>Zambia</label>
+            <value>AO195</value>
+          </category>
+          <category>
+            <label>Zimbabwe</label>
+            <value>AO196</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>How old are you?</text>
+      <response varName="D2Age">
+        <fixed>
+          <category>
+            <label>18-25 years old</label>
+            <value>AO01</value>
+          </category>
+          <category>
+            <label>26-35 years old</label>
+            <value>AO02</value>
+          </category>
+          <category>
+            <label>36-45 years old</label>
+            <value>AO03</value>
+          </category>
+          <category>
+            <label>46-55 years old</label>
+            <value>AO04</value>
+          </category>
+          <category>
+            <label>56-65 years old</label>
+            <value>AO05</value>
+          </category>
+          <category>
+            <label>Over 65 years old</label>
+            <value>AO06</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>How much professional experience do you have?</text>
+      <directive>
+        <position>during</position>
+        <text>Professional experience means all time spans in which you worked for a company or organization in the context of software development (i.e., also in different roles).</text>
+        <administration>self</administration>
+      </directive>
+      <response varName="D3Experience">
+        <fixed>
+          <category>
+            <label>Less than 1 year</label>
+            <value>AO01</value>
+          </category>
+          <category>
+            <label>1-5 years</label>
+            <value>AO02</value>
+          </category>
+          <category>
+            <label>6-10 years</label>
+            <value>AO03</value>
+          </category>
+          <category>
+            <label>More than 10 years</label>
+            <value>AO04</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>What are your roles in your company?</text>
+      <directive>
+        <position>during</position>
+        <text>For the remainder of this survey, we relate the questions to the company and team in which you are currently working.</text>
+        <administration>self</administration>
+      </directive>
+      <response varName="D4Roles_SQ001">
+        <fixed>
+          <category>
+            <label>Software Developer</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="D4Roles_SQ002">
+        <fixed>
+          <category>
+            <label>Software Architect</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="D4Roles_SQ003">
+        <fixed>
+          <category>
+            <label>Project Manager</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="D4Roles_SQ004">
+        <fixed>
+          <category>
+            <label>Product Owner</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="D4Roles_SQ005">
+        <fixed>
+          <category>
+            <label>Scrum Master</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="D4Roles_SQ006">
+        <fixed>
+          <category>
+            <label>QA/Test Engineer</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="D4RolesT">
+        <fixed>
+          <category>
+            <label>Other</label>
+            <value>Y</value>
+            <contingentQuestion varName="D4Rolesother">
+              <text>Other</text>
+              <length>24</length>
+              <format>longtext</format>
+            </contingentQuestion>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>How large is your company?</text>
+      <response varName="D5CompanySize">
+        <fixed>
+          <category>
+            <label>Up to 9 employees</label>
+            <value>AO01</value>
+          </category>
+          <category>
+            <label>10-100 employees</label>
+            <value>AO02</value>
+          </category>
+          <category>
+            <label>101-250 employees</label>
+            <value>AO03</value>
+          </category>
+          <category>
+            <label>250-10,000 employees</label>
+            <value>AO04</value>
+          </category>
+          <category>
+            <label>More than 10,000 employees</label>
+            <value>AO05</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>How large is your team?</text>
+      <response varName="D6TeamSize">
+        <fixed>
+          <category>
+            <label>Up to 5 people</label>
+            <value>AO01</value>
+          </category>
+          <category>
+            <label>6-10 people</label>
+            <value>AO02</value>
+          </category>
+          <category>
+            <label>More than 10 people</label>
+            <value>AO03</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+  </section>
+  <section id="50">
+    <sectionInfo>
+      <position>title</position>
+      <text>Contextual Information</text>
+      <administration>self</administration>
+    </sectionInfo>
+    <question>
+      <text>Which of the following software development methods are commonly used in your team?</text>
+      <response varName="C1DevMethod_SQ001">
+        <fixed>
+          <category>
+            <label>Sequential development (e.g., Waterfall)</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C1DevMethod_SQ002">
+        <fixed>
+          <category>
+            <label>Agile development (e.g., Scrum, XP)</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C1DevMethod_SQ003">
+        <fixed>
+          <category>
+            <label>DevOps</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C1DevMethodT">
+        <fixed>
+          <category>
+            <label>Other</label>
+            <value>Y</value>
+            <contingentQuestion varName="C1DevMethodother">
+              <text>Other</text>
+              <length>24</length>
+              <format>longtext</format>
+            </contingentQuestion>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>Which technologies and methods do you use for development?</text>
+      <response varName="C2Technologies_SQ001">
+        <fixed>
+          <category>
+            <label>Cloud Computing (e.g., AWS, Azure)</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C2Technologies_SQ002">
+        <fixed>
+          <category>
+            <label>Microservices</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C2Technologies_SQ003">
+        <fixed>
+          <category>
+            <label>Container (e.g., Docker, Kubernetes)</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C2Technologies_SQ004">
+        <fixed>
+          <category>
+            <label>Big Data (e.g., Apache Hadoop)</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C2Technologies_SQ005">
+        <fixed>
+          <category>
+            <label>Technologies for CI/CD</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C2Technologies_SQ006">
+        <fixed>
+          <category>
+            <label>Databases</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C2TechnologiesT">
+        <fixed>
+          <category>
+            <label>Other</label>
+            <value>Y</value>
+            <contingentQuestion varName="C2Technologiesother">
+              <text>Other</text>
+              <length>24</length>
+              <format>longtext</format>
+            </contingentQuestion>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>How do you currently manage performance in your team?</text>
+      <directive>
+        <position>during</position>
+        <text>&lt;p&gt;&lt;em&gt;Monitoring tools&lt;/em&gt; take measurements of a software during its runtime in the production environment and allow to analyze the software's performance based on these measurements.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Performance tests&lt;/em&gt; execute a part or the complete software with different workloads to measure the software's performance.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Model-based performance predictions&lt;/em&gt; employ a performance model (e.g., a Petri net or UML) which represents a software and describes how resources are used. Based on such a performance model, different techniques predict the performance characteristics of the software.&lt;/p&gt;</text>
+        <administration>self</administration>
+      </directive>
+      <response varName="C3PManagement_C3Mon">
+        <fixed>
+          <category>
+            <label>By using monitoring tools</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C3PManagement_C3Tests">
+        <fixed>
+          <category>
+            <label>By using performance tests</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C3PManagement_C3Prediction">
+        <fixed>
+          <category>
+            <label>By using model-based performance predictions</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C3PManagementD">
+        <fixed>
+          <category>
+            <label>Other</label>
+            <value>Y</value>
+            <contingentQuestion varName="C3PManagementother">
+              <text>Other</text>
+              <length>24</length>
+              <format>longtext</format>
+            </contingentQuestion>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>Which reasons hinder you in using monitoring tools?</text>
+      <response varName="C4MonHinder_SQ001">
+        <fixed>
+          <category>
+            <label>Not required</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C4MonHinder_SQ002">
+        <fixed>
+          <category>
+            <label>Time constraints</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C4MonHinder_SQ003">
+        <fixed>
+          <category>
+            <label>No expertise in team</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C4MonHinder_SQ004">
+        <fixed>
+          <category>
+            <label>Never used before</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C4MonHinder_SQ005">
+        <fixed>
+          <category>
+            <label>No tool support</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C4MonHinder_SQ006">
+        <fixed>
+          <category>
+            <label>Limited tool support</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C4MonHinder_SQ007">
+        <fixed>
+          <category>
+            <label>Inaccurate results</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C4MonHinder_SQ008">
+        <fixed>
+          <category>
+            <label>High costs</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C4MonHinder_SQ009">
+        <fixed>
+          <category>
+            <label>I don't know what monitoring tools are</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C4MonHinderT">
+        <fixed>
+          <category>
+            <label>Other</label>
+            <value>Y</value>
+            <contingentQuestion varName="C4MonHinderother">
+              <text>Other</text>
+              <length>24</length>
+              <format>longtext</format>
+            </contingentQuestion>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>Which monitoring tools do you currently use?</text>
+      <response varName="C4MonTools_SQ001">
+        <fixed>
+          <category>
+            <label>Dynatrace</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C4MonTools_SQ002">
+        <fixed>
+          <category>
+            <label>Prometheus</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C4MonTools_SQ003">
+        <fixed>
+          <category>
+            <label>Akamai mPulse</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C4MonTools_SQ004">
+        <fixed>
+          <category>
+            <label>DataDog</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C4MonTools_SQ005">
+        <fixed>
+          <category>
+            <label>GrayLog</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C4MonTools_SQ006">
+        <fixed>
+          <category>
+            <label>pyroscope</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C4MonToolsT">
+        <fixed>
+          <category>
+            <label>Other</label>
+            <value>Y</value>
+            <contingentQuestion varName="C4MonToolsother">
+              <text>Other</text>
+              <length>24</length>
+              <format>longtext</format>
+            </contingentQuestion>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>Which reasons hinder you in using performance tests?</text>
+      <response varName="C5TestsHinder_SQ001">
+        <fixed>
+          <category>
+            <label>Not required</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C5TestsHinder_SQ002">
+        <fixed>
+          <category>
+            <label>Time constraints</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C5TestsHinder_SQ003">
+        <fixed>
+          <category>
+            <label>No expertise in team</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C5TestsHinder_SQ004">
+        <fixed>
+          <category>
+            <label>Never used before</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C5TestsHinder_SQ005">
+        <fixed>
+          <category>
+            <label>No tool support</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C5TestsHinder_SQ006">
+        <fixed>
+          <category>
+            <label>Limited tool support</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C5TestsHinder_SQ007">
+        <fixed>
+          <category>
+            <label>Inaccurate results</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C5TestsHinder_SQ008">
+        <fixed>
+          <category>
+            <label>High costs</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C5TestsHinder_SQ009">
+        <fixed>
+          <category>
+            <label>I don't know what performance tests are</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C5TestsHinderT">
+        <fixed>
+          <category>
+            <label>Other</label>
+            <value>Y</value>
+            <contingentQuestion varName="C5TestsHinderother">
+              <text>Other</text>
+              <length>24</length>
+              <format>longtext</format>
+            </contingentQuestion>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>Which reasons hinder you in using model-based performance predictions?</text>
+      <response varName="C6PredictionHinder_SQ001">
+        <fixed>
+          <category>
+            <label>Not required</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C6PredictionHinder_SQ002">
+        <fixed>
+          <category>
+            <label>Time constraints</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C6PredictionHinder_SQ003">
+        <fixed>
+          <category>
+            <label>No expertise in team</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C6PredictionHinder_SQ004">
+        <fixed>
+          <category>
+            <label>Never used before</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C6PredictionHinder_SQ005">
+        <fixed>
+          <category>
+            <label>No tool support</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C6PredictionHinder_SQ006">
+        <fixed>
+          <category>
+            <label>Limited tool support</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C6PredictionHinder_SQ007">
+        <fixed>
+          <category>
+            <label>Inaccurate results</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C6PredictionHinder_SQ008">
+        <fixed>
+          <category>
+            <label>High costs</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C6PredictionHinder_SQ009">
+        <fixed>
+          <category>
+            <label>I don't know what model-based performance predictions are</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C6PredictionHinderT">
+        <fixed>
+          <category>
+            <label>Other</label>
+            <value>Y</value>
+            <contingentQuestion varName="C6PredictionHinderother">
+              <text>Other</text>
+              <length>24</length>
+              <format>longtext</format>
+            </contingentQuestion>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>Which tools or techniques do you currently use for performance predictions?</text>
+      <response varName="C6PredictionTools_SQ001">
+        <fixed>
+          <category>
+            <label>Analytical models (e.g., Petri nets)</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C6PredictionTools_SQ002">
+        <fixed>
+          <category>
+            <label>Architecture-based models (e.g., UML or UML Profiles)</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C6PredictionTools_SQ003">
+        <fixed>
+          <category>
+            <label>Machine Learning</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C6PredictionTools_SQ004">
+        <fixed>
+          <category>
+            <label>Spreadsheet</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C6PredictionToolsT">
+        <fixed>
+          <category>
+            <label>Other</label>
+            <value>Y</value>
+            <contingentQuestion varName="C6PredictionToolsother">
+              <text>Other</text>
+              <length>24</length>
+              <format>longtext</format>
+            </contingentQuestion>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>For which purposes do you use the performance management tools or tests?</text>
+      <directive>
+        <position>during</position>
+        <text>Performance management tools include monitoring tools and model-based performance prediction tools.</text>
+        <administration>self</administration>
+      </directive>
+      <response varName="C7Purpose_SQ001">
+        <fixed>
+          <category>
+            <label>Improve performance</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C7Purpose_SQ002">
+        <fixed>
+          <category>
+            <label>Analyze performance behavior</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C7Purpose_SQ003">
+        <fixed>
+          <category>
+            <label>Observe performance over time</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C7Purpose_SQ004">
+        <fixed>
+          <category>
+            <label>Evaluate performance for design alternatives</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C7Purpose_SQ005">
+        <fixed>
+          <category>
+            <label>Find performance regressions</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C7Purpose_SQ006">
+        <fixed>
+          <category>
+            <label>Find performance bottlenecks</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C7Purpose_SQ007">
+        <fixed>
+          <category>
+            <label>Fulfill regulations</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="C7PurposeT">
+        <fixed>
+          <category>
+            <label>Other</label>
+            <value>Y</value>
+            <contingentQuestion varName="C7Purposeother">
+              <text>Other</text>
+              <length>24</length>
+              <format>longtext</format>
+            </contingentQuestion>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>How important is the performance management? Please indicate on a scale from very unimportant to very important.</text>
+      <subQuestion varName="C8Relevance_SQ001">
+        <text>Performance management is important in our company.</text>
+      </subQuestion>
+      <subQuestion varName="C8Relevance_SQ002">
+        <text>Performance management is important in our team.</text>
+      </subQuestion>
+      <response varName="C8Relevance">
+        <fixed>
+          <category>
+            <label>Very unimportant</label>
+            <value>AO01</value>
+          </category>
+          <category>
+            <label>Unimportant</label>
+            <value>AO02</value>
+          </category>
+          <category>
+            <label>Neutral</label>
+            <value>AO03</value>
+          </category>
+          <category>
+            <label>Important</label>
+            <value>AO04</value>
+          </category>
+          <category>
+            <label>Very important</label>
+            <value>AO05</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>Do you agree to the following statements? Please indicate on a scale from strongly disagree to strongly agree.</text>
+      <subQuestion varName="C9GeneralTrust_SQ001">
+        <text>I would trust monitoring data from monitoring tools.</text>
+      </subQuestion>
+      <subQuestion varName="C9GeneralTrust_SQ002">
+        <text>I would trust the results of performance tests.</text>
+      </subQuestion>
+      <subQuestion varName="C9GeneralTrust_SQ003">
+        <text>I would trust the results of model-based performance predictions.</text>
+      </subQuestion>
+      <response varName="C9GeneralTrust">
+        <fixed>
+          <category>
+            <label>Strongly disagree</label>
+            <value>AO01</value>
+          </category>
+          <category>
+            <label>Disagree</label>
+            <value>AO02</value>
+          </category>
+          <category>
+            <label>Slightly disagree</label>
+            <value>AO03</value>
+          </category>
+          <category>
+            <label>Neutral</label>
+            <value>AO04</value>
+          </category>
+          <category>
+            <label>Slightly agree</label>
+            <value>AO05</value>
+          </category>
+          <category>
+            <label>Agree</label>
+            <value>AO06</value>
+          </category>
+          <category>
+            <label>Strongly agree</label>
+            <value>AO07</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+  </section>
+  <section id="51">
+    <sectionInfo>
+      <position>title</position>
+      <text>Challenges</text>
+      <administration>self</administration>
+    </sectionInfo>
+    <question>
+      <text>How satisfied are you with the following quality attributes of the performance management tools that you use? Please indicate on a scale from very unsatisfied to very satisfied.</text>
+      <subQuestion varName="Ch1Quality_SQ001">
+        <text>Accuracy</text>
+      </subQuestion>
+      <subQuestion varName="Ch1Quality_SQ002">
+        <text>Reliability</text>
+      </subQuestion>
+      <subQuestion varName="Ch1Quality_SQ003">
+        <text>User-friendliness</text>
+      </subQuestion>
+      <subQuestion varName="Ch1Quality_SQ004">
+        <text>Performance</text>
+      </subQuestion>
+      <subQuestion varName="Ch1Quality_SQ005">
+        <text>Effort to apply</text>
+      </subQuestion>
+      <response varName="Ch1Quality">
+        <fixed>
+          <category>
+            <label>Very unsatisfied</label>
+            <value>AO01</value>
+          </category>
+          <category>
+            <label>Unsatisfied</label>
+            <value>AO02</value>
+          </category>
+          <category>
+            <label>Neutral</label>
+            <value>AO03</value>
+          </category>
+          <category>
+            <label>Satisfied</label>
+            <value>AO04</value>
+          </category>
+          <category>
+            <label>Very satisfied</label>
+            <value>AO05</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>Which of the following features do you want to have in a model-based performance prediction tool? Please indicate on a scale from strongly disagree to strongly agree.</text>
+      <subQuestion varName="Ch4PredictionFeature_SQ001">
+        <text>Support for design decisions (e.g., deployment or system composition)</text>
+      </subQuestion>
+      <subQuestion varName="Ch4PredictionFeature_SQ002">
+        <text>Statements about the prediction accuracy</text>
+      </subQuestion>
+      <subQuestion varName="Ch4PredictionFeature_SQ003">
+        <text>Visualization</text>
+      </subQuestion>
+      <subQuestion varName="Ch4PredictionFeature_SQ004">
+        <text>Support for the software architecture and architectural design</text>
+      </subQuestion>
+      <subQuestion varName="Ch4PredictionFeature_SQ005">
+        <text>Fast feedback</text>
+      </subQuestion>
+      <response varName="Ch4PredictionFeature">
+        <fixed>
+          <category>
+            <label>Strongly disagree</label>
+            <value>AO01</value>
+          </category>
+          <category>
+            <label>Disagree</label>
+            <value>AO02</value>
+          </category>
+          <category>
+            <label>Neutral</label>
+            <value>AO03</value>
+          </category>
+          <category>
+            <label>Agree</label>
+            <value>AO04</value>
+          </category>
+          <category>
+            <label>Strongly agree</label>
+            <value>AO05</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>Are there any issues or challenges when you use the performance management tools and/or tests? If so, please name them.</text>
+      <response varName="Ch2Challenges">
+        <free>
+          <format>longtext</format>
+          <length>40</length>
+          <label/>
+        </free>
+      </response>
+    </question>
+    <question>
+      <text>Do you miss features in performance management tools and/or tests? If so, please name them.</text>
+      <response varName="Ch3MissingFeatures">
+        <free>
+          <format>longtext</format>
+          <length>40</length>
+          <label/>
+        </free>
+      </response>
+    </question>
+  </section>
+  <section id="52">
+    <sectionInfo>
+      <position>title</position>
+      <text>New Tool</text>
+      <administration>self</administration>
+    </sectionInfo>
+    <sectionInfo>
+      <position>before</position>
+      <text>Welcome to the second part. It consists of four questions about a new model-based performance prediction tool. This tool extracts a performance model from code and monitors the code in a test or production environment. Based on a training set from these measurements, the performance model is calibrated (i.e., its parameters are estimated). Afterwards, the tool performs a self-validation by predicting the performance and comparing the results with a validation set from the measurements. The comparison is based on statistical measures which express the accuracy of the performance prediction. If the prediction is accurate enough, the model can be used to analyze the software system. Otherwise, the monitoring and calibration continues until the self-validation estimates the prediction as sufficiently accurate.</text>
+      <administration>self</administration>
+    </sectionInfo>
+    <question>
+      <text>&lt;p&gt;Do you agree to the following statements? Please indicate on a scale from strongly disagree to strongly agree.&lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;p&gt;I would trust the results of model-based performance predictions when...&lt;/p&gt;</text>
+      <subQuestion varName="N2Trust_SQ001">
+        <text>metrics about the accuracy of the performance prediction are available.</text>
+      </subQuestion>
+      <subQuestion varName="N2Trust_SQ003">
+        <text>the calibration of the performance model is based on monitoring data.</text>
+      </subQuestion>
+      <subQuestion varName="N2Trust_SQ002">
+        <text>the prediction results are validated with monitoring data.</text>
+      </subQuestion>
+      <response varName="N2Trust">
+        <fixed>
+          <category>
+            <label>Strongly disagree</label>
+            <value>AO01</value>
+          </category>
+          <category>
+            <label>Disagree</label>
+            <value>AO02</value>
+          </category>
+          <category>
+            <label>Slightly disagree</label>
+            <value>AO03</value>
+          </category>
+          <category>
+            <label>Neutral</label>
+            <value>AO04</value>
+          </category>
+          <category>
+            <label>Slightly agree</label>
+            <value>AO05</value>
+          </category>
+          <category>
+            <label>Agree</label>
+            <value>AO06</value>
+          </category>
+          <category>
+            <label>Strongly agree</label>
+            <value>AO07</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+  </section>
+  <section id="53">
+    <sectionInfo>
+      <position>title</position>
+      <text>Costs</text>
+      <administration>self</administration>
+    </sectionInfo>
+    <question>
+      <text>What factors would you consider when introducing a new performance prediction tool?</text>
+      <response varName="Co1PMFactors_SQ001">
+        <fixed>
+          <category>
+            <label>Easy setup</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="Co1PMFactors_SQ002">
+        <fixed>
+          <category>
+            <label>Learning curve</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="Co1PMFactors_SQ003">
+        <fixed>
+          <category>
+            <label>Effort to adapt the tool for the team</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="Co1PMFactors_SQ004">
+        <fixed>
+          <category>
+            <label>Possibilities for extensions to the tool</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="Co1PMFactors_SQ005">
+        <fixed>
+          <category>
+            <label>License costs</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="Co1PMFactors_SQ006">
+        <fixed>
+          <category>
+            <label>Setup costs</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="Co1PMFactors_SQ007">
+        <fixed>
+          <category>
+            <label>Maintenance costs</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="Co1PMFactors_SQ008">
+        <fixed>
+          <category>
+            <label>Benefits and Quality</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="Co1PMFactorsT">
+        <fixed>
+          <category>
+            <label>Other</label>
+            <value>Y</value>
+            <contingentQuestion varName="Co1PMFactorsother">
+              <text>Other</text>
+              <length>24</length>
+              <format>longtext</format>
+            </contingentQuestion>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>What factors would you consider when adopting a new performance prediction tool?</text>
+      <response varName="Co1DevFactors_SQ001">
+        <fixed>
+          <category>
+            <label>Easy setup</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="Co1DevFactors_SQ002">
+        <fixed>
+          <category>
+            <label>Learning curve</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="Co1DevFactors_SQ003">
+        <fixed>
+          <category>
+            <label>Effort to adapt the tool for the team</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="Co1DevFactors_SQ004">
+        <fixed>
+          <category>
+            <label>Possibilities for extensions to the tool</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="Co1DevFactors_SQ005">
+        <fixed>
+          <category>
+            <label>License costs</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="Co1DevFactors_SQ006">
+        <fixed>
+          <category>
+            <label>Setup costs</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="Co1DevFactors_SQ007">
+        <fixed>
+          <category>
+            <label>Maintenance costs</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="Co1DevFactors_SQ008">
+        <fixed>
+          <category>
+            <label>Benefits and Quality</label>
+            <value>Y</value>
+          </category>
+        </fixed>
+      </response>
+      <response varName="Co1DevFactorsT">
+        <fixed>
+          <category>
+            <label>Other</label>
+            <value>Y</value>
+            <contingentQuestion varName="Co1DevFactorsother">
+              <text>Other</text>
+              <length>24</length>
+              <format>longtext</format>
+            </contingentQuestion>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>How much overall time would you be willing that people of your team invest in setting up and learning a new performance prediction tool?</text>
+      <response varName="Co2PMTimeLearn">
+        <fixed>
+          <category>
+            <label>Less than 1 working day</label>
+            <value>AO01</value>
+          </category>
+          <category>
+            <label>1 working day</label>
+            <value>AO02</value>
+          </category>
+          <category>
+            <label>2-3 working days</label>
+            <value>AO03</value>
+          </category>
+          <category>
+            <label>4-5 working days</label>
+            <value>AO04</value>
+          </category>
+          <category>
+            <label>6-10 working days</label>
+            <value>AO05</value>
+          </category>
+          <category>
+            <label>More than 10 working days</label>
+            <value>AO06</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>How much time would you be willing to invest in setting up and learning a new performance prediction tool?</text>
+      <response varName="Co2DevTimeLearn">
+        <fixed>
+          <category>
+            <label>Less than 1 working day</label>
+            <value>AO01</value>
+          </category>
+          <category>
+            <label>1 working day</label>
+            <value>AO02</value>
+          </category>
+          <category>
+            <label>2-3 working days</label>
+            <value>AO03</value>
+          </category>
+          <category>
+            <label>4-5 working days</label>
+            <value>AO04</value>
+          </category>
+          <category>
+            <label>6-10 working days</label>
+            <value>AO05</value>
+          </category>
+          <category>
+            <label>More than 10 working days</label>
+            <value>AO06</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>If a new performance prediction tool requires adoption to your team's specific technologies and programming languages, how much overall time would you be willing that people of your team invest in this adoption?</text>
+      <response varName="Co3PMTimeAdoption">
+        <fixed>
+          <category>
+            <label>Less than 1 week</label>
+            <value>AO01</value>
+          </category>
+          <category>
+            <label>1-2 weeks</label>
+            <value>AO02</value>
+          </category>
+          <category>
+            <label>2-3 weeks</label>
+            <value>AO03</value>
+          </category>
+          <category>
+            <label>3-4 weeks</label>
+            <value>AO04</value>
+          </category>
+          <category>
+            <label>More than 4 weeks</label>
+            <value>AO05</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>If a new performance prediction tool requires adoption to your specific technologies and programming languages, how much time would you be willing to invest in this adoption?</text>
+      <response varName="Co3DevTimeAdoption">
+        <fixed>
+          <category>
+            <label>Less than 1 week</label>
+            <value>AO01</value>
+          </category>
+          <category>
+            <label>1-2 weeks</label>
+            <value>AO02</value>
+          </category>
+          <category>
+            <label>2-3 weeks</label>
+            <value>AO03</value>
+          </category>
+          <category>
+            <label>3-4 weeks</label>
+            <value>AO04</value>
+          </category>
+          <category>
+            <label>More than 4 weeks</label>
+            <value>AO05</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+  </section>
+</questionnaire>
