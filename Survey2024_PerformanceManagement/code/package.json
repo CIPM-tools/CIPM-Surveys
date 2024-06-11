@@ -1,7 +1,9 @@
 {
     "name": "@cipm/surveys-2024-pm-eval",
     "version": "1.0.0-dev",
-    "scripts": {},
+    "scripts": {
+        "start": "ts-node ./src/main.ts"
+    },
     "license": "MIT",
     "dependencies": {
         "@observablehq/plot": "^0.6.14",
