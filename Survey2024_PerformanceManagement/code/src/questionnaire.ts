@@ -7,12 +7,16 @@ export type FixedResponse = {
     category: ResponseCategory[] | ResponseCategory;
 };
 
+export type FreeResponse = {};
+
 export type Response = {
     '@_varName': string;
-    fixed: FixedResponse;
+    fixed?: FixedResponse;
+    free?: FreeResponse;
 };
 
 export type SubQuestion = {
+    '@_varName': string;
     text: string;
 };
 
