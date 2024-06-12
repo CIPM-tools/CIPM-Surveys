@@ -1,8 +1,9 @@
 {
     "name": "@cipm/surveys-2024-pm-eval",
     "version": "1.0.0-dev",
+    "type": "module",
     "scripts": {
-        "start": "ts-node ./src/main.ts"
+        "start": "node --loader ts-node/esm ./src/main.ts"
     },
     "license": "MIT",
     "dependencies": {

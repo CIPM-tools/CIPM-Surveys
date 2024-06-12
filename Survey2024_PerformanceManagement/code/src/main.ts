@@ -3,8 +3,7 @@ import { parse } from 'csv-parse/sync';
 import { existsSync } from 'fs';
 import { readFile, writeFile } from 'fs/promises';
 import { resolve } from 'path';
-import { Question, QuestionnaireXML, ResponseCategory } from './questionnaire';
-import { QUESTION_CODES } from './question-codes';
+import { Question, QuestionnaireXML, ResponseCategory } from './questionnaire.js';
 
 function readFileContent(path: string): Promise<string> {
     if (!existsSync(path)) {
