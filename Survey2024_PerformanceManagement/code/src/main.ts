@@ -4,6 +4,13 @@ import { existsSync } from 'fs';
 import { readFile, writeFile } from 'fs/promises';
 import { resolve } from 'path';
 import { Question, QuestionnaireXML, ResponseCategory } from './questionnaire.js';
+import { QUESTION_CODES } from './question-codes.js';
+import * as Plot from '@observablehq/plot';
+import { JSDOM } from 'jsdom';
+
+const Other: string = 'Other';
+const OtherCode: string = `[${Other}]`;
+const NoAnswer: string = 'No Answer';
 
 function readFileContent(path: string): Promise<string> {
     if (!existsSync(path)) {
@@ -34,6 +41,34 @@ function formatCode(code: string): string {
     return code.replace('_', '[') + ']';
 }
 
+function unformatCode(code: string): string {
+    return code.replace('[', '').replace(']', '');
+}
+
+type Tuple = {
+    x: string;
+    y: number;
+};
+
+type Triple = Tuple & { z: string; };
+
+function countResponseOccurrences(answers: string[][], code: string, responseValues: string[]): Tuple[] {
+    const result: Tuple[] = responseValues.map((value) => ({ x: value, y: 0 }));
+    const columnIdx: number = answers[0].indexOf(code);
+    let noAnswerCount: number = 0;
+    for (let rowIdx: number = 1; rowIdx < answers.length; rowIdx++) {
+        if (answers[rowIdx][columnIdx] !== '') {
+            result.filter((x) => x.x === answers[rowIdx][columnIdx]).forEach((x) => x.y++);
+        } else {
+            noAnswerCount++;
+        }
+    }
+    if (noAnswerCount > 0) {
+        result.push({ x: NoAnswer, y: noAnswerCount });
+    }
+    return result;
+}
+
 async function main(): Promise<void> {
     const allQuestions: Question[] = await parseQuestionnaire();
     const codeToResponses: Map<string, string[]> = new Map();
@@ -46,8 +81,8 @@ async function main(): Promise<void> {
                 }
                 const unformattedResponseCode: string = response['@_varName'];
                 const subResponseValues: string[] = extractReponseValues(response.fixed.category);
-                if (subResponseValues.length === 1 && subResponseValues.includes('Other')) {
-                    const otherCode = unformattedResponseCode.substring(0, unformattedResponseCode.length - 1) + '[Other]';
+                if (subResponseValues.length === 1 && subResponseValues.includes(Other)) {
+                    const otherCode = unformattedResponseCode.substring(0, unformattedResponseCode.length - 1) + OtherCode;
                     codeToResponses.set(otherCode, subResponseValues);
                     continue;
                 }
@@ -74,12 +109,31 @@ async function main(): Promise<void> {
 
     // let questionCodesSourceCode: string = '// This is an automatically generated file.\n\nexport const QUESTION_CODES = {\n\n';
     // for (const key of codeToResponses.keys()) {
-    //     questionCodesSourceCode += `    ${key.replace('[', '').replace(']', '')}: '${key}',\n\n`;
+    //     questionCodesSourceCode += `    ${unformatCode(key)}: '${key}',\n\n`;
     // }
     // questionCodesSourceCode += '};\n';
     // await writeFile(resolve('src', 'question-codes.ts'), questionCodesSourceCode, { encoding: 'utf-8' });
     
     const answers: string[][] = await parseAnswers(); // [row][column]
+
+    const virtualDom = new JSDOM();
+
+    const codesForDescriptiveStatistics: string[] = [QUESTION_CODES.D2Age, QUESTION_CODES.D3Experience, QUESTION_CODES.D5CompanySize, QUESTION_CODES.D6TeamSize];
+    for (const code of codesForDescriptiveStatistics) {
+        const responseCount: Tuple[] = countResponseOccurrences(answers, code, codeToResponses.get(code) ?? []);
+        const svgElement = Plot.plot({
+            grid: true,
+            x: { label: '' },
+            y: { label: '' },
+            marks: [
+                Plot.frame(),
+                Plot.barY(responseCount, { x: 'x', y: 'y', sort: { x: 'x', order: null } })
+            ],
+            document: virtualDom.window.document
+        });
+        const svg: string = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
+        await writeFile(`${unformatCode(code)}.svg`, svg, { encoding: 'utf-8' });
+    }
 }
 
 main();

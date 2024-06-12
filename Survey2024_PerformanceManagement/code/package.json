@@ -10,10 +10,12 @@
         "@observablehq/plot": "^0.6.14",
         "csv": "^6.3.9",
         "d3-array": "^3.2.4",
-        "fast-xml-parser": "^4.4.0"
+        "fast-xml-parser": "^4.4.0",
+        "jsdom": "^24.1.0"
     },
     "devDependencies": {
         "@types/d3-array": "^3.2.1",
+        "@types/jsdom": "^21.1.7",
         "@types/node": "^20.14.2",
         "ts-node": "^10.9.2",
         "tslib": "^2.6.3",
