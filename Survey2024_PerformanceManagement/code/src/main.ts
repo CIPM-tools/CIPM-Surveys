@@ -62,16 +62,24 @@ type Condition = {
 type CodeConditionPair = {
     code: string;
     condition?: Condition;
+    isMultipleChoice?: boolean,
+    responseValueMapping?: Map<string, string>;
 };
 
-function countResponseOccurrences(answers: ResponseJson, { code, condition }: CodeConditionPair, responseValues: string[]): Tuple[] {
+function countResponseOccurrences(answers: ResponseJson, { code, condition, responseValueMapping }: CodeConditionPair, responseValues: string[]): Tuple[] {
     const result: Tuple[] = responseValues.map((value) => ({ x: value, y: 0 }));
     let noAnswerCount: number = 0;
     for (const entry of answers.responses) {
         if (condition && entry[condition.code] !== condition.value) {
             continue;
         }
-        if (entry[code] !== '') {
+        if (responseValueMapping) {
+            for (const tup of result) {
+                if (entry[tup.x] === Yes) {
+                    tup.y++;
+                }
+            }
+        } else if (entry[code] !== '') {
             result.filter((x) => x.x === entry[code]).forEach((x) => x.y++);
         } else {
             noAnswerCount++;
@@ -79,6 +87,22 @@ function countResponseOccurrences(answers: ResponseJson, { code, condition }: Co
     }
     if (noAnswerCount > 0) {
         result.push({ x: NoAnswer, y: noAnswerCount });
+    }
+    if (responseValueMapping) {
+        for (const tup of result) {
+            tup.x = responseValueMapping.get(tup.x) ?? tup.x;
+        }
+    }
+    return result;
+}
+
+function getResponseCodeMapping(responseCodes: string[], codeToResponses: Map<string, string[]>): Map<string, string> {
+    const result: Map<string, string> = new Map();
+    for (const code of responseCodes) {
+        const responses: string[] | undefined = codeToResponses.get(code);
+        if (responses && responses.length > 0) {
+            result.set(code, responses[0]);
+        }
     }
     return result;
 }
@@ -88,7 +112,7 @@ async function main(): Promise<void> {
     const codeToResponses: Map<string, string[]> = new Map();
     for (const question of allQuestions) {
         if (Array.isArray(question.response)) { // Multiple choice
-            const allResponseValues: string[] = [];
+            const allResponseCodes: string[] = [];
             for (const response of question.response) {
                 if (!response.fixed) {
                     throw new Error('Found multiple responses with free text.');
@@ -100,12 +124,13 @@ async function main(): Promise<void> {
                     codeToResponses.set(otherCode, subResponseValues);
                     continue;
                 }
-                codeToResponses.set(formatCode(unformattedResponseCode), subResponseValues);
-                allResponseValues.push(...subResponseValues);
+                const formattedResponseCode: string = formatCode(unformattedResponseCode);
+                codeToResponses.set(formattedResponseCode, subResponseValues);
+                allResponseCodes.push(formattedResponseCode);
             }
             const firstResponseCode = question.response[0]['@_varName'];
             const questionCode = firstResponseCode.substring(0, firstResponseCode.indexOf('_'));
-            codeToResponses.set(questionCode, allResponseValues);
+            codeToResponses.set(questionCode, allResponseCodes);
         } else {
             if (!question.response.fixed) {
                 continue;
@@ -135,8 +160,18 @@ async function main(): Promise<void> {
     const codesForDescriptiveStatistics: CodeConditionPair[] = [
         { code: QUESTION_CODES.D2Age },
         { code: QUESTION_CODES.D3Experience },
+        { code: QUESTION_CODES.D4Roles, isMultipleChoice: true },
         { code: QUESTION_CODES.D5CompanySize },
         { code: QUESTION_CODES.D6TeamSize },
+        { code: QUESTION_CODES.C1DevMethod, isMultipleChoice: true },
+        { code: QUESTION_CODES.C2Technologies, isMultipleChoice: true },
+        { code: QUESTION_CODES.C3PManagement, isMultipleChoice: true },
+        { code: QUESTION_CODES.C4MonHinder, isMultipleChoice: true, condition: { code: QUESTION_CODES.C3PManagementC3Mon, value: No } },
+        { code: QUESTION_CODES.C4MonTools, isMultipleChoice: true, condition: { code: QUESTION_CODES.C3PManagementC3Mon, value: Yes } },
+        { code: QUESTION_CODES.C5TestsHinder, isMultipleChoice: true, condition: { code: QUESTION_CODES.C3PManagementC3Tests, value: No } },
+        { code: QUESTION_CODES.C6PredictionHinder, isMultipleChoice: true, condition: { code: QUESTION_CODES.C3PManagementC3Prediction, value: No } },
+        { code: QUESTION_CODES.C6PredictionTools, isMultipleChoice: true, condition: { code: QUESTION_CODES.C3PManagementC3Prediction, value: Yes } },
+        { code: QUESTION_CODES.C7Purpose },
         { code: QUESTION_CODES.C8RelevanceSQ001 },
         { code: QUESTION_CODES.C8RelevanceSQ002 },
         { code: QUESTION_CODES.C9GeneralTrustSQ001 },
@@ -155,12 +190,17 @@ async function main(): Promise<void> {
         { code: QUESTION_CODES.N2TrustSQ001 },
         { code: QUESTION_CODES.N2TrustSQ002 },
         { code: QUESTION_CODES.N2TrustSQ003 },
+        { code: QUESTION_CODES.Co1DevFactors, isMultipleChoice: true, condition: { code: QUESTION_CODES.D4RolesSQ003, value: No } },
+        { code: QUESTION_CODES.Co1PMFactors, isMultipleChoice: true, condition: { code: QUESTION_CODES.D4RolesSQ003, value: Yes } },
         { code: QUESTION_CODES.Co2DevTimeLearn, condition: { code: QUESTION_CODES.D4RolesSQ003, value: No } },
         { code: QUESTION_CODES.Co2PMTimeLearn, condition: { code: QUESTION_CODES.D4RolesSQ003, value: Yes } },
         { code: QUESTION_CODES.Co3DevTimeAdoption, condition: { code: QUESTION_CODES.D4RolesSQ003, value: No } },
         { code: QUESTION_CODES.Co3PMTimeAdoption, condition: { code: QUESTION_CODES.D4RolesSQ003, value: Yes } }
     ];
     for (const coco of codesForDescriptiveStatistics) {
+        if (coco.isMultipleChoice) {
+            coco.responseValueMapping = getResponseCodeMapping(codeToResponses.get(coco.code) ?? [], codeToResponses);
+        }
         const responseCount: Tuple[] = countResponseOccurrences(answers, coco, codeToResponses.get(coco.code) ?? []);
         const svgElement = Plot.plot({
             grid: true,
@@ -173,7 +213,7 @@ async function main(): Promise<void> {
             document: virtualDom.window.document
         });
         const svg: string = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
-        await writeFile(`${unformatCode(coco.code)}${coco.condition ? '-' + coco.condition.code + '-' + coco.condition.value : ''}.svg`, svg, { encoding: 'utf-8' });
+        await writeFile(resolve('..', 'output', `${unformatCode(coco.code)}${coco.condition ? '-' + coco.condition.code + '-' + coco.condition.value : ''}.svg`), svg, { encoding: 'utf-8' });
     }
 }
 
