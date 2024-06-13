@@ -107,6 +107,10 @@ function getResponseCodeMapping(responseCodes: string[], codeToResponses: Map<st
     return result;
 }
 
+function getTexts(answers: ResponseJson, code: string): string[] {
+    return answers.responses.map((entry) => entry[code]).filter((entry) => typeof entry === 'string' && entry !== '').map((entry) => entry as string);
+}
+
 async function main(): Promise<void> {
     const allQuestions: Question[] = await parseQuestionnaire();
     const codeToResponses: Map<string, string[]> = new Map();
@@ -133,6 +137,9 @@ async function main(): Promise<void> {
             codeToResponses.set(questionCode, allResponseCodes);
         } else {
             if (!question.response.fixed) {
+                if (question.response.free) {
+                    codeToResponses.set(question.response['@_varName'], []);
+                }
                 continue;
             }
             const responseValues: string[] = extractReponseValues(question.response.fixed.category);
@@ -215,6 +222,16 @@ async function main(): Promise<void> {
         const svg: string = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
         await writeFile(resolve('..', 'output', `${unformatCode(coco.code)}${coco.condition ? '-' + coco.condition.code + '-' + coco.condition.value : ''}.svg`), svg, { encoding: 'utf-8' });
     }
+
+    const texts: { [key: string]: string[] } = {};
+    texts[QUESTION_CODES.Ch2Challenges] = getTexts(answers, QUESTION_CODES.Ch2Challenges);
+    texts[QUESTION_CODES.Ch3MissingFeatures] = getTexts(answers, QUESTION_CODES.Ch3MissingFeatures);
+    for (const code of codeToResponses.keys()) {
+        if (code.endsWith(OtherCode)) {
+            texts[code] = getTexts(answers, code);
+        }
+    }
+    await writeFile(resolve('..', 'output', 'texts.json'), JSON.stringify(texts, undefined, 4), { encoding: 'utf-8' });
 }
 
 main();

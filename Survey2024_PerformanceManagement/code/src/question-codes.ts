@@ -206,6 +206,10 @@ export const QUESTION_CODES = {
 
     Ch4PredictionFeatureSQ005: 'Ch4PredictionFeature[SQ005]',
 
+    Ch2Challenges: 'Ch2Challenges',
+
+    Ch3MissingFeatures: 'Ch3MissingFeatures',
+
     N2TrustSQ001: 'N2Trust[SQ001]',
 
     N2TrustSQ003: 'N2Trust[SQ003]',
