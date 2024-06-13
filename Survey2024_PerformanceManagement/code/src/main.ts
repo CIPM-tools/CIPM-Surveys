@@ -7,6 +7,7 @@ import { QUESTION_CODES } from './question-codes.js';
 import * as Plot from '@observablehq/plot';
 import { JSDOM } from 'jsdom';
 import { ResponseJson } from './responses.js';
+import { Output } from './output.js';
 
 const Other: string = 'Other';
 const OtherCode: string = `[${Other}]`;
@@ -209,6 +210,7 @@ async function main(): Promise<void> {
     const answers: ResponseJson = await parseAnswers();
 
     const virtualDom = new JSDOM();
+    const output: Output = new Output(resolve('..', 'output'));
 
     const codesForDescriptiveStatistics: CodeConditionPair[] = [
         { code: QUESTION_CODES.D2Age },
@@ -266,7 +268,7 @@ async function main(): Promise<void> {
             document: virtualDom.window.document
         });
         const svg: string = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
-        await writeFile(resolve('..', 'output', `${unformatCode(coco.code)}${coco.condition ? '-' + coco.condition.code + '-' + coco.condition.value : ''}.svg`), svg, { encoding: 'utf-8' });
+        await output.saveSvgForDescriptiveStatistic(`${unformatCode(coco.code)}.svg`, svg);
     }
 
     const texts: { [key: string]: string[] } = {};
@@ -277,7 +279,7 @@ async function main(): Promise<void> {
             texts[code] = getTexts(answers, code);
         }
     }
-    await writeFile(resolve('..', 'output', 'texts.json'), JSON.stringify(texts, undefined, 4), { encoding: 'utf-8' });
+    await output.saveText('texts.json', JSON.stringify(texts, undefined, 4));
 
     const codesOneDimension: string[] = [
         QUESTION_CODES.D5CompanySize,
@@ -300,7 +302,7 @@ async function main(): Promise<void> {
                 document: virtualDom.window.document
             });
             const svg: string = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
-            await writeFile(resolve('..', 'output', `${unformatCode(codeOne)}x${unformatCode(codeTwo)}.svg`), svg, { encoding: 'utf-8' });
+            await output.saveSvgForRelation(`${unformatCode(codeOne)}x${unformatCode(codeTwo)}.svg`, svg);
         }
     }
 }
