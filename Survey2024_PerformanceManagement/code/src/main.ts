@@ -111,6 +111,52 @@ function getTexts(answers: ResponseJson, code: string): string[] {
     return answers.responses.map((entry) => entry[code]).filter((entry) => typeof entry === 'string' && entry !== '').map((entry) => entry as string);
 }
 
+type LabeledCondition = Condition & { label: string; };
+
+type CodeRelation = {
+    first: LabeledCondition;
+    second: LabeledCondition;
+};
+
+function createConditions(codeToResponses: Map<string, string[]>, code: string): LabeledCondition[] {
+    const responses: string[] | undefined = codeToResponses.get(code);
+    if (!responses) {
+        throw new Error(`Illegal code '${code}'. No responses found.`);
+    }
+    if (codeToResponses.get(responses[0]) !== undefined) {
+        return responses.map((responseCode) => ({ code: responseCode, value: Yes, label: codeToResponses.get(responseCode)?.[0] ?? '' }));
+    } else {
+        return responses.map((responseValue) => ({ code: code, value: responseValue, label: responseValue }));
+    }
+}
+
+function createRelation(codeToResponses: Map<string, string[]>, codeOne: string, codeTwo: string): CodeRelation[] {
+    const conditionsOne: LabeledCondition[] = createConditions(codeToResponses, codeOne);
+    const conidtionsTwo: LabeledCondition[] = createConditions(codeToResponses, codeTwo);
+    const result: CodeRelation[] = [];
+    for (const c1 of conditionsOne) {
+        for (const c2 of conidtionsTwo) {
+            result.push({ first: c1, second: c2 });
+        }
+    }
+    return result;
+}
+
+function countRelationOccurrences(codeToResponses: Map<string, string[]>, answers: ResponseJson, codeOne: string, codeTwo: string): Triple[] {
+    const relations: CodeRelation[] = createRelation(codeToResponses, codeOne, codeTwo);
+    const result: Triple[] = [];
+    for (const rel of relations) {
+        const nextTriple: Triple = { x: rel.first.label, z: rel.second.label, y: 0 };
+        for (const response of answers.responses) {
+            if (response[rel.first.code] === rel.first.value && response[rel.second.code] === rel.second.value) {
+                nextTriple.y++;
+            }
+        }
+        result.push(nextTriple);
+    }
+    return result;
+}
+
 async function main(): Promise<void> {
     const allQuestions: Question[] = await parseQuestionnaire();
     const codeToResponses: Map<string, string[]> = new Map();
@@ -232,6 +278,31 @@ async function main(): Promise<void> {
         }
     }
     await writeFile(resolve('..', 'output', 'texts.json'), JSON.stringify(texts, undefined, 4), { encoding: 'utf-8' });
+
+    const codesOneDimension: string[] = [
+        QUESTION_CODES.D5CompanySize,
+        QUESTION_CODES.D6TeamSize
+    ];
+    const codesOtherDimension: string[] = [
+        QUESTION_CODES.C3PManagement
+    ];
+    for (const codeOne of codesOneDimension) {
+        for (const codeTwo of codesOtherDimension) {
+            const count: Triple[] = countRelationOccurrences(codeToResponses, answers, codeOne, codeTwo);
+            const svgElement = Plot.plot({
+                grid: true,
+                x: { label: '' },
+                y: { label: '' },
+                marks: [
+                    Plot.frame(),
+                    Plot.dot(count, { x: 'x', y: 'z', r: 'y' })
+                ],
+                document: virtualDom.window.document
+            });
+            const svg: string = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
+            await writeFile(resolve('..', 'output', `${unformatCode(codeOne)}x${unformatCode(codeTwo)}.svg`), svg, { encoding: 'utf-8' });
+        }
+    }
 }
 
 main();
