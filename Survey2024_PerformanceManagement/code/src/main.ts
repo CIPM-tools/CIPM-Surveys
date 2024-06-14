@@ -252,11 +252,13 @@ async function main(): Promise<void> {
         { code: QUESTION_CODES.Co3DevTimeAdoption, condition: { code: QUESTION_CODES.D4RolesSQ003, value: No } },
         { code: QUESTION_CODES.Co3PMTimeAdoption, condition: { code: QUESTION_CODES.D4RolesSQ003, value: Yes } }
     ];
+    const tuples: Map<string, Tuple[]> = new Map();
     for (const coco of codesForDescriptiveStatistics) {
         if (coco.isMultipleChoice) {
             coco.responseValueMapping = getResponseCodeMapping(codeToResponses.get(coco.code) ?? [], codeToResponses);
         }
         const responseCount: Tuple[] = countResponseOccurrences(answers, coco, codeToResponses.get(coco.code) ?? []);
+        tuples.set(coco.code, responseCount);
         const svgElement = Plot.plot({
             grid: true,
             x: { label: '' },
@@ -270,6 +272,22 @@ async function main(): Promise<void> {
         const svg: string = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
         await output.saveSvgForDescriptiveStatistic(`${unformatCode(coco.code)}.svg`, svg);
     }
+
+    const combinedCodes: string[] = [QUESTION_CODES.C9GeneralTrustSQ001, QUESTION_CODES.C9GeneralTrustSQ002, QUESTION_CODES.C9GeneralTrustSQ003];
+    const svgElement = Plot.plot({
+        grid: true,
+        x: { label: '', axis: 'top' },
+        fx: { label: '', axis: 'bottom', domain: [...codeToResponses.get(combinedCodes[0]) ?? [], NoAnswer] },
+        y: { label: '' },
+        color: { scheme: 'Category10' },
+        marks: [
+            Plot.frame(),
+            Plot.barY(combinedCodes.flatMap((code) => tuples.get(code)?.map((v) => ({ x: v.x, y: v.y, z: code } as Triple)) ?? []), Plot.groupX({ y: 'identity' }, { x: 'z', y: 'y', fx: 'x', fill: 'z' })),
+        ],
+        document: virtualDom.window.document
+    });
+    const svg: string = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
+    await output.saveSvgForDescriptiveStatistic(`${combinedCodes.join('-')}.svg`, svg);
 
     const texts: { [key: string]: string[] } = {};
     texts[QUESTION_CODES.Ch2Challenges] = getTexts(answers, QUESTION_CODES.Ch2Challenges);
