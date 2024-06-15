@@ -20,7 +20,7 @@ export const QUESTION_CODES = {
 
     D4RolesSQ006: 'D4Roles[SQ006]',
 
-    D4RolesOther: 'D4Roles[Other]',
+    D4Rolesother: 'D4Roles[other]',
 
     D4Roles: 'D4Roles',
 
@@ -34,7 +34,7 @@ export const QUESTION_CODES = {
 
     C1DevMethodSQ003: 'C1DevMethod[SQ003]',
 
-    C1DevMethodOther: 'C1DevMethod[Other]',
+    C1DevMethodother: 'C1DevMethod[other]',
 
     C1DevMethod: 'C1DevMethod',
 
@@ -50,7 +50,7 @@ export const QUESTION_CODES = {
 
     C2TechnologiesSQ006: 'C2Technologies[SQ006]',
 
-    C2TechnologiesOther: 'C2Technologies[Other]',
+    C2Technologiesother: 'C2Technologies[other]',
 
     C2Technologies: 'C2Technologies',
 
@@ -60,7 +60,7 @@ export const QUESTION_CODES = {
 
     C3PManagementC3Prediction: 'C3PManagement[C3Prediction]',
 
-    C3PManagementOther: 'C3PManagement[Other]',
+    C3PManagementother: 'C3PManagement[other]',
 
     C3PManagement: 'C3PManagement',
 
@@ -82,7 +82,7 @@ export const QUESTION_CODES = {
 
     C4MonHinderSQ009: 'C4MonHinder[SQ009]',
 
-    C4MonHinderOther: 'C4MonHinder[Other]',
+    C4MonHinderother: 'C4MonHinder[other]',
 
     C4MonHinder: 'C4MonHinder',
 
@@ -98,7 +98,7 @@ export const QUESTION_CODES = {
 
     C4MonToolsSQ006: 'C4MonTools[SQ006]',
 
-    C4MonToolsOther: 'C4MonTools[Other]',
+    C4MonToolsother: 'C4MonTools[other]',
 
     C4MonTools: 'C4MonTools',
 
@@ -120,7 +120,7 @@ export const QUESTION_CODES = {
 
     C5TestsHinderSQ009: 'C5TestsHinder[SQ009]',
 
-    C5TestsHinderOther: 'C5TestsHinder[Other]',
+    C5TestsHinderother: 'C5TestsHinder[other]',
 
     C5TestsHinder: 'C5TestsHinder',
 
@@ -142,7 +142,7 @@ export const QUESTION_CODES = {
 
     C6PredictionHinderSQ009: 'C6PredictionHinder[SQ009]',
 
-    C6PredictionHinderOther: 'C6PredictionHinder[Other]',
+    C6PredictionHinderother: 'C6PredictionHinder[other]',
 
     C6PredictionHinder: 'C6PredictionHinder',
 
@@ -154,7 +154,7 @@ export const QUESTION_CODES = {
 
     C6PredictionToolsSQ004: 'C6PredictionTools[SQ004]',
 
-    C6PredictionToolsOther: 'C6PredictionTools[Other]',
+    C6PredictionToolsother: 'C6PredictionTools[other]',
 
     C6PredictionTools: 'C6PredictionTools',
 
@@ -172,7 +172,7 @@ export const QUESTION_CODES = {
 
     C7PurposeSQ007: 'C7Purpose[SQ007]',
 
-    C7PurposeOther: 'C7Purpose[Other]',
+    C7Purposeother: 'C7Purpose[other]',
 
     C7Purpose: 'C7Purpose',
 
@@ -180,11 +180,15 @@ export const QUESTION_CODES = {
 
     C8RelevanceSQ002: 'C8Relevance[SQ002]',
 
+    C8Relevance: 'C8Relevance',
+
     C9GeneralTrustSQ001: 'C9GeneralTrust[SQ001]',
 
     C9GeneralTrustSQ002: 'C9GeneralTrust[SQ002]',
 
     C9GeneralTrustSQ003: 'C9GeneralTrust[SQ003]',
+
+    C9GeneralTrust: 'C9GeneralTrust',
 
     Ch1QualitySQ001: 'Ch1Quality[SQ001]',
 
@@ -196,6 +200,8 @@ export const QUESTION_CODES = {
 
     Ch1QualitySQ005: 'Ch1Quality[SQ005]',
 
+    Ch1Quality: 'Ch1Quality',
+
     Ch4PredictionFeatureSQ001: 'Ch4PredictionFeature[SQ001]',
 
     Ch4PredictionFeatureSQ002: 'Ch4PredictionFeature[SQ002]',
@@ -206,6 +212,8 @@ export const QUESTION_CODES = {
 
     Ch4PredictionFeatureSQ005: 'Ch4PredictionFeature[SQ005]',
 
+    Ch4PredictionFeature: 'Ch4PredictionFeature',
+
     Ch2Challenges: 'Ch2Challenges',
 
     Ch3MissingFeatures: 'Ch3MissingFeatures',
@@ -215,6 +223,8 @@ export const QUESTION_CODES = {
     N2TrustSQ003: 'N2Trust[SQ003]',
 
     N2TrustSQ002: 'N2Trust[SQ002]',
+
+    N2Trust: 'N2Trust',
 
     Co1PMFactorsSQ001: 'Co1PMFactors[SQ001]',
 
@@ -232,7 +242,7 @@ export const QUESTION_CODES = {
 
     Co1PMFactorsSQ008: 'Co1PMFactors[SQ008]',
 
-    Co1PMFactorsOther: 'Co1PMFactors[Other]',
+    Co1PMFactorsother: 'Co1PMFactors[other]',
 
     Co1PMFactors: 'Co1PMFactors',
 
@@ -252,7 +262,7 @@ export const QUESTION_CODES = {
 
     Co1DevFactorsSQ008: 'Co1DevFactors[SQ008]',
 
-    Co1DevFactorsOther: 'Co1DevFactors[Other]',
+    Co1DevFactorsother: 'Co1DevFactors[other]',
 
     Co1DevFactors: 'Co1DevFactors',
 

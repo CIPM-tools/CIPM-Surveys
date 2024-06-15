@@ -1,6 +1,3 @@
-import { XMLParser } from 'fast-xml-parser';
-import { existsSync } from 'fs';
-import { readFile, writeFile } from 'fs/promises';
 import { resolve } from 'path';
 import { Question, QuestionnaireXML, ResponseCategory } from './questionnaire.js';
 import { QUESTION_CODES } from './question-codes.js';
@@ -8,44 +5,16 @@ import * as Plot from '@observablehq/plot';
 import { JSDOM } from 'jsdom';
 import { ResponseJson } from './responses.js';
 import { Output } from './output.js';
+import { readFileContent, unformatCode } from './utility.js';
+import { OtherCode } from './constants.js';
+import { QuestionContainer } from './question-container.js';
 
-const Other: string = 'Other';
-const OtherCode: string = `[other]`;
 const NoAnswer: string = 'No Answer';
 const Yes: string = 'Yes';
 const No: string = 'No';
 
-function readFileContent(path: string): Promise<string> {
-    if (!existsSync(path)) {
-        throw new Error(`The file '${path}' does not exist.`);
-    }
-    return readFile(path, { encoding: 'utf-8' });
-}
-
-async function parseQuestionnaire(): Promise<Question[]> {
-    const xmlParser = new XMLParser({ ignoreAttributes: false });
-    const survey: QuestionnaireXML = xmlParser.parse(await readFileContent(resolve('..', 'data', 'questionnaire.xml')));
-    return survey.questionnaire.section.flatMap((section) => section.question);
-}
-
 async function parseAnswers(): Promise<ResponseJson> {
     return JSON.parse(await readFileContent(resolve('..', 'results.json')));
-}
-
-function extractReponseValues(responses: ResponseCategory | ResponseCategory[]): string[] {
-    if (Array.isArray(responses)) {
-        return responses.map((v) => v.label);
-    } else {
-        return [responses.label];
-    }
-}
-
-function formatCode(code: string): string {
-    return code.replace('_', '[') + ']';
-}
-
-function unformatCode(code: string): string {
-    return code.replace('[', '').replace(']', '');
 }
 
 type Tuple = {
@@ -97,17 +66,6 @@ function countResponseOccurrences(answers: ResponseJson, { code, condition, resp
     return result;
 }
 
-function getResponseCodeMapping(responseCodes: string[], codeToResponses: Map<string, string[]>): Map<string, string> {
-    const result: Map<string, string> = new Map();
-    for (const code of responseCodes) {
-        const responses: string[] | undefined = codeToResponses.get(code);
-        if (responses && responses.length > 0) {
-            result.set(code, responses[0]);
-        }
-    }
-    return result;
-}
-
 function getTexts(answers: ResponseJson, code: string): string[] {
     return answers.responses.map((entry) => entry[code]).filter((entry) => typeof entry === 'string' && entry !== '').map((entry) => entry as string);
 }
@@ -119,21 +77,21 @@ type CodeRelation = {
     second: LabeledCondition;
 };
 
-function createConditions(codeToResponses: Map<string, string[]>, code: string): LabeledCondition[] {
-    const responses: string[] | undefined = codeToResponses.get(code);
-    if (!responses) {
+function createConditions(questionContainer: QuestionContainer, code: string): LabeledCondition[] {
+    const responses: string[] | undefined = questionContainer.getResponses(code);
+    if (responses.length === 0) {
         throw new Error(`Illegal code '${code}'. No responses found.`);
     }
-    if (codeToResponses.get(responses[0]) !== undefined) {
-        return responses.map((responseCode) => ({ code: responseCode, value: Yes, label: codeToResponses.get(responseCode)?.[0] ?? '' }));
+    if (questionContainer.getQuestionType(code) === 'mulitple-choice') {
+        return responses.map((responseCode) => ({ code: responseCode, value: Yes, label: questionContainer.getResponses(responseCode)[0] }));
     } else {
         return responses.map((responseValue) => ({ code: code, value: responseValue, label: responseValue }));
     }
 }
 
-function createRelation(codeToResponses: Map<string, string[]>, codeOne: string, codeTwo: string): CodeRelation[] {
-    const conditionsOne: LabeledCondition[] = createConditions(codeToResponses, codeOne);
-    const conidtionsTwo: LabeledCondition[] = createConditions(codeToResponses, codeTwo);
+function createRelation(questionContainer: QuestionContainer, codeOne: string, codeTwo: string): CodeRelation[] {
+    const conditionsOne: LabeledCondition[] = createConditions(questionContainer, codeOne);
+    const conidtionsTwo: LabeledCondition[] = createConditions(questionContainer, codeTwo);
     const result: CodeRelation[] = [];
     for (const c1 of conditionsOne) {
         for (const c2 of conidtionsTwo) {
@@ -143,8 +101,8 @@ function createRelation(codeToResponses: Map<string, string[]>, codeOne: string,
     return result;
 }
 
-function countRelationOccurrences(codeToResponses: Map<string, string[]>, answers: ResponseJson, codeOne: string, codeTwo: string): Triple[] {
-    const relations: CodeRelation[] = createRelation(codeToResponses, codeOne, codeTwo);
+function countRelationOccurrences(questionContainer: QuestionContainer, answers: ResponseJson, codeOne: string, codeTwo: string): Triple[] {
+    const relations: CodeRelation[] = createRelation(questionContainer, codeOne, codeTwo);
     const result: Triple[] = [];
     for (const rel of relations) {
         const nextTriple: Triple = { x: rel.first.label, z: rel.second.label, y: 0 };
@@ -159,53 +117,9 @@ function countRelationOccurrences(codeToResponses: Map<string, string[]>, answer
 }
 
 async function main(): Promise<void> {
-    const allQuestions: Question[] = await parseQuestionnaire();
-    const codeToResponses: Map<string, string[]> = new Map();
-    for (const question of allQuestions) {
-        if (Array.isArray(question.response)) { // Multiple choice
-            const allResponseCodes: string[] = [];
-            for (const response of question.response) {
-                if (!response.fixed) {
-                    throw new Error('Found multiple responses with free text.');
-                }
-                const unformattedResponseCode: string = response['@_varName'];
-                const subResponseValues: string[] = extractReponseValues(response.fixed.category);
-                if (subResponseValues.length === 1 && subResponseValues.includes(Other)) {
-                    const otherCode = unformattedResponseCode.substring(0, unformattedResponseCode.length - 1) + OtherCode;
-                    codeToResponses.set(otherCode, subResponseValues);
-                    continue;
-                }
-                const formattedResponseCode: string = formatCode(unformattedResponseCode);
-                codeToResponses.set(formattedResponseCode, subResponseValues);
-                allResponseCodes.push(formattedResponseCode);
-            }
-            const firstResponseCode = question.response[0]['@_varName'];
-            const questionCode = firstResponseCode.substring(0, firstResponseCode.indexOf('_'));
-            codeToResponses.set(questionCode, allResponseCodes);
-        } else {
-            if (!question.response.fixed) {
-                if (question.response.free) {
-                    codeToResponses.set(question.response['@_varName'], []);
-                }
-                continue;
-            }
-            const responseValues: string[] = extractReponseValues(question.response.fixed.category);
-            if (question.subQuestion) { // Matrix
-                for (const sq of question.subQuestion) {
-                    codeToResponses.set(formatCode(sq['@_varName']), responseValues);
-                }
-            } else { // Single choice
-                codeToResponses.set(question.response['@_varName'], responseValues);
-            }
-        }
-    }
-
-    // let questionCodesSourceCode: string = '// This is an automatically generated file.\n\nexport const QUESTION_CODES = {\n\n';
-    // for (const key of codeToResponses.keys()) {
-    //     questionCodesSourceCode += `    ${unformatCode(key)}: '${key}',\n\n`;
-    // }
-    // questionCodesSourceCode += '};\n';
-    // await writeFile(resolve('src', 'question-codes.ts'), questionCodesSourceCode, { encoding: 'utf-8' });
+    const questionContainer: QuestionContainer = new QuestionContainer();
+    await questionContainer.initialize();
+    await questionContainer.writeCodesToTS();
     
     const answers: ResponseJson = await parseAnswers();
     // answers.responses = answers.responses.filter((r) => r['lastpage']! === 29);
@@ -270,9 +184,9 @@ async function main(): Promise<void> {
     const tuples: Map<string, Tuple[]> = new Map();
     for (const coco of codesForDescriptiveStatistics) {
         if (coco.isMultipleChoice) {
-            coco.responseValueMapping = getResponseCodeMapping(codeToResponses.get(coco.code) ?? [], codeToResponses);
+            coco.responseValueMapping = questionContainer.getResponseCodeValueMapping(coco.code);
         }
-        const responseCount: Tuple[] = countResponseOccurrences(answers, coco, codeToResponses.get(coco.code) ?? []);
+        const responseCount: Tuple[] = countResponseOccurrences(answers, coco, questionContainer.getResponses(coco.code));
         tuples.set(coco.code, responseCount);
         const svgElement = Plot.plot({
             grid: true,
@@ -292,7 +206,7 @@ async function main(): Promise<void> {
     const svgElement = Plot.plot({
         grid: true,
         x: { label: '', axis: 'top' },
-        fx: { label: '', axis: 'bottom', domain: [...codeToResponses.get(combinedCodes[0]) ?? [], NoAnswer] },
+        fx: { label: '', axis: 'bottom', domain: questionContainer.getResponses(combinedCodes[0]) },
         y: { label: '' },
         color: { scheme: 'Category10' },
         marks: [
@@ -307,7 +221,7 @@ async function main(): Promise<void> {
     const texts: { [key: string]: string[] } = {};
     texts[QUESTION_CODES.Ch2Challenges] = getTexts(answers, QUESTION_CODES.Ch2Challenges);
     texts[QUESTION_CODES.Ch3MissingFeatures] = getTexts(answers, QUESTION_CODES.Ch3MissingFeatures);
-    for (const code of codeToResponses.keys()) {
+    for (const code of questionContainer.getAllCodes()) {
         if (code.endsWith(OtherCode)) {
             texts[code] = getTexts(answers, code);
         }
@@ -334,7 +248,7 @@ async function main(): Promise<void> {
     ];
     for (const codeOne of codesOneDimension) {
         for (const codeTwo of codesOtherDimension) {
-            const count: Triple[] = countRelationOccurrences(codeToResponses, answers, codeOne, codeTwo);
+            const count: Triple[] = countRelationOccurrences(questionContainer, answers, codeOne, codeTwo);
             const svgElement = Plot.plot({
                 grid: true,
                 x: { label: '' },
