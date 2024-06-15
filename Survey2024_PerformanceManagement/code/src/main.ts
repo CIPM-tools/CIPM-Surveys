@@ -13,6 +13,21 @@ const NoAnswer: string = 'No Answer';
 const Yes: string = 'Yes';
 const No: string = 'No';
 
+type RelationResult = {
+    codes: string[];
+    data: Triple[]
+};
+
+type AnalysisResult = {
+    responseNumbers: {
+        completed: number;
+        incomplete: number;
+        neverStarted: number;
+    };
+    counts: { [code: string]: Tuple[] };
+    relations: RelationResult[];
+};
+
 async function parseAnswers(): Promise<ResponseJson> {
     return JSON.parse(await readFileContent(resolve('..', 'results.json')));
 }
@@ -119,23 +134,29 @@ async function main(): Promise<void> {
     const questionContainer: QuestionContainer = new QuestionContainer();
     await questionContainer.initialize();
     await questionContainer.writeCodesToTS();
+
+    const overallResult: AnalysisResult = {
+        counts: {},
+        relations: [],
+        responseNumbers: {
+            completed: 0,
+            incomplete: 0,
+            neverStarted: 0
+        }
+    };
     
     const answers: ResponseJson = await parseAnswers();
     // answers.responses = answers.responses.filter((r) => r['lastpage']! === 29);
-    let completed = 0;
-    let incomplete = 0;
-    let neverStarted = 0;
     for (const r of answers.responses) {
         const lp = r['lastpage'];
         if (lp === null || (typeof lp === 'number' && lp <= 0)) {
-            neverStarted++;
+            overallResult.responseNumbers.neverStarted++;
         } else if (lp === 29) {
-            completed++;
+            overallResult.responseNumbers.completed++;
         } else {
-            incomplete++;
+            overallResult.responseNumbers.incomplete++;
         }
     }
-    console.log(completed, incomplete, neverStarted);
 
     const virtualDom = new JSDOM();
     const output: Output = new Output(resolve('..', 'output'));
@@ -217,6 +238,7 @@ async function main(): Promise<void> {
         });
     }
     for (const comb of combinedData) {
+        overallResult.relations.push(comb);
         const svgElement = Plot.plot({
             grid: true,
             x: { label: '', axis: 'top' },
@@ -259,6 +281,7 @@ async function main(): Promise<void> {
         }
         mappedData.push(...temporaryMappedData);
     }
+    overallResult.relations.push({ codes: codesToMap, data: mappedData });
 
     const svgElement = Plot.plot({
         grid: true,
@@ -306,6 +329,7 @@ async function main(): Promise<void> {
     for (const codeOne of codesOneDimension) {
         for (const codeTwo of codesOtherDimension) {
             const count: Triple[] = countRelationOccurrences(questionContainer, answers, codeOne, codeTwo);
+            overallResult.relations.push({ codes: [codeOne, codeTwo], data: count });
             const svgElement = Plot.plot({
                 grid: true,
                 x: { label: '',  domain: questionContainer.getResponseValues(codeOne) },
@@ -320,6 +344,11 @@ async function main(): Promise<void> {
             await output.saveSvgForRelation(`${unformatCode(codeOne)}x${unformatCode(codeTwo)}.svg`, svg);
         }
     }
+
+    tuples.forEach((value: Tuple[], key: string) => {
+        overallResult.counts[key] = value;
+    });
+    output.saveText('all-results.json', JSON.stringify(overallResult, undefined, 4));
 }
 
 main();
