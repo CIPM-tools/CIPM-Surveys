@@ -10,7 +10,7 @@ import { ResponseJson } from './responses.js';
 import { Output } from './output.js';
 
 const Other: string = 'Other';
-const OtherCode: string = `[${Other}]`;
+const OtherCode: string = `[other]`;
 const NoAnswer: string = 'No Answer';
 const Yes: string = 'Yes';
 const No: string = 'No';
@@ -208,6 +208,21 @@ async function main(): Promise<void> {
     // await writeFile(resolve('src', 'question-codes.ts'), questionCodesSourceCode, { encoding: 'utf-8' });
     
     const answers: ResponseJson = await parseAnswers();
+    // answers.responses = answers.responses.filter((r) => r['lastpage']! === 29);
+    let completed = 0;
+    let incomplete = 0;
+    let neverStarted = 0;
+    for (const r of answers.responses) {
+        const lp = r['lastpage'];
+        if (lp === null || (typeof lp === 'number' && lp <= 0)) {
+            neverStarted++;
+        } else if (lp === 29) {
+            completed++;
+        } else {
+            incomplete++;
+        }
+    }
+    console.log(completed, incomplete, neverStarted);
 
     const virtualDom = new JSDOM();
     const output: Output = new Output(resolve('..', 'output'));
