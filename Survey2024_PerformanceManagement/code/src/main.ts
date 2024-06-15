@@ -205,24 +205,75 @@ async function main(): Promise<void> {
         [QUESTION_CODES.C9GeneralTrustSQ001, QUESTION_CODES.C9GeneralTrustSQ002, QUESTION_CODES.C9GeneralTrustSQ003],
         [QUESTION_CODES.N2TrustSQ001, QUESTION_CODES.N2TrustSQ002, QUESTION_CODES.N2TrustSQ003],
         [QUESTION_CODES.C9GeneralTrustSQ003, QUESTION_CODES.N2TrustSQ001, QUESTION_CODES.N2TrustSQ002, QUESTION_CODES.N2TrustSQ003],
-        [QUESTION_CODES.C8RelevanceSQ001, QUESTION_CODES.C8RelevanceSQ002]
+        [QUESTION_CODES.C8RelevanceSQ001, QUESTION_CODES.C8RelevanceSQ002],
+        [QUESTION_CODES.Co2DevTimeLearn, QUESTION_CODES.Co2PMTimeLearn],
+        [QUESTION_CODES.Co3DevTimeAdoption, QUESTION_CODES.Co3PMTimeAdoption]
     ];
+    const combinedData: { codes: string[]; data: Triple[]; }[] = [];
     for (const comb of combinedCodes) {
+        combinedData.push({
+            codes: comb,
+            data: comb.flatMap((code) => tuples.get(code)?.map((v) => ({ x: v.x, y: v.y, z: code } as Triple)) ?? [])
+        });
+    }
+    for (const comb of combinedData) {
         const svgElement = Plot.plot({
             grid: true,
             x: { label: '', axis: 'top' },
-            fx: { label: '', axis: 'bottom', domain: questionContainer.getResponseValues(comb[0]) },
+            fx: { label: '', axis: 'bottom', domain: questionContainer.getResponseValues(comb.codes[0]) },
             y: { label: '' },
             color: { scheme: 'Category10' },
             marks: [
                 Plot.frame(),
-                Plot.barY(comb.flatMap((code) => tuples.get(code)?.map((v) => ({ x: v.x, y: v.y, z: code } as Triple)) ?? []), Plot.groupX({ y: 'identity' }, { x: 'z', y: 'y', fx: 'x', fill: 'z' })),
+                Plot.barY(comb.data, Plot.groupX({ y: 'identity' }, { x: 'z', y: 'y', fx: 'x', fill: 'z' })),
             ],
             document: virtualDom.window.document
         });
         const svg: string = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
-        await output.saveSvgForDescriptiveStatistic(`${comb.join('-')}.svg`, svg);
+        await output.saveSvgForDescriptiveStatistic(`${comb.codes.join('-')}.svg`, svg);
     }
+
+    const valuesLearn = questionContainer.getResponses(QUESTION_CODES.Co2DevTimeLearn);
+    const valuesAdoption = questionContainer.getResponses(QUESTION_CODES.Co3DevTimeAdoption);
+    const newValues = ['Less than 1 week', '1-2 weeks', 'More than 2 weeks'];
+    const oldValuesToNewIndices: Map<string, number> = new Map();
+    oldValuesToNewIndices.set(valuesLearn[0], 0);
+    oldValuesToNewIndices.set(valuesLearn[1], 0);
+    oldValuesToNewIndices.set(valuesLearn[2], 0);
+    oldValuesToNewIndices.set(valuesLearn[3], 0);
+    oldValuesToNewIndices.set(valuesLearn[4], 1);
+    oldValuesToNewIndices.set(valuesLearn[5], 2);
+    oldValuesToNewIndices.set(valuesAdoption[0], 0);
+    oldValuesToNewIndices.set(valuesAdoption[1], 1);
+    oldValuesToNewIndices.set(valuesAdoption[2], 2);
+    oldValuesToNewIndices.set(valuesAdoption[3], 2);
+    oldValuesToNewIndices.set(valuesAdoption[4], 2);
+
+    const codesToMap = [QUESTION_CODES.Co2DevTimeLearn, QUESTION_CODES.Co2PMTimeLearn, QUESTION_CODES.Co3DevTimeAdoption, QUESTION_CODES.Co3PMTimeAdoption];
+    const mappedData: Triple[] = [];
+    for (const code of codesToMap) {
+        const temporaryMappedData: Triple[] = newValues.map((v) => ({ x: v, y: 0, z: code }));
+        const tuple: Tuple[] = tuples.get(code) ?? [];
+        for (const tup of tuple) {
+            temporaryMappedData[oldValuesToNewIndices.get(tup.x) ?? 0].y += tup.y;
+        }
+        mappedData.push(...temporaryMappedData);
+    }
+
+    const svgElement = Plot.plot({
+        grid: true,
+        x: { label: '', axis: 'top' },
+        fx: { label: '', axis: 'bottom', domain: newValues },
+        y: { label: '' },
+        color: { scheme: 'Category10' },
+        marks: [
+            Plot.frame(),
+            Plot.barY(mappedData, Plot.groupX({ y: 'identity' }, { x: 'z', y: 'y', fx: 'x', fill: 'z' })),
+        ],
+        document: virtualDom.window.document
+    });
+    const svg: string = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
+    await output.saveSvgForDescriptiveStatistic(`${codesToMap.join('-')}.svg`, svg);
 
     const texts: { [key: string]: string[] } = {};
     texts[QUESTION_CODES.Ch2Challenges] = getTexts(answers, QUESTION_CODES.Ch2Challenges);
