@@ -300,11 +300,22 @@ async function main(): Promise<void> {
     await output.saveText('texts.json', JSON.stringify(texts, undefined, 4));
 
     const codesOneDimension: string[] = [
+        QUESTION_CODES.D2Age,
+        QUESTION_CODES.D3Experience,
         QUESTION_CODES.D5CompanySize,
         QUESTION_CODES.D6TeamSize
     ];
     const codesOtherDimension: string[] = [
-        QUESTION_CODES.C3PManagement
+        QUESTION_CODES.C3PManagement,
+        QUESTION_CODES.C7Purpose,
+        QUESTION_CODES.C8RelevanceSQ001,
+        QUESTION_CODES.C8RelevanceSQ002,
+        QUESTION_CODES.C9GeneralTrustSQ001,
+        QUESTION_CODES.C9GeneralTrustSQ002,
+        QUESTION_CODES.C9GeneralTrustSQ003,
+        QUESTION_CODES.N2TrustSQ001,
+        QUESTION_CODES.N2TrustSQ002,
+        QUESTION_CODES.N2TrustSQ003
     ];
     for (const codeOne of codesOneDimension) {
         for (const codeTwo of codesOtherDimension) {
