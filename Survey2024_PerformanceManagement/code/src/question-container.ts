@@ -103,6 +103,14 @@ export class QuestionContainer {
         return this.codes.get(code)?.responses ?? [];
     }
 
+    getResponseValues(code: string): string[] {
+        if (this.getQuestionType(code) === 'mulitple-choice') {
+            return [...this.getResponseCodeValueMapping(code).values()];
+        } else {
+            return this.getResponses(code);
+        }
+    }
+
     getResponseCodeValueMapping(code: string): Map<string, string> {
         const result: Map<string, string> = new Map();
         const responseCodes: string[] = this.getResponses(code);

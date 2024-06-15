@@ -32,7 +32,6 @@ type Condition = {
 type CodeConditionPair = {
     code: string;
     condition?: Condition;
-    isMultipleChoice?: boolean,
     responseValueMapping?: Map<string, string>;
 };
 
@@ -55,9 +54,9 @@ function countResponseOccurrences(answers: ResponseJson, { code, condition, resp
             noAnswerCount++;
         }
     }
-    if (noAnswerCount > 0) {
-        result.push({ x: NoAnswer, y: noAnswerCount });
-    }
+    // if (noAnswerCount > 0) {
+    //     result.push({ x: NoAnswer, y: noAnswerCount });
+    // }
     if (responseValueMapping) {
         for (const tup of result) {
             tup.x = responseValueMapping.get(tup.x) ?? tup.x;
@@ -144,17 +143,17 @@ async function main(): Promise<void> {
     const codesForDescriptiveStatistics: CodeConditionPair[] = [
         { code: QUESTION_CODES.D2Age },
         { code: QUESTION_CODES.D3Experience },
-        { code: QUESTION_CODES.D4Roles, isMultipleChoice: true },
+        { code: QUESTION_CODES.D4Roles },
         { code: QUESTION_CODES.D5CompanySize },
         { code: QUESTION_CODES.D6TeamSize },
-        { code: QUESTION_CODES.C1DevMethod, isMultipleChoice: true },
-        { code: QUESTION_CODES.C2Technologies, isMultipleChoice: true },
-        { code: QUESTION_CODES.C3PManagement, isMultipleChoice: true },
-        { code: QUESTION_CODES.C4MonHinder, isMultipleChoice: true, condition: { code: QUESTION_CODES.C3PManagementC3Mon, value: No } },
-        { code: QUESTION_CODES.C4MonTools, isMultipleChoice: true, condition: { code: QUESTION_CODES.C3PManagementC3Mon, value: Yes } },
-        { code: QUESTION_CODES.C5TestsHinder, isMultipleChoice: true, condition: { code: QUESTION_CODES.C3PManagementC3Tests, value: No } },
-        { code: QUESTION_CODES.C6PredictionHinder, isMultipleChoice: true, condition: { code: QUESTION_CODES.C3PManagementC3Prediction, value: No } },
-        { code: QUESTION_CODES.C6PredictionTools, isMultipleChoice: true, condition: { code: QUESTION_CODES.C3PManagementC3Prediction, value: Yes } },
+        { code: QUESTION_CODES.C1DevMethod },
+        { code: QUESTION_CODES.C2Technologies },
+        { code: QUESTION_CODES.C3PManagement },
+        { code: QUESTION_CODES.C4MonHinder, condition: { code: QUESTION_CODES.C3PManagementC3Mon, value: No } },
+        { code: QUESTION_CODES.C4MonTools, condition: { code: QUESTION_CODES.C3PManagementC3Mon, value: Yes } },
+        { code: QUESTION_CODES.C5TestsHinder, condition: { code: QUESTION_CODES.C3PManagementC3Tests, value: No } },
+        { code: QUESTION_CODES.C6PredictionHinder, condition: { code: QUESTION_CODES.C3PManagementC3Prediction, value: No } },
+        { code: QUESTION_CODES.C6PredictionTools, condition: { code: QUESTION_CODES.C3PManagementC3Prediction, value: Yes } },
         { code: QUESTION_CODES.C7Purpose },
         { code: QUESTION_CODES.C8RelevanceSQ001 },
         { code: QUESTION_CODES.C8RelevanceSQ002 },
@@ -174,8 +173,8 @@ async function main(): Promise<void> {
         { code: QUESTION_CODES.N2TrustSQ001 },
         { code: QUESTION_CODES.N2TrustSQ002 },
         { code: QUESTION_CODES.N2TrustSQ003 },
-        { code: QUESTION_CODES.Co1DevFactors, isMultipleChoice: true, condition: { code: QUESTION_CODES.D4RolesSQ003, value: No } },
-        { code: QUESTION_CODES.Co1PMFactors, isMultipleChoice: true, condition: { code: QUESTION_CODES.D4RolesSQ003, value: Yes } },
+        { code: QUESTION_CODES.Co1DevFactors, condition: { code: QUESTION_CODES.D4RolesSQ003, value: No } },
+        { code: QUESTION_CODES.Co1PMFactors, condition: { code: QUESTION_CODES.D4RolesSQ003, value: Yes } },
         { code: QUESTION_CODES.Co2DevTimeLearn, condition: { code: QUESTION_CODES.D4RolesSQ003, value: No } },
         { code: QUESTION_CODES.Co2PMTimeLearn, condition: { code: QUESTION_CODES.D4RolesSQ003, value: Yes } },
         { code: QUESTION_CODES.Co3DevTimeAdoption, condition: { code: QUESTION_CODES.D4RolesSQ003, value: No } },
@@ -183,7 +182,7 @@ async function main(): Promise<void> {
     ];
     const tuples: Map<string, Tuple[]> = new Map();
     for (const coco of codesForDescriptiveStatistics) {
-        if (coco.isMultipleChoice) {
+        if (questionContainer.getQuestionType(coco.code) === 'mulitple-choice') {
             coco.responseValueMapping = questionContainer.getResponseCodeValueMapping(coco.code);
         }
         const responseCount: Tuple[] = countResponseOccurrences(answers, coco, questionContainer.getResponses(coco.code));
@@ -202,21 +201,28 @@ async function main(): Promise<void> {
         await output.saveSvgForDescriptiveStatistic(`${unformatCode(coco.code)}.svg`, svg);
     }
 
-    const combinedCodes: string[] = [QUESTION_CODES.C9GeneralTrustSQ001, QUESTION_CODES.C9GeneralTrustSQ002, QUESTION_CODES.C9GeneralTrustSQ003];
-    const svgElement = Plot.plot({
-        grid: true,
-        x: { label: '', axis: 'top' },
-        fx: { label: '', axis: 'bottom', domain: questionContainer.getResponses(combinedCodes[0]) },
-        y: { label: '' },
-        color: { scheme: 'Category10' },
-        marks: [
-            Plot.frame(),
-            Plot.barY(combinedCodes.flatMap((code) => tuples.get(code)?.map((v) => ({ x: v.x, y: v.y, z: code } as Triple)) ?? []), Plot.groupX({ y: 'identity' }, { x: 'z', y: 'y', fx: 'x', fill: 'z' })),
-        ],
-        document: virtualDom.window.document
-    });
-    const svg: string = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
-    await output.saveSvgForDescriptiveStatistic(`${combinedCodes.join('-')}.svg`, svg);
+    const combinedCodes: string[][] = [
+        [QUESTION_CODES.C9GeneralTrustSQ001, QUESTION_CODES.C9GeneralTrustSQ002, QUESTION_CODES.C9GeneralTrustSQ003],
+        [QUESTION_CODES.N2TrustSQ001, QUESTION_CODES.N2TrustSQ002, QUESTION_CODES.N2TrustSQ003],
+        [QUESTION_CODES.C9GeneralTrustSQ003, QUESTION_CODES.N2TrustSQ001, QUESTION_CODES.N2TrustSQ002, QUESTION_CODES.N2TrustSQ003],
+        [QUESTION_CODES.C8RelevanceSQ001, QUESTION_CODES.C8RelevanceSQ002]
+    ];
+    for (const comb of combinedCodes) {
+        const svgElement = Plot.plot({
+            grid: true,
+            x: { label: '', axis: 'top' },
+            fx: { label: '', axis: 'bottom', domain: questionContainer.getResponseValues(comb[0]) },
+            y: { label: '' },
+            color: { scheme: 'Category10' },
+            marks: [
+                Plot.frame(),
+                Plot.barY(comb.flatMap((code) => tuples.get(code)?.map((v) => ({ x: v.x, y: v.y, z: code } as Triple)) ?? []), Plot.groupX({ y: 'identity' }, { x: 'z', y: 'y', fx: 'x', fill: 'z' })),
+            ],
+            document: virtualDom.window.document
+        });
+        const svg: string = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
+        await output.saveSvgForDescriptiveStatistic(`${comb.join('-')}.svg`, svg);
+    }
 
     const texts: { [key: string]: string[] } = {};
     texts[QUESTION_CODES.Ch2Challenges] = getTexts(answers, QUESTION_CODES.Ch2Challenges);
@@ -251,8 +257,8 @@ async function main(): Promise<void> {
             const count: Triple[] = countRelationOccurrences(questionContainer, answers, codeOne, codeTwo);
             const svgElement = Plot.plot({
                 grid: true,
-                x: { label: '' },
-                y: { label: '' },
+                x: { label: '',  domain: questionContainer.getResponseValues(codeOne) },
+                y: { label: '', domain: questionContainer.getResponseValues(codeTwo) },
                 marks: [
                     Plot.frame(),
                     Plot.dot(count, { x: 'x', y: 'z', r: 'y' })
