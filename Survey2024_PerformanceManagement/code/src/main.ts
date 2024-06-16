@@ -1,5 +1,4 @@
 import { resolve } from 'path';
-import { Question, QuestionnaireXML, ResponseCategory } from './questionnaire.js';
 import { QUESTION_CODES } from './question-codes.js';
 import * as Plot from '@observablehq/plot';
 import { JSDOM } from 'jsdom';
@@ -8,6 +7,8 @@ import { Output } from './output.js';
 import { readFileContent, unformatCode } from './utility.js';
 import { OtherCode } from './constants.js';
 import { QuestionContainer } from './question-container.js';
+import { XMLParser, XMLBuilder } from 'fast-xml-parser';
+import { writeFile } from 'fs/promises';
 
 const NoAnswer: string = 'No Answer';
 const Yes: string = 'Yes';
@@ -130,6 +131,26 @@ function countRelationOccurrences(questionContainer: QuestionContainer, answers:
     return result;
 }
 
+function filterXAxis(svg: string): string {
+    const parser: XMLParser = new XMLParser({ ignoreAttributes: false, preserveOrder: true });
+    const builder: XMLBuilder = new XMLBuilder({ ignoreAttributes: false, preserveOrder: true });
+    const svgObj = parser.parse(svg);
+    const toRemove = [];
+    for (const obj of svgObj[0].svg) {
+        if (obj[':@'] !== undefined && obj[':@']['@_aria-label'].startsWith('x-axis tick')) {
+            toRemove.push(obj);
+        }
+    }
+    for (const o of toRemove) {
+        svgObj[0].svg.splice(svgObj[0].svg.indexOf(o), 1);
+    }
+    return builder.build(svgObj);
+}
+
+function convertToLowerCaseLetter(idx: number): string {
+    return String.fromCharCode('a'.charCodeAt(0) + idx);
+}
+
 async function main(): Promise<void> {
     const questionContainer: QuestionContainer = new QuestionContainer();
     await questionContainer.initialize();
@@ -241,17 +262,18 @@ async function main(): Promise<void> {
         overallResult.relations.push(comb);
         const svgElement = Plot.plot({
             grid: true,
-            x: { label: '', axis: 'top' },
+            x: { label: '', axis: 'top', domain: comb.codes.map((_, idx) => convertToLowerCaseLetter(idx)) },
             fx: { label: '', axis: 'bottom', domain: questionContainer.getResponseValues(comb.codes[0]) },
             y: { label: '' },
             color: { scheme: 'Category10' },
             marks: [
                 Plot.frame(),
-                Plot.barY(comb.data, Plot.groupX({ y: 'identity' }, { x: 'z', y: 'y', fx: 'x', fill: 'z' })),
+                Plot.barY(comb.data.map((v) => ({ x: v.x, y: v.y, z: convertToLowerCaseLetter(comb.codes.indexOf(v.z)) })), Plot.groupX({ y: 'identity' }, { x: 'z', y: 'y', fx: 'x', fill: 'z' })),
             ],
             document: virtualDom.window.document
         });
         const svg: string = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
+        // svg = filterXAxis(svg);
         await output.saveSvgForDescriptiveStatistic(`${comb.codes.join('-')}.svg`, svg);
     }
 
@@ -285,13 +307,13 @@ async function main(): Promise<void> {
 
     const svgElement = Plot.plot({
         grid: true,
-        x: { label: '', axis: 'top' },
+        x: { label: '', axis: 'top', domain: codesToMap.map((_, idx) => convertToLowerCaseLetter(idx)) },
         fx: { label: '', axis: 'bottom', domain: newValues },
         y: { label: '' },
         color: { scheme: 'Category10' },
         marks: [
             Plot.frame(),
-            Plot.barY(mappedData, Plot.groupX({ y: 'identity' }, { x: 'z', y: 'y', fx: 'x', fill: 'z' })),
+            Plot.barY(mappedData.map((v) => ({ x: v.x, y: v.y, z: convertToLowerCaseLetter(codesToMap.indexOf(v.z)) }), Plot.groupX({ y: 'identity' }, { x: 'z', y: 'y', fx: 'x', fill: 'z' }))),
         ],
         document: virtualDom.window.document
     });
@@ -344,7 +366,7 @@ async function main(): Promise<void> {
             await output.saveSvgForRelation(`${unformatCode(codeOne)}x${unformatCode(codeTwo)}.svg`, svg);
         }
     }
-
+'x-axis tick label';
     tuples.forEach((value: Tuple[], key: string) => {
         overallResult.counts[key] = value;
     });
