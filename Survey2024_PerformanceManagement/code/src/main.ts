@@ -151,11 +151,7 @@ function convertToLowerCaseLetter(idx: number): string {
     return String.fromCharCode('a'.charCodeAt(0) + idx);
 }
 
-async function main(): Promise<void> {
-    const questionContainer: QuestionContainer = new QuestionContainer();
-    await questionContainer.initialize();
-    await questionContainer.writeCodesToTS();
-
+async function analyzeAnswers(questionContainer: QuestionContainer, answers: ResponseJson, outputDirectory: string): Promise<void> {
     const overallResult: AnalysisResult = {
         counts: {},
         relations: [],
@@ -166,8 +162,6 @@ async function main(): Promise<void> {
         }
     };
     
-    const answers: ResponseJson = await parseAnswers();
-    // answers.responses = answers.responses.filter((r) => r['lastpage']! === 29);
     for (const r of answers.responses) {
         const lp = r['lastpage'];
         if (lp === null || (typeof lp === 'number' && lp <= 0)) {
@@ -180,7 +174,7 @@ async function main(): Promise<void> {
     }
 
     const virtualDom = new JSDOM();
-    const output: Output = new Output(resolve('..', 'output'));
+    const output: Output = new Output(resolve('..', 'data', outputDirectory));
 
     const codesForDescriptiveStatistics: CodeConditionPair[] = [
         { code: QUESTION_CODES.D2Age },
@@ -366,11 +360,22 @@ async function main(): Promise<void> {
             await output.saveSvgForRelation(`${unformatCode(codeOne)}x${unformatCode(codeTwo)}.svg`, svg);
         }
     }
-'x-axis tick label';
+
     tuples.forEach((value: Tuple[], key: string) => {
         overallResult.counts[key] = value;
     });
     output.saveText('all-results.json', JSON.stringify(overallResult, undefined, 4));
+}
+
+async function main(): Promise<void> {
+    const questionContainer: QuestionContainer = new QuestionContainer();
+    await questionContainer.initialize();
+    // await questionContainer.writeCodesToTS();
+    
+    const answers: ResponseJson = await parseAnswers();
+    await analyzeAnswers(questionContainer, answers, 'results-unfiltered');
+    answers.responses = answers.responses.filter((r) => r['lastpage']! === 29);
+    await analyzeAnswers(questionContainer, answers, 'results-complete-only');
 }
 
 main();
