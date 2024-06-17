@@ -78,6 +78,9 @@ function countResponseOccurrences(answers: ResponseJson, { code, condition, resp
             tup.x = responseValueMapping.get(tup.x) ?? tup.x;
         }
     }
+    if (result.length >= 15) {
+        return result.filter((v) => v.y !== 0);
+    }
     return result;
 }
 
@@ -177,6 +180,7 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
     const output: Output = new Output(resolve('..', 'data', outputDirectory));
 
     const codesForDescriptiveStatistics: CodeConditionPair[] = [
+        { code: QUESTION_CODES.D1Country },
         { code: QUESTION_CODES.D2Age },
         { code: QUESTION_CODES.D3Experience },
         { code: QUESTION_CODES.D4Roles },
