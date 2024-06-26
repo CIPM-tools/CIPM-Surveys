@@ -8,6 +8,7 @@ import { readFileContent, unformatCode } from './utility.js';
 import { OtherCode } from './constants.js';
 import { QuestionContainer } from './question-container.js';
 import { XMLParser, XMLBuilder } from 'fast-xml-parser';
+import { stringify } from 'csv-stringify/sync'
 import { writeFile } from 'fs/promises';
 
 const NoAnswer: string = 'No Answer';
@@ -239,6 +240,8 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
         });
         const svg: string = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
         await output.saveSvgForDescriptiveStatistic(`${unformatCode(coco.code)}.svg`, svg);
+
+        await output.saveText(`${unformatCode(coco.code)}.csv`, stringify(responseCount, { header: true, columns: [{ key: 'x', header: 'Responses' }, { key: 'y', header: 'Count' }] }));
     }
 
     const combinedCodes: string[][] = [
