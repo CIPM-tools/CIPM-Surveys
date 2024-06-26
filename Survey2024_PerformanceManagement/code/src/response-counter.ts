@@ -1,13 +1,17 @@
 import { ResponseCount, SingleResponseCount } from './response-count';
 import { QuestionContainer } from './question-container';
 import { NoAnswer, Yes } from './constants';
-import { ResponseJson } from './responses';
+import { ResponseEntry, ResponseJson } from './responses';
+import { RequiredValue } from './condition';
+import { checkRequiredValue } from './condition-evaluator';
 
 export type CountConfiguration = {
     countNoAnswers: boolean;
     countRelativeFrequency: boolean;
     limitResponsesBy: number;
 };
+
+type LabeledRequiredValue = RequiredValue & { label: string; };
 
 export class ResponseCounter {
     countResponsesForCodes(questionContainer: QuestionContainer, answers: ResponseJson, codes: string[], config: CountConfiguration): ResponseCount[] {
@@ -60,5 +64,58 @@ export class ResponseCounter {
 
         return { questionCodes: [code], counts: singleResults.length >= config.limitResponsesBy ? singleResults.filter((value) => value.count !== 0) : singleResults, stats: [] };
     }
+
+    countRelatedResponsesForCodes(questionContainer: QuestionContainer, answers: ResponseJson, codes: string[][]): ResponseCount[] {
+        return codes.map((value) => this.countRelatedResponses(questionContainer, answers, value));
+    }
     
+    countRelatedResponses(questionContainer: QuestionContainer, answers: ResponseJson, codes: string[]): ResponseCount {
+        const relations: LabeledRequiredValue[][] = this.createRelations(questionContainer, codes);
+        const singleResults: SingleResponseCount[] = [];
+        for (const rel of relations) {
+            const nextCount: SingleResponseCount = { codes: rel.map((value) => value.label), count: 0 };
+            for (const response of answers.responses) {
+                if (this.checkRequiredValues(rel, response)) {
+                    nextCount.count++;
+                }
+            }
+            singleResults.push(nextCount);
+        }
+        return { questionCodes: codes, counts: singleResults, stats: [] };
+    }
+
+    private checkRequiredValues(values: LabeledRequiredValue[], entry: ResponseEntry): boolean {
+        return !values.map((required) => checkRequiredValue(required, entry)).some((checkResult) => checkResult === false);
+    }
+    
+    private createRelations(questionContainer: QuestionContainer, codes: string[]): LabeledRequiredValue[][] {
+        const requiredValues: LabeledRequiredValue[][] = codes.map((c) => this.createRequiredValues(questionContainer, c));
+        const result: LabeledRequiredValue[][] = [];
+        this.recursivelyCreateRelationsFromRequiredValues(requiredValues, [], result);
+        return result;
+    }
+
+    private recursivelyCreateRelationsFromRequiredValues(values: LabeledRequiredValue[][], stack: LabeledRequiredValue[], result: LabeledRequiredValue[][]): void {
+        for (const firstCellValue of values[0]) {
+            stack.push(firstCellValue);
+            if (values.length === 1) {
+                result.push(stack.slice());
+            } else {
+                this.recursivelyCreateRelationsFromRequiredValues(values.slice(1), stack, result);
+            }
+            stack.pop();
+        }
+    }
+
+    private createRequiredValues(questionContainer: QuestionContainer, code: string): LabeledRequiredValue[] {
+        const responses: string[] | undefined = questionContainer.getResponses(code);
+        if (responses.length === 0) {
+            throw new Error(`Illegal code '${code}'. No responses found.`);
+        }
+        if (questionContainer.getQuestionType(code) === 'mulitple-choice') {
+            return responses.map((responseCode) => ({ code: responseCode, value: Yes, label: questionContainer.getResponses(responseCode)[0] }));
+        } else {
+            return responses.map((responseValue) => ({ code: code, value: responseValue, label: responseValue }));
+        }
+    }
 }
