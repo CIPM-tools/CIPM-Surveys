@@ -3,7 +3,7 @@ import { QuestionContainer } from './question-container';
 import { NoAnswer, Yes } from './constants';
 import { ResponseEntry, ResponseJson } from './responses';
 import { RequiredValue } from './condition';
-import { checkRequiredValue } from './condition-evaluator';
+import { checkConditions, checkRequiredValue } from './condition-evaluator';
 
 export type CountConfiguration = {
     countNoAnswers: boolean;
@@ -31,9 +31,9 @@ export class ResponseCounter {
         let noAnswerCount: number = 0;
 
         for (const entry of answers.responses) {
-            // if (condition && entry[condition.code] !== condition.value) {
-            //     continue;
-            // }
+            if (!checkConditions(code, questionContainer, entry)) {
+                continue;
+            }
             if (responseValueMapping) {
                 for (const singleCount of singleResults) {
                     if (entry[singleCount.codes[0]] === Yes) {
