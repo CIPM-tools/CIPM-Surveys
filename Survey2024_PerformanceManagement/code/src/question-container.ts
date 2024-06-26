@@ -4,6 +4,7 @@ import { readFileContent, unformatCode } from './utility.js';
 import { resolve } from 'path';
 import { OtherCode } from './constants.js';
 import { writeFile } from 'fs/promises';
+import { SimpleCondition } from './condition.js';
 
 export type QuestionTypes = 'single-choice' | 'mulitple-choice' | 'free-text' | 'matrix' | 'other-free-text';
 
@@ -17,6 +18,7 @@ export type QuestionEncoding = {
 
 export class QuestionContainer {
     private codes: Map<string, QuestionEncoding> = new Map();
+    private conditions: SimpleCondition[] = [];
 
     async initialize(): Promise<void> {
         const allQuestions: Question[] = await this.parseQuestionnaire();
@@ -129,5 +131,13 @@ export class QuestionContainer {
 
     getQuestionType(code: string): QuestionTypes | undefined {
         return this.codes.get(code)?.type;
+    }
+
+    addConditions(...conditions: SimpleCondition[]): void {
+        this.conditions.push(...conditions);
+    }
+
+    getConditions(): SimpleCondition[] {
+        return this.conditions;
     }
 }
