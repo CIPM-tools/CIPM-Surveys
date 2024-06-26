@@ -62,7 +62,7 @@ export class QuestionContainer {
                     for (const sq of question.subQuestion) {
                         const code: string = this.formatCode(sq['@_varName']);
                         subQuestionCodes.push(code);
-                        this.codes.set(code, { code, type: 'matrix', responses: responseValues, statement: sq.text });
+                        this.codes.set(code, { code, parentCode: question.response['@_varName'], type: 'matrix', responses: responseValues, statement: sq.text });
                     }
                     this.codes.set(question.response['@_varName'], { code: question.response['@_varName'], type: 'matrix', responses: subQuestionCodes });
                 } else { // Single choice
