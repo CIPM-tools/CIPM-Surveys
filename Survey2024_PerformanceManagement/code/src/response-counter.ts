@@ -1,20 +1,20 @@
-import { ResponseCount, SingleResponseCount } from './response-count';
-import { QuestionContainer } from './question-container';
-import { NoAnswer, Yes } from './constants';
-import { ResponseEntry, ResponseJson } from './responses';
-import { RequiredValue } from './condition';
-import { checkConditions, checkRequiredValue } from './condition-evaluator';
+import { ResponseCount, SingleResponseCount } from './response-count.js';
+import { QuestionContainer } from './question-container.js';
+import { NoAnswer, Yes } from './constants.js';
+import { ResponseEntry, ResponseJson } from './responses.js';
+import { RequiredValue } from './condition.js';
+import { checkConditions, checkRequiredValue } from './condition-evaluator.js';
 
 export type CountConfiguration = {
-    countNoAnswers: boolean;
-    countRelativeFrequency: boolean;
-    limitResponsesBy: number;
+    countNoAnswers?: boolean;
+    countRelativeFrequency?: boolean;
+    limitResponsesBy?: number;
 };
 
 type LabeledRequiredValue = RequiredValue & { label: string; };
 
 export class ResponseCounter {
-    countResponsesForCodes(questionContainer: QuestionContainer, answers: ResponseJson, codes: string[], config: CountConfiguration): ResponseCount[] {
+    countResponsesForCodes(questionContainer: QuestionContainer, answers: ResponseJson, codes: string[], config: CountConfiguration = { countNoAnswers: false, countRelativeFrequency: true, limitResponsesBy: 15 }): ResponseCount[] {
         return codes.map((c) => this.countResponses(questionContainer, answers, c, config));
     }
 
@@ -62,11 +62,28 @@ export class ResponseCounter {
             });
         }
 
-        return { questionCodes: [code], counts: singleResults.length >= config.limitResponsesBy ? singleResults.filter((value) => value.count !== 0) : singleResults, stats: [] };
+        return { questionCodes: [code], counts: config.limitResponsesBy && singleResults.length >= config.limitResponsesBy ? singleResults.filter((value) => value.count !== 0) : singleResults, stats: [] };
     }
 
-    countRelatedResponsesForCodes(questionContainer: QuestionContainer, answers: ResponseJson, codes: string[][]): ResponseCount[] {
-        return codes.map((value) => this.countRelatedResponses(questionContainer, answers, value));
+    countRelatedResponsesForCodes(questionContainer: QuestionContainer, answers: ResponseJson, codeDimensions: string[][]): ResponseCount[] {
+        const result: ResponseCount[] = [];
+        this.recursivelyCountRelatedResponsesForCode(questionContainer, answers, codeDimensions, [], result);
+        return result;
+    }
+
+    private recursivelyCountRelatedResponsesForCode(questionContainer: QuestionContainer, answers: ResponseJson, codeDimensions: string[][], stack: string[], result: ResponseCount[]): void {
+        if (codeDimensions.length === 0) {
+            return;
+        }
+        for (const code of codeDimensions[0]) {
+            stack.push(code);
+            if (codeDimensions.length === 1) {
+                result.push(this.countRelatedResponses(questionContainer, answers, stack));
+            } else {
+                this.recursivelyCountRelatedResponsesForCode(questionContainer, answers, codeDimensions.slice(1), stack, result);
+            }
+            stack.pop();
+        }
     }
     
     countRelatedResponses(questionContainer: QuestionContainer, answers: ResponseJson, codes: string[]): ResponseCount {
@@ -96,6 +113,9 @@ export class ResponseCounter {
     }
 
     private recursivelyCreateRelationsFromRequiredValues(values: LabeledRequiredValue[][], stack: LabeledRequiredValue[], result: LabeledRequiredValue[][]): void {
+        if (values.length === 0) {
+            return;
+        }
         for (const firstCellValue of values[0]) {
             stack.push(firstCellValue);
             if (values.length === 1) {
