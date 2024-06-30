@@ -5,20 +5,13 @@ import { JSDOM } from 'jsdom';
 import { ResponseJson } from './responses.js';
 import { Output } from './output.js';
 import { readFileContent, unformatCode } from './utility.js';
-import { OtherCode } from './constants.js';
+import { No, OtherCode, Yes } from './constants.js';
 import { QuestionContainer } from './question-container.js';
 import { XMLParser, XMLBuilder } from 'fast-xml-parser';
 import { stringify } from 'csv-stringify/sync'
 import { writeFile } from 'fs/promises';
-
-const NoAnswer: string = 'No Answer';
-const Yes: string = 'Yes';
-const No: string = 'No';
-
-type RelationResult = {
-    codes: string[];
-    data: Triple[]
-};
+import { ResponseCounter } from './response-counter.js';
+import { ResponseCount, SingleResponseCount } from './response-count.js';
 
 type AnalysisResult = {
     responseNumbers: {
@@ -26,113 +19,16 @@ type AnalysisResult = {
         incomplete: number;
         neverStarted: number;
     };
-    counts: { [code: string]: Tuple[] };
-    relations: RelationResult[];
+    counts: ResponseCount[];
+    relations: ResponseCount[];
 };
 
 async function parseAnswers(): Promise<ResponseJson> {
-    return JSON.parse(await readFileContent(resolve('..', 'results.json')));
-}
-
-type Tuple = {
-    x: string;
-    y: number;
-};
-
-type Triple = Tuple & { z: string; };
-
-type Condition = {
-    code: string;
-    value: string;
-};
-
-type CodeConditionPair = {
-    code: string;
-    condition?: Condition;
-    responseValueMapping?: Map<string, string>;
-};
-
-function countResponseOccurrences(answers: ResponseJson, { code, condition, responseValueMapping }: CodeConditionPair, responseValues: string[]): Tuple[] {
-    const result: Tuple[] = responseValues.map((value) => ({ x: value, y: 0 }));
-    let noAnswerCount: number = 0;
-    for (const entry of answers.responses) {
-        if (condition && entry[condition.code] !== condition.value) {
-            continue;
-        }
-        if (responseValueMapping) {
-            for (const tup of result) {
-                if (entry[tup.x] === Yes) {
-                    tup.y++;
-                }
-            }
-        } else if (entry[code] !== '') {
-            result.filter((x) => x.x === entry[code]).forEach((x) => x.y++);
-        } else {
-            noAnswerCount++;
-        }
-    }
-    // if (noAnswerCount > 0) {
-    //     result.push({ x: NoAnswer, y: noAnswerCount });
-    // }
-    if (responseValueMapping) {
-        for (const tup of result) {
-            tup.x = responseValueMapping.get(tup.x) ?? tup.x;
-        }
-    }
-    if (result.length >= 15) {
-        return result.filter((v) => v.y !== 0);
-    }
-    return result;
+    return JSON.parse(await readFileContent(resolve('..', 'actual_responses.json')));
 }
 
 function getTexts(answers: ResponseJson, code: string): string[] {
     return answers.responses.map((entry) => entry[code]).filter((entry) => typeof entry === 'string' && entry !== '').map((entry) => entry as string);
-}
-
-type LabeledCondition = Condition & { label: string; };
-
-type CodeRelation = {
-    first: LabeledCondition;
-    second: LabeledCondition;
-};
-
-function createConditions(questionContainer: QuestionContainer, code: string): LabeledCondition[] {
-    const responses: string[] | undefined = questionContainer.getResponses(code);
-    if (responses.length === 0) {
-        throw new Error(`Illegal code '${code}'. No responses found.`);
-    }
-    if (questionContainer.getQuestionType(code) === 'mulitple-choice') {
-        return responses.map((responseCode) => ({ code: responseCode, value: Yes, label: questionContainer.getResponses(responseCode)[0] }));
-    } else {
-        return responses.map((responseValue) => ({ code: code, value: responseValue, label: responseValue }));
-    }
-}
-
-function createRelation(questionContainer: QuestionContainer, codeOne: string, codeTwo: string): CodeRelation[] {
-    const conditionsOne: LabeledCondition[] = createConditions(questionContainer, codeOne);
-    const conidtionsTwo: LabeledCondition[] = createConditions(questionContainer, codeTwo);
-    const result: CodeRelation[] = [];
-    for (const c1 of conditionsOne) {
-        for (const c2 of conidtionsTwo) {
-            result.push({ first: c1, second: c2 });
-        }
-    }
-    return result;
-}
-
-function countRelationOccurrences(questionContainer: QuestionContainer, answers: ResponseJson, codeOne: string, codeTwo: string): Triple[] {
-    const relations: CodeRelation[] = createRelation(questionContainer, codeOne, codeTwo);
-    const result: Triple[] = [];
-    for (const rel of relations) {
-        const nextTriple: Triple = { x: rel.first.label, z: rel.second.label, y: 0 };
-        for (const response of answers.responses) {
-            if (response[rel.first.code] === rel.first.value && response[rel.second.code] === rel.second.value) {
-                nextTriple.y++;
-            }
-        }
-        result.push(nextTriple);
-    }
-    return result;
 }
 
 function filterXAxis(svg: string): string {
@@ -155,9 +51,22 @@ function convertToLowerCaseLetter(idx: number): string {
     return String.fromCharCode('a'.charCodeAt(0) + idx);
 }
 
+type InternalDisplayableItems =
+    { count: number } & { [key: `code${number}`]: string };
+
+function flattenResponseCount(count: ResponseCount, config?: { useRelativeFrequency?: boolean }): InternalDisplayableItems[] {
+    return count.counts.map((singleCount) => {
+        const flattenedCount: InternalDisplayableItems = { count: config?.useRelativeFrequency && singleCount.relativeFrequency ? singleCount.relativeFrequency : singleCount.count };
+        singleCount.codes.forEach((code: string, idx: number) => {
+            flattenedCount[`code${idx}`] = code;
+        });
+        return flattenedCount;
+    });
+}
+
 async function analyzeAnswers(questionContainer: QuestionContainer, answers: ResponseJson, outputDirectory: string): Promise<void> {
     const overallResult: AnalysisResult = {
-        counts: {},
+        counts: [],
         relations: [],
         responseNumbers: {
             completed: 0,
@@ -177,71 +86,69 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
         }
     }
 
+    const responseCounter: ResponseCounter = new ResponseCounter();
     const virtualDom = new JSDOM();
     const output: Output = new Output(resolve('..', 'data', outputDirectory));
 
-    const codesForDescriptiveStatistics: CodeConditionPair[] = [
-        { code: QUESTION_CODES.D1Country },
-        { code: QUESTION_CODES.D2Age },
-        { code: QUESTION_CODES.D3Experience },
-        { code: QUESTION_CODES.D4Roles },
-        { code: QUESTION_CODES.D5CompanySize },
-        { code: QUESTION_CODES.D6TeamSize },
-        { code: QUESTION_CODES.C1DevMethod },
-        { code: QUESTION_CODES.C2Technologies },
-        { code: QUESTION_CODES.C3PManagement },
-        { code: QUESTION_CODES.C4MonHinder, condition: { code: QUESTION_CODES.C3PManagementC3Mon, value: No } },
-        { code: QUESTION_CODES.C4MonTools, condition: { code: QUESTION_CODES.C3PManagementC3Mon, value: Yes } },
-        { code: QUESTION_CODES.C5TestsHinder, condition: { code: QUESTION_CODES.C3PManagementC3Tests, value: No } },
-        { code: QUESTION_CODES.C6PredictionHinder, condition: { code: QUESTION_CODES.C3PManagementC3Prediction, value: No } },
-        { code: QUESTION_CODES.C6PredictionTools, condition: { code: QUESTION_CODES.C3PManagementC3Prediction, value: Yes } },
-        { code: QUESTION_CODES.C7Purpose },
-        { code: QUESTION_CODES.C8RelevanceSQ001 },
-        { code: QUESTION_CODES.C8RelevanceSQ002 },
-        { code: QUESTION_CODES.C9GeneralTrustSQ001 },
-        { code: QUESTION_CODES.C9GeneralTrustSQ002 },
-        { code: QUESTION_CODES.C9GeneralTrustSQ003 },
-        { code: QUESTION_CODES.Ch1QualitySQ001 },
-        { code: QUESTION_CODES.Ch1QualitySQ002 },
-        { code: QUESTION_CODES.Ch1QualitySQ003 },
-        { code: QUESTION_CODES.Ch1QualitySQ004 },
-        { code: QUESTION_CODES.Ch1QualitySQ005 },
-        { code: QUESTION_CODES.Ch4PredictionFeatureSQ001 },
-        { code: QUESTION_CODES.Ch4PredictionFeatureSQ002 },
-        { code: QUESTION_CODES.Ch4PredictionFeatureSQ003 },
-        { code: QUESTION_CODES.Ch4PredictionFeatureSQ004 },
-        { code: QUESTION_CODES.Ch4PredictionFeatureSQ005 },
-        { code: QUESTION_CODES.N2TrustSQ001 },
-        { code: QUESTION_CODES.N2TrustSQ002 },
-        { code: QUESTION_CODES.N2TrustSQ003 },
-        { code: QUESTION_CODES.Co1DevFactors, condition: { code: QUESTION_CODES.D4RolesSQ003, value: No } },
-        { code: QUESTION_CODES.Co1PMFactors, condition: { code: QUESTION_CODES.D4RolesSQ003, value: Yes } },
-        { code: QUESTION_CODES.Co2DevTimeLearn, condition: { code: QUESTION_CODES.D4RolesSQ003, value: No } },
-        { code: QUESTION_CODES.Co2PMTimeLearn, condition: { code: QUESTION_CODES.D4RolesSQ003, value: Yes } },
-        { code: QUESTION_CODES.Co3DevTimeAdoption, condition: { code: QUESTION_CODES.D4RolesSQ003, value: No } },
-        { code: QUESTION_CODES.Co3PMTimeAdoption, condition: { code: QUESTION_CODES.D4RolesSQ003, value: Yes } }
+    const codesForDescriptiveStatistics: string[] = [
+        QUESTION_CODES.D1Country,
+        QUESTION_CODES.D2Age,
+        QUESTION_CODES.D3Experience,
+        QUESTION_CODES.D4Roles,
+        QUESTION_CODES.D5CompanySize,
+        QUESTION_CODES.D6TeamSize,
+        QUESTION_CODES.C1DevMethod,
+        QUESTION_CODES.C2Technologies,
+        QUESTION_CODES.C3PManagement,
+        QUESTION_CODES.C4MonHinder,
+        QUESTION_CODES.C4MonTools,
+        QUESTION_CODES.C5TestsHinder,
+        QUESTION_CODES.C6PredictionHinder,
+        QUESTION_CODES.C6PredictionTools,
+        QUESTION_CODES.C7Purpose,
+        QUESTION_CODES.C8RelevanceSQ001,
+        QUESTION_CODES.C8RelevanceSQ002,
+        QUESTION_CODES.C9GeneralTrustSQ001,
+        QUESTION_CODES.C9GeneralTrustSQ002,
+        QUESTION_CODES.C9GeneralTrustSQ003,
+        QUESTION_CODES.Ch1QualitySQ001,
+        QUESTION_CODES.Ch1QualitySQ002,
+        QUESTION_CODES.Ch1QualitySQ003,
+        QUESTION_CODES.Ch1QualitySQ004,
+        QUESTION_CODES.Ch1QualitySQ005,
+        QUESTION_CODES.Ch4PredictionFeatureSQ001,
+        QUESTION_CODES.Ch4PredictionFeatureSQ002,
+        QUESTION_CODES.Ch4PredictionFeatureSQ003,
+        QUESTION_CODES.Ch4PredictionFeatureSQ004,
+        QUESTION_CODES.Ch4PredictionFeatureSQ005,
+        QUESTION_CODES.N2TrustSQ001,
+        QUESTION_CODES.N2TrustSQ002,
+        QUESTION_CODES.N2TrustSQ003,
+        QUESTION_CODES.Co1DevFactors,
+        QUESTION_CODES.Co1PMFactors,
+        QUESTION_CODES.Co2DevTimeLearn,
+        QUESTION_CODES.Co2PMTimeLearn,
+        QUESTION_CODES.Co3DevTimeAdoption,
+        QUESTION_CODES.Co3PMTimeAdoption
     ];
-    const tuples: Map<string, Tuple[]> = new Map();
-    for (const coco of codesForDescriptiveStatistics) {
-        if (questionContainer.getQuestionType(coco.code) === 'mulitple-choice') {
-            coco.responseValueMapping = questionContainer.getResponseCodeValueMapping(coco.code);
-        }
-        const responseCount: Tuple[] = countResponseOccurrences(answers, coco, questionContainer.getResponses(coco.code));
-        tuples.set(coco.code, responseCount);
+    const allSingleResponseCounts: ResponseCount[] = responseCounter.countResponsesForCodes(questionContainer, answers, codesForDescriptiveStatistics, { countRelativeFrequency: true });
+
+    for (const responseCount of allSingleResponseCounts) {
         const svgElement = Plot.plot({
             grid: true,
+            style: { fontSize: '14px' },
             x: { label: '' },
-            y: { label: '' },
+            y: { label: '# Responses', labelArrow: 'none' },
             marks: [
                 Plot.frame(),
-                Plot.barY(responseCount, { x: 'x', y: 'y', sort: { x: 'x', order: null } })
+                Plot.barY(flattenResponseCount(responseCount), { x: 'code0', y: 'count', sort: { x: 'x', order: null } })
             ],
             document: virtualDom.window.document
         });
         const svg: string = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
-        await output.saveSvgForDescriptiveStatistic(`${unformatCode(coco.code)}.svg`, svg);
+        await output.saveSvgForDescriptiveStatistic(`${unformatCode(responseCount.questionCodes[0])}.svg`, svg);
 
-        await output.saveText(`${unformatCode(coco.code)}.csv`, stringify(responseCount, { header: true, columns: [{ key: 'x', header: 'Responses' }, { key: 'y', header: 'Count' }] }));
+        // await output.saveText(`${unformatCode(coco.questionCodes[0])}.csv`, stringify(responseCount, { header: true, columns: [{ key: 'x', header: 'Responses' }, { key: 'y', header: 'Count' }] }));
     }
 
     const combinedCodes: string[][] = [
@@ -252,34 +159,128 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
         [QUESTION_CODES.Co2DevTimeLearn, QUESTION_CODES.Co2PMTimeLearn],
         [QUESTION_CODES.Co3DevTimeAdoption, QUESTION_CODES.Co3PMTimeAdoption]
     ];
-    const combinedData: { codes: string[]; data: Triple[]; }[] = [];
+
     for (const comb of combinedCodes) {
-        combinedData.push({
-            codes: comb,
-            data: comb.flatMap((code) => tuples.get(code)?.map((v) => ({ x: v.x, y: v.y, z: code } as Triple)) ?? [])
+        const combiningCounts: ResponseCount[] = allSingleResponseCounts.filter((count: ResponseCount) => {
+            return comb.map((code) => count.questionCodes.includes(code)).some((included) => included === true);
         });
-    }
-    for (const comb of combinedData) {
-        overallResult.relations.push(comb);
-        const svgElement = Plot.plot({
+        const combinedData: SingleResponseCount[] = combiningCounts.flatMap((count) => {
+            const countsWithQuestionCode = count.counts.slice();
+            countsWithQuestionCode.forEach((value) => value.codes.push(...count.questionCodes));
+            return countsWithQuestionCode;
+        });
+        const combinedResponseCount: ResponseCount = { questionCodes: comb, counts: combinedData, stats: [] };
+        // overallResult.relations.push(combinedResponseCount);
+        const items = questionContainer.getResponseValues(comb[0]);
+
+        let svgElement = Plot.plot({
             grid: true,
-            x: { label: '', axis: 'top', domain: comb.codes.map((_, idx) => convertToLowerCaseLetter(idx)) },
-            fx: { label: '', axis: 'bottom', domain: questionContainer.getResponseValues(comb.codes[0]) },
-            y: { label: '' },
-            color: { scheme: 'Category10' },
+            style: { fontSize: '14px' },
+            x: { label: '', axis: 'top', domain: comb },
+            fx: { label: '', axis: 'bottom', domain: questionContainer.getResponseValues(comb[0]) },
+            y: { label: '', labelArrow: 'none' },
+            color: { scheme: 'Set1' },
             marks: [
                 Plot.frame(),
-                Plot.barY(comb.data.map((v) => ({ x: v.x, y: v.y, z: convertToLowerCaseLetter(comb.codes.indexOf(v.z)) })), Plot.groupX({ y: 'identity' }, { x: 'z', y: 'y', fx: 'x', fill: 'z' })),
+                Plot.barY(flattenResponseCount(combinedResponseCount), Plot.groupX({ y: 'identity' }, { x: 'code1', y: 'count', fx: 'code0', fill: 'code1' }))
             ],
             document: virtualDom.window.document
         });
-        const svg: string = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
+        let svg: string = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
+        await output.saveSvgForDescriptiveStatistic(`${comb.join('-')}-choices.svg`, svg);
+
+        svgElement = Plot.plot({
+            grid: true,
+            style: { fontSize: '14px' },
+            x: { label: 'Frequency', labelArrow: 'none' },
+            fy: { label: '' },
+            y: { label: '' },
+            color: { scheme: 'RdBu', domain: items, label: '' },
+            marks: [
+                Plot.frame(),
+                Plot.barX(flattenResponseCount(combinedResponseCount),
+                    Plot.stackX(
+                        {
+                            order: items,
+                            offset: (indices, x1, x2, z) => {
+                                for (const stacks of indices) {
+                                    for (const stack of stacks) {
+                                        const actualOffset: number =
+                                            stack
+                                            .map((idx) => {
+                                                const itemsIdx: number = items.indexOf(z[idx]);
+                                                const mid: number = Math.floor(items.length / 2);
+                                                const partOffset: number = (x2[idx] - x1[idx]) * (itemsIdx < mid ? -1 : (itemsIdx === mid ? -0.5 : 0));
+                                                return partOffset;
+                                            })
+                                            .reduce((previousValue, currentValue) => previousValue + currentValue);
+                                        for (const idx of stack) {
+                                            x1[idx] += actualOffset;
+                                            x2[idx] += actualOffset;
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            x: 'count',
+                            fy: 'code1',
+                            fill: 'code0'
+                        }
+                    )
+                )
+            ],
+            document: virtualDom.window.document
+        });
+        svg = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
+        await output.saveSvgForDescriptiveStatistic(`${comb.join('-')}-matrix-abs.svg`, svg);
+
+        svgElement = Plot.plot({
+            grid: true,
+            style: { fontSize: '14px' },
+            x: { label: 'Frequency (%)', labelArrow: 'none' },
+            fy: { label: '' },
+            y: { label: '' },
+            color: { scheme: 'RdBu', domain: items },
+            marks: [
+                Plot.frame(),
+                Plot.barX(flattenResponseCount(combinedResponseCount, { useRelativeFrequency: true }), Plot.stackX({ order: items }, { x: 'count', fill: 'code0', fy: 'code1' })),
+            ],
+            document: virtualDom.window.document
+        });
+        svg = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
         // svg = filterXAxis(svg);
-        await output.saveSvgForDescriptiveStatistic(`${comb.codes.join('-')}.svg`, svg);
+        await output.saveSvgForDescriptiveStatistic(`${comb.join('-')}-matrix-rel.svg`, svg);
+
+        svgElement = Plot.plot({
+            grid: true,
+            style: { fontSize: '14px' },
+            x: { label: '' },
+            y: { label: '', labelArrow: 'none' },
+            marks: [
+                Plot.frame(),
+                Plot.boxY(
+                    answers.responses.flatMap((entry) => {
+                        const responses: { code: string; value: number }[] = [];
+                        comb.forEach((code) => {
+                            if (entry[code]) {
+                                responses.push({ code, value: items.indexOf(entry[code] as string) - items.length / 2 });
+                            }
+                        });
+                        return responses;
+                    }),
+                    { y: 'value', x: 'code' }
+                )
+            ],
+            document: virtualDom.window.document
+        });
+        svg = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
+        // svg = filterXAxis(svg);
+        await output.saveSvgForDescriptiveStatistic(`${comb.join('-')}-matrix-box.svg`, svg);
     }
 
-    const valuesLearn = questionContainer.getResponses(QUESTION_CODES.Co2DevTimeLearn);
-    const valuesAdoption = questionContainer.getResponses(QUESTION_CODES.Co3DevTimeAdoption);
+    const valuesLearn = questionContainer.getResponseValues(QUESTION_CODES.Co2DevTimeLearn);
+    const valuesAdoption = questionContainer.getResponseValues(QUESTION_CODES.Co3DevTimeAdoption);
     const newValues = ['Less than 1 week', '1-2 weeks', 'More than 2 weeks'];
     const oldValuesToNewIndices: Map<string, number> = new Map();
     oldValuesToNewIndices.set(valuesLearn[0], 0);
@@ -295,26 +296,29 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
     oldValuesToNewIndices.set(valuesAdoption[4], 2);
 
     const codesToMap = [QUESTION_CODES.Co2DevTimeLearn, QUESTION_CODES.Co2PMTimeLearn, QUESTION_CODES.Co3DevTimeAdoption, QUESTION_CODES.Co3PMTimeAdoption];
-    const mappedData: Triple[] = [];
+    const mappedData: SingleResponseCount[] = [];
     for (const code of codesToMap) {
-        const temporaryMappedData: Triple[] = newValues.map((v) => ({ x: v, y: 0, z: code }));
-        const tuple: Tuple[] = tuples.get(code) ?? [];
-        for (const tup of tuple) {
-            temporaryMappedData[oldValuesToNewIndices.get(tup.x) ?? 0].y += tup.y;
+        
+        const temporaryMappedData: SingleResponseCount[] = newValues.map((v) => ({ codes: [v, code], count: 0 }));
+        const filteredCounts: SingleResponseCount[] = allSingleResponseCounts.filter((c) => c.questionCodes.includes(code)).flatMap((c) => c.counts);
+        for (const counts of filteredCounts) {
+            temporaryMappedData[oldValuesToNewIndices.get(counts.codes[0]) ?? 0].count += counts.count;
         }
         mappedData.push(...temporaryMappedData);
     }
-    overallResult.relations.push({ codes: codesToMap, data: mappedData });
+    const mappedResponseCount = { questionCodes: codesToMap, counts: mappedData, stats: [] };
+    overallResult.relations.push(mappedResponseCount);
 
     const svgElement = Plot.plot({
         grid: true,
-        x: { label: '', axis: 'top', domain: codesToMap.map((_, idx) => convertToLowerCaseLetter(idx)) },
+        style: { fontSize: '14px' },
+        x: { label: '', axis: 'top' },
         fx: { label: '', axis: 'bottom', domain: newValues },
-        y: { label: '' },
-        color: { scheme: 'Category10' },
+        y: { label: '# Responses', labelArrow: 'none' },
+        color: { scheme: 'Set1' },
         marks: [
             Plot.frame(),
-            Plot.barY(mappedData.map((v) => ({ x: v.x, y: v.y, z: convertToLowerCaseLetter(codesToMap.indexOf(v.z)) }), Plot.groupX({ y: 'identity' }, { x: 'z', y: 'y', fx: 'x', fill: 'z' }))),
+            Plot.barY(flattenResponseCount(mappedResponseCount), Plot.groupX({ y: 'identity' }, { x: 'code1', y: 'count', fx: 'code0', fill: 'code1' })),
         ],
         document: virtualDom.window.document
     });
@@ -349,28 +353,25 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
         QUESTION_CODES.N2TrustSQ002,
         QUESTION_CODES.N2TrustSQ003
     ];
-    for (const codeOne of codesOneDimension) {
-        for (const codeTwo of codesOtherDimension) {
-            const count: Triple[] = countRelationOccurrences(questionContainer, answers, codeOne, codeTwo);
-            overallResult.relations.push({ codes: [codeOne, codeTwo], data: count });
-            const svgElement = Plot.plot({
-                grid: true,
-                x: { label: '',  domain: questionContainer.getResponseValues(codeOne) },
-                y: { label: '', domain: questionContainer.getResponseValues(codeTwo) },
-                marks: [
-                    Plot.frame(),
-                    Plot.dot(count, { x: 'x', y: 'z', r: 'y' })
-                ],
-                document: virtualDom.window.document
-            });
-            const svg: string = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
-            await output.saveSvgForRelation(`${unformatCode(codeOne)}x${unformatCode(codeTwo)}.svg`, svg);
-        }
+    const relatedReponseCounts: ResponseCount[] = responseCounter.countRelatedResponsesForCodes(questionContainer, answers, [codesOneDimension, codesOtherDimension]);
+
+    for (const responseCount of relatedReponseCounts) {
+        overallResult.relations.push(responseCount);
+        const svgElement = Plot.plot({
+            grid: true,
+            style: { fontSize: '14px' },
+            x: { label: responseCount.questionCodes[0],  domain: questionContainer.getResponseValues(responseCount.questionCodes[0]) },
+            y: { label: responseCount.questionCodes[1], domain: questionContainer.getResponseValues(responseCount.questionCodes[1]), labelArrow: 'none' },
+            marks: [
+                Plot.frame(),
+                Plot.dot(flattenResponseCount(responseCount), { x: 'code0', y: 'code1', r: 'count' })
+            ],
+            document: virtualDom.window.document
+        });
+        const svg: string = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
+        await output.saveSvgForRelation(responseCount.questionCodes.map(unformatCode).join('x') + '.svg', svg);
     }
 
-    tuples.forEach((value: Tuple[], key: string) => {
-        overallResult.counts[key] = value;
-    });
     output.saveText('all-results.json', JSON.stringify(overallResult, undefined, 4));
 }
 
@@ -378,6 +379,19 @@ async function main(): Promise<void> {
     const questionContainer: QuestionContainer = new QuestionContainer();
     await questionContainer.initialize();
     // await questionContainer.writeCodesToTS();
+    questionContainer.addConditions(
+        { conditionedCode: QUESTION_CODES.C4MonHinder, required: { code: QUESTION_CODES.C3PManagementC3Mon, value: No } },
+        { conditionedCode: QUESTION_CODES.C4MonTools, required: { code: QUESTION_CODES.C3PManagementC3Mon, value: Yes } },
+        { conditionedCode: QUESTION_CODES.C5TestsHinder, required: { code: QUESTION_CODES.C3PManagementC3Tests, value: No } },
+        { conditionedCode: QUESTION_CODES.C6PredictionHinder, required: { code: QUESTION_CODES.C3PManagementC3Prediction, value: No } },
+        { conditionedCode: QUESTION_CODES.C6PredictionTools, required: { code: QUESTION_CODES.C3PManagementC3Prediction, value: Yes } },
+        { conditionedCode: QUESTION_CODES.Co1DevFactors, required: { code: QUESTION_CODES.D4RolesSQ003, value: No } },
+        { conditionedCode: QUESTION_CODES.Co1PMFactors, required: { code: QUESTION_CODES.D4RolesSQ003, value: Yes } },
+        { conditionedCode: QUESTION_CODES.Co2DevTimeLearn, required: { code: QUESTION_CODES.D4RolesSQ003, value: No } },
+        { conditionedCode: QUESTION_CODES.Co2PMTimeLearn, required: { code: QUESTION_CODES.D4RolesSQ003, value: Yes } },
+        { conditionedCode: QUESTION_CODES.Co3DevTimeAdoption, required: { code: QUESTION_CODES.D4RolesSQ003, value: No } },
+        { conditionedCode: QUESTION_CODES.Co3PMTimeAdoption, required: { code: QUESTION_CODES.D4RolesSQ003, value: Yes } 
+    });
     
     const answers: ResponseJson = await parseAnswers();
     await analyzeAnswers(questionContainer, answers, 'results-unfiltered');
