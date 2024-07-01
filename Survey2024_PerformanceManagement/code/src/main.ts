@@ -191,6 +191,9 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
 
         svgElement = Plot.plot({
             grid: true,
+            width: 850,
+            marginTop: 50,
+            marginLeft: 100,
             style: { fontSize: '14px' },
             x: { label: 'Frequency', labelArrow: 'none' },
             fy: { label: '' },
@@ -232,11 +235,24 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
             ],
             document: virtualDom.window.document
         });
-        svg = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
+        let legendSvg = svgElement.legend('color', { legend: 'ramp', width: 810, marginLeft: 20 });
+        if (svgElement instanceof virtualDom.window.SVGElement) {
+            if (legendSvg instanceof virtualDom.window.SVGSVGElement) {
+                for (const child of legendSvg.childNodes) {
+                    if (child.nodeName !== 'style') {
+                        svgElement.appendChild(child.cloneNode(true));
+                    }
+                }
+            }
+            svg = svgElement.outerHTML;
+        }
         await output.saveSvgForDescriptiveStatistic(`${comb.join('-')}-matrix-abs.svg`, svg);
 
         svgElement = Plot.plot({
             grid: true,
+            width: 850,
+            marginTop: 50,
+            marginLeft: 100,
             style: { fontSize: '14px' },
             x: { label: 'Frequency (%)', labelArrow: 'none' },
             fy: { label: '' },
@@ -248,8 +264,17 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
             ],
             document: virtualDom.window.document
         });
-        svg = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
-        // svg = filterXAxis(svg);
+        legendSvg = svgElement.legend('color', { legend: 'ramp', width: 810, marginLeft: 20 });
+        if (svgElement instanceof virtualDom.window.SVGElement) {
+            if (legendSvg instanceof virtualDom.window.SVGSVGElement) {
+                for (const child of legendSvg.childNodes) {
+                    if (child.nodeName !== 'style') {
+                        svgElement.appendChild(child.cloneNode(true));
+                    }
+                }
+            }
+            svg = svgElement.outerHTML;
+        }
         await output.saveSvgForDescriptiveStatistic(`${comb.join('-')}-matrix-rel.svg`, svg);
 
         svgElement = Plot.plot({
@@ -275,7 +300,6 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
             document: virtualDom.window.document
         });
         svg = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
-        // svg = filterXAxis(svg);
         await output.saveSvgForDescriptiveStatistic(`${comb.join('-')}-matrix-box.svg`, svg);
     }
 
