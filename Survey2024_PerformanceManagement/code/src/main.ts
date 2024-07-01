@@ -157,7 +157,10 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
         [QUESTION_CODES.C9GeneralTrustSQ003, QUESTION_CODES.N2TrustSQ001, QUESTION_CODES.N2TrustSQ002, QUESTION_CODES.N2TrustSQ003],
         [QUESTION_CODES.C8RelevanceSQ001, QUESTION_CODES.C8RelevanceSQ002],
         [QUESTION_CODES.Co2DevTimeLearn, QUESTION_CODES.Co2PMTimeLearn],
-        [QUESTION_CODES.Co3DevTimeAdoption, QUESTION_CODES.Co3PMTimeAdoption]
+        [QUESTION_CODES.Co3DevTimeAdoption, QUESTION_CODES.Co3PMTimeAdoption],
+        [QUESTION_CODES.C4MonHinder, QUESTION_CODES.C5TestsHinder, QUESTION_CODES.C6PredictionHinder],
+        [QUESTION_CODES.Ch1QualitySQ001, QUESTION_CODES.Ch1QualitySQ002, QUESTION_CODES.Ch1QualitySQ003, QUESTION_CODES.Ch1QualitySQ004, QUESTION_CODES.Ch1QualitySQ005],
+        [QUESTION_CODES.Ch4PredictionFeatureSQ001, QUESTION_CODES.Ch4PredictionFeatureSQ002, QUESTION_CODES.Ch4PredictionFeatureSQ003, QUESTION_CODES.Ch4PredictionFeatureSQ004, QUESTION_CODES.Ch4PredictionFeatureSQ005]
     ];
 
     for (const comb of combinedCodes) {
