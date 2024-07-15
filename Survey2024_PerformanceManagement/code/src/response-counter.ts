@@ -78,7 +78,7 @@ export class ResponseCounter {
         for (const code of codeDimensions[0]) {
             stack.push(code);
             if (codeDimensions.length === 1) {
-                result.push(this.countRelatedResponses(questionContainer, answers, stack));
+                result.push(this.countRelatedResponses(questionContainer, answers, stack.slice()));
             } else {
                 this.recursivelyCountRelatedResponsesForCode(questionContainer, answers, codeDimensions.slice(1), stack, result);
             }
