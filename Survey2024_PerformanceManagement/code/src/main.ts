@@ -2,16 +2,17 @@ import { resolve } from 'path';
 import { QUESTION_CODES } from './question-codes.js';
 import * as Plot from '@observablehq/plot';
 import { JSDOM } from 'jsdom';
-import { ResponseJson } from './responses.js';
-import { Output } from './output.js';
-import { readFileContent, unformatCode } from './utility.js';
-import { No, OtherCode, Yes } from './constants.js';
-import { QuestionContainer } from './question-container.js';
+import { ResponseJson } from './common/types/responses.js';
+import { Output } from './common/types/output.js';
+import { readFileContent } from './node/fs-utility.js';
+import { No, OtherCode, Yes } from './common/types/constants.js';
+import { QuestionContainer } from './common/logic/question-container.js';
 import { XMLParser, XMLBuilder } from 'fast-xml-parser';
 import { stringify } from 'csv-stringify/sync'
 import { writeFile } from 'fs/promises';
-import { ResponseCounter } from './response-counter.js';
-import { ResponseCount, SingleResponseCount } from './response-count.js';
+import { ResponseCounter } from './common/logic/response-counter.js';
+import { ResponseCount, SingleResponseCount } from './common/types/response-count.js';
+import { unformatCode } from './common/logic/utility.js';
 
 type AnalysisResult = {
     responseNumbers: {

@@ -1,8 +1,8 @@
-import { ResponseCount, SingleResponseCount } from './response-count.js';
+import { ResponseCount, SingleResponseCount } from '../types/response-count.js';
 import { QuestionContainer } from './question-container.js';
-import { NoAnswer, Yes } from './constants.js';
-import { ResponseEntry, ResponseJson } from './responses.js';
-import { RequiredValue } from './condition.js';
+import { NoAnswer, Yes } from '../types/constants.js';
+import { ResponseEntry, ResponseJson } from '../types/responses.js';
+import { RequiredValue } from '../types/condition.js';
 import { checkConditions, checkRequiredValue } from './condition-evaluator.js';
 
 export type CountConfiguration = {

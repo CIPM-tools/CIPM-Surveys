@@ -7,7 +7,3 @@ export function readFileContent(path: string): Promise<string> {
     }
     return readFile(path, { encoding: 'utf-8' });
 }
-
-export function unformatCode(code: string): string {
-    return code.replace('[', '').replace(']', '');
-}

@@ -1,10 +1,11 @@
 import { XMLParser } from 'fast-xml-parser';
-import { Question, QuestionnaireXML, ResponseCategory } from './questionnaire.js';
-import { readFileContent, unformatCode } from './utility.js';
+import { Question, QuestionnaireXML, ResponseCategory } from '../types/questionnaire-xml.js';
+import { readFileContent } from '../../node/fs-utility.js';
 import { resolve } from 'path';
-import { OtherCode } from './constants.js';
+import { OtherCode } from '../types/constants.js';
 import { writeFile } from 'fs/promises';
-import { SimpleCondition } from './condition.js';
+import { SimpleCondition } from '../types/condition.js';
+import { unformatCode } from './utility.js';
 
 export type QuestionTypes = 'single-choice' | 'mulitple-choice' | 'free-text' | 'matrix' | 'other-free-text';
 

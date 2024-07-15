@@ -1,6 +1,6 @@
-import { RequiredValue } from './condition';
+import { RequiredValue } from '../types/condition';
 import { QuestionContainer } from './question-container';
-import { ResponseEntry } from './responses';
+import { ResponseEntry } from '../types/responses';
 
 export function checkConditions(code: string, questionContainer: QuestionContainer, responseEntry: ResponseEntry): boolean {
     for (const cond of questionContainer.getConditions()) {
