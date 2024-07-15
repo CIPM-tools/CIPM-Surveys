@@ -51,6 +51,15 @@ function convertToLowerCaseLetter(idx: number): string {
     return String.fromCharCode('a'.charCodeAt(0) + idx);
 }
 
+function convertLongCodeToShortCode(code: string) {
+    const matchResult: RegExpMatchArray | null = code.match(/^([a-zA-Z]+[0-9]+)[a-zA-Z]+(?:\[[a-zA-Z]+([0-9]+)\])?$/);
+    if (matchResult) {
+        return matchResult[1] + (matchResult[2] ? convertToLowerCaseLetter(Number.parseInt(matchResult[2]) - 1) : '');
+    } else {
+        return code;
+    }
+}
+
 type InternalDisplayableItems =
     { count: number } & { [key: `code${number}`]: string };
 
@@ -89,6 +98,9 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
     const responseCounter: ResponseCounter = new ResponseCounter();
     const virtualDom = new JSDOM();
     const output: Output = new Output(resolve('..', 'data', outputDirectory));
+
+    const fontSizeNumber: number = 16;
+    const fontSize: string = fontSizeNumber + 'px';
 
     const codesForDescriptiveStatistics: string[] = [
         QUESTION_CODES.D1Country,
@@ -134,9 +146,11 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
     const allSingleResponseCounts: ResponseCount[] = responseCounter.countResponsesForCodes(questionContainer, answers, codesForDescriptiveStatistics, { countRelativeFrequency: true });
 
     for (const responseCount of allSingleResponseCounts) {
+        overallResult.relations.push(responseCount);
+
         const svgElement = Plot.plot({
             grid: true,
-            style: { fontSize: '14px' },
+            style: { fontSize },
             x: { label: '' },
             y: { label: '# Responses', labelArrow: 'none' },
             marks: [
@@ -155,6 +169,7 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
         [QUESTION_CODES.C9GeneralTrustSQ001, QUESTION_CODES.C9GeneralTrustSQ002, QUESTION_CODES.C9GeneralTrustSQ003],
         [QUESTION_CODES.N2TrustSQ001, QUESTION_CODES.N2TrustSQ002, QUESTION_CODES.N2TrustSQ003],
         [QUESTION_CODES.C9GeneralTrustSQ003, QUESTION_CODES.N2TrustSQ001, QUESTION_CODES.N2TrustSQ002, QUESTION_CODES.N2TrustSQ003],
+        [QUESTION_CODES.C9GeneralTrustSQ001, QUESTION_CODES.C9GeneralTrustSQ002, QUESTION_CODES.C9GeneralTrustSQ003, QUESTION_CODES.N2TrustSQ001, QUESTION_CODES.N2TrustSQ002, QUESTION_CODES.N2TrustSQ003],
         [QUESTION_CODES.C8RelevanceSQ001, QUESTION_CODES.C8RelevanceSQ002],
         [QUESTION_CODES.Co2DevTimeLearn, QUESTION_CODES.Co2PMTimeLearn],
         [QUESTION_CODES.Co3DevTimeAdoption, QUESTION_CODES.Co3PMTimeAdoption],
@@ -169,17 +184,17 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
         });
         const combinedData: SingleResponseCount[] = combiningCounts.flatMap((count) => {
             const countsWithQuestionCode = count.counts.slice();
-            countsWithQuestionCode.forEach((value) => value.codes.push(...count.questionCodes));
+            countsWithQuestionCode.forEach((value) => value.codes.push(...count.questionCodes.map(convertLongCodeToShortCode)));
             return countsWithQuestionCode;
         });
         const combinedResponseCount: ResponseCount = { questionCodes: comb, counts: combinedData, stats: [] };
-        // overallResult.relations.push(combinedResponseCount);
+        overallResult.relations.push(combinedResponseCount);
         const items = questionContainer.getResponseValues(comb[0]);
 
         let svgElement = Plot.plot({
             grid: true,
-            style: { fontSize: '14px' },
-            x: { label: '', axis: 'top', domain: comb },
+            style: { fontSize },
+            x: { label: '', axis: 'top', domain: comb.map(convertLongCodeToShortCode) },
             fx: { label: '', axis: 'bottom', domain: questionContainer.getResponseValues(comb[0]) },
             y: { label: '', labelArrow: 'none' },
             color: { scheme: 'Set1' },
@@ -194,11 +209,10 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
 
         svgElement = Plot.plot({
             grid: true,
-            width: 850,
-            marginTop: 50,
-            marginLeft: 100,
-            style: { fontSize: '14px' },
-            x: { label: 'Frequency', labelArrow: 'none' },
+            height: items.length * 1.5 * fontSizeNumber,
+            marginLeft: fontSizeNumber * comb.map(convertLongCodeToShortCode).map((value) => value.length).reduce((previousValue, currentValue) => previousValue <= currentValue ? currentValue : previousValue),
+            style: { fontSize },
+            x: { label: '', labelArrow: 'none' },
             fy: { label: '' },
             y: { label: '' },
             color: { scheme: 'RdBu', domain: items, label: '' },
@@ -238,51 +252,28 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
             ],
             document: virtualDom.window.document
         });
-        let legendSvg = svgElement.legend('color', { legend: 'ramp', width: 810, marginLeft: 20 });
-        if (svgElement instanceof virtualDom.window.SVGElement) {
-            if (legendSvg instanceof virtualDom.window.SVGSVGElement) {
-                for (const child of legendSvg.childNodes) {
-                    if (child.nodeName !== 'style') {
-                        svgElement.appendChild(child.cloneNode(true));
-                    }
-                }
-            }
-            svg = svgElement.outerHTML;
-        }
+        svg = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
         await output.saveSvgForDescriptiveStatistic(`${comb.join('-')}-matrix-abs.svg`, svg);
 
         svgElement = Plot.plot({
             grid: true,
-            width: 850,
-            marginTop: 50,
-            marginLeft: 100,
-            style: { fontSize: '14px' },
-            x: { label: 'Frequency (%)', labelArrow: 'none' },
+            style: { fontSize },
+            x: { label: '', labelArrow: 'none' },
             fy: { label: '' },
             y: { label: '' },
-            color: { scheme: 'RdBu', domain: items },
+            color: { scheme: 'RdBu', domain: items, label: '' },
             marks: [
                 Plot.frame(),
                 Plot.barX(flattenResponseCount(combinedResponseCount, { useRelativeFrequency: true }), Plot.stackX({ order: items }, { x: 'count', fill: 'code0', fy: 'code1' })),
             ],
             document: virtualDom.window.document
         });
-        legendSvg = svgElement.legend('color', { legend: 'ramp', width: 810, marginLeft: 20 });
-        if (svgElement instanceof virtualDom.window.SVGElement) {
-            if (legendSvg instanceof virtualDom.window.SVGSVGElement) {
-                for (const child of legendSvg.childNodes) {
-                    if (child.nodeName !== 'style') {
-                        svgElement.appendChild(child.cloneNode(true));
-                    }
-                }
-            }
-            svg = svgElement.outerHTML;
-        }
+        svg = svgElement instanceof virtualDom.window.SVGElement ? svgElement.outerHTML : svgElement.innerHTML;
         await output.saveSvgForDescriptiveStatistic(`${comb.join('-')}-matrix-rel.svg`, svg);
 
         svgElement = Plot.plot({
             grid: true,
-            style: { fontSize: '14px' },
+            style: { fontSize },
             x: { label: '' },
             y: { label: '', labelArrow: 'none' },
             marks: [
@@ -338,7 +329,7 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
 
     const svgElement = Plot.plot({
         grid: true,
-        style: { fontSize: '14px' },
+        style: { fontSize },
         x: { label: '', axis: 'top' },
         fx: { label: '', axis: 'bottom', domain: newValues },
         y: { label: '# Responses', labelArrow: 'none' },
@@ -386,7 +377,7 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
         overallResult.relations.push(responseCount);
         const svgElement = Plot.plot({
             grid: true,
-            style: { fontSize: '14px' },
+            style: { fontSize },
             x: { label: responseCount.questionCodes[0],  domain: questionContainer.getResponseValues(responseCount.questionCodes[0]) },
             y: { label: responseCount.questionCodes[1], domain: questionContainer.getResponseValues(responseCount.questionCodes[1]), labelArrow: 'none' },
             marks: [
