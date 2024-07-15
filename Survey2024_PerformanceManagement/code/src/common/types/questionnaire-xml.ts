@@ -35,7 +35,14 @@ export type Section = {
     question: Question[];
 };
 
+export type QuestionnaireInfo = {
+    position: 'after' | 'before';
+    text: string;
+};
+
 export type Questionnaire = {
+    title: string;
+    questionnaireInfo: QuestionnaireInfo[];
     section: Section[];
 };
 
