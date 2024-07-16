@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import { QUESTION_CODES } from './question-codes.js';
+import { QUESTION_CODES } from './node/question-codes.js';
 import * as Plot from '@observablehq/plot';
 import { JSDOM } from 'jsdom';
 import { ResponseJson } from './common/types/responses.js';

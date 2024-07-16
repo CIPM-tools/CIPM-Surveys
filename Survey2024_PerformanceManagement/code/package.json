@@ -3,7 +3,8 @@
     "version": "1.0.0-dev",
     "type": "module",
     "scripts": {
-        "start": "node --loader ts-node/esm ./src/main.ts"
+        "start": "node --loader ts-node/esm ./src/main.ts",
+        "analyze": "node --loader ts-node/esm ./src/node/main-analysis.ts"
     },
     "license": "MIT",
     "dependencies": {

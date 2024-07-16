@@ -7,7 +7,7 @@ import { QuestionEncoding, Questions, QuestionSection } from '../types/questions
 export function parseQuestionnaire(content: string): Questions {
     const xmlParser = new XMLParser({ ignoreAttributes: false });
     const survey: QuestionnaireXML = xmlParser.parse(content);
-    
+
     const sections: QuestionSection[] = survey.questionnaire.section.map((section) => convertSection(section));
     return { introduction: { title: survey.questionnaire.title, infoAfter: '', infoBefore: '' }, sections, conditions: [] };
 }
@@ -15,7 +15,7 @@ export function parseQuestionnaire(content: string): Questions {
 function convertSection(section: Section): QuestionSection {
     const convertedQuestions: QuestionEncoding[] = [];
 
-    for (const question of section.question) {
+    for (const question of Array.isArray(section.question) ? section.question : [section.question]) {
         if (Array.isArray(question.response)) { // Multiple choice
             const firstResponseCode = question.response[0]['@_varName'];
             const questionCode = firstResponseCode.substring(0, firstResponseCode.indexOf('_'));

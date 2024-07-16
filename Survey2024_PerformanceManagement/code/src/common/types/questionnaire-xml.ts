@@ -32,7 +32,7 @@ export type SectionInfo = {
 
 export type Section = {
     sectionInfo: SectionInfo;
-    question: Question[];
+    question: Question[] | Question;
 };
 
 export type QuestionnaireInfo = {
