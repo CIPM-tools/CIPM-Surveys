@@ -1,9 +1,10 @@
-import { ResponseCount, SingleResponseCount } from '../types/response-count.js';
+import { ResponseCount, SingleResponseCount, Statistics } from '../types/response-count.js';
 import { QuestionContainer } from './question-container.js';
 import { NoAnswer, Yes } from '../types/constants.js';
 import { ResponseEntry, ResponseJson } from '../types/responses.js';
 import { RequiredValue } from '../types/condition.js';
 import { checkConditions, checkRequiredValue } from './condition-evaluator.js';
+import { calculateStatistics } from './statistics-calculator.js';
 
 export type CountConfiguration = {
     countNoAnswers?: boolean;
@@ -61,8 +62,9 @@ export class ResponseCounter {
                 value.relativeFrequency = value.count / overallCount;
             });
         }
+        const stats: Statistics[] = questionType === 'matrix' ? calculateStatistics(questionContainer, answers, code) : [];
 
-        return { questionCodes: [code], counts: config.limitResponsesBy && singleResults.length >= config.limitResponsesBy ? singleResults.filter((value) => value.count !== 0) : singleResults, stats: [] };
+        return { questionCodes: [code], counts: config.limitResponsesBy && singleResults.length >= config.limitResponsesBy ? singleResults.filter((value) => value.count !== 0) : singleResults, stats };
     }
 
     countRelatedResponsesForCodes(questionContainer: QuestionContainer, answers: ResponseJson, codeDimensions: string[][]): ResponseCount[] {

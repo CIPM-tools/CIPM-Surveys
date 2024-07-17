@@ -5,7 +5,7 @@ export type SingleResponseCount = {
 };
 
 export type Statistics =
-    | { type: 'percentile'; percentile: number; value: number };
+    | { type: 'quantile'; quantile: number; value: number | string };
 
 export type ResponseCount = {
     questionCodes: string[];
