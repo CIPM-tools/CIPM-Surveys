@@ -41,8 +41,10 @@ export async function main(): Promise<void> {
         { conditionedCode: QUESTION_CODES.Co3PMTimeAdoption, required: { code: QUESTION_CODES.D4RolesSQ003, value: Yes } }
     ];
     await writeFileContent(resolve(dataDirectory, 'questions.json'), JSON.stringify(questionnaire, undefined, 4));
-    // The generated code is already contained within the repository.
-    // await writeFileContent(resolve('src', 'node', 'question-codes.ts'), convertCodesToTypeScript(questionnaire));
+    const questionCodeFile: string = resolve('src', 'node', 'question-codes.ts');
+    if (!existsSync(questionCodeFile)) {
+        await writeFileContent(resolve('src', 'node', 'question-codes.ts'), convertCodesToTypeScript(questionnaire));
+    }
 
     const originalResponseFile: string = resolve('..', 'actual_responses.json');
     const anonymizedResponseFile: string = resolve(dataDirectory, 'responses-anonymized.json');
@@ -51,14 +53,15 @@ export async function main(): Promise<void> {
         throw new Error('There is no response file.');
     }
     const answers: ResponseJson = JSON.parse(await readFileContent(originalExists ? originalResponseFile : anonymizedResponseFile));
-    // The anonymized answers are already contained in the repository.
-    // await writeFileContent(
-    //     anonymizedResponseFile,
-    //     JSON.stringify(
-    //         anonymize(answers, [
-    //             QUESTION_CODES.D1Country, QUESTION_CODES.D2Age, QUESTION_CODES.D3Experience, QUESTION_CODES.D5CompanySize, QUESTION_CODES.D6TeamSize
-    //         ]), undefined, 4)
-    // );
+    if (!existsSync(anonymizedResponseFile)) {
+        await writeFileContent(
+            anonymizedResponseFile,
+            JSON.stringify(
+                anonymize(answers, [
+                    QUESTION_CODES.D1Country, QUESTION_CODES.D2Age, QUESTION_CODES.D3Experience, QUESTION_CODES.D5CompanySize, QUESTION_CODES.D6TeamSize
+                ]), undefined, 4)
+        );
+    }
 
     const questionContainer: QuestionContainer = new QuestionContainer(questionnaire);
     const outputDirectory: string = resolve(dataDirectory, `results-${Date.now()}`);
