@@ -19,6 +19,7 @@ import { JSDOM } from 'jsdom';
 import { generateCombinedPlot } from '../common/ui/plots-combined.js';
 import { generateMatrixPlots } from '../common/ui/plots-matrix.js';
 import { generateRelationPlot } from '../common/ui/plots-relations.js';
+import { generateQuestionnaireMarkdown } from './report-generator.js';
 
 main();
 
@@ -46,6 +47,9 @@ export async function main(): Promise<void> {
         await writeFileContent(resolve('src', 'node', 'question-codes.ts'), convertCodesToTypeScript(questionnaire));
     }
 
+    const questionContainer: QuestionContainer = new QuestionContainer(questionnaire);
+    await generateQuestionnaireMarkdown(dataDirectory, questionnaire, questionContainer);
+
     const originalResponseFile: string = resolve('..', 'actual_responses.json');
     const anonymizedResponseFile: string = resolve(dataDirectory, 'responses-anonymized.json');
     const { originalExists, anonymizedExists } = { originalExists: existsSync(originalResponseFile), anonymizedExists: existsSync(anonymizedResponseFile) };
@@ -63,7 +67,6 @@ export async function main(): Promise<void> {
         );
     }
 
-    const questionContainer: QuestionContainer = new QuestionContainer(questionnaire);
     const outputDirectory: string = resolve(dataDirectory, `results-${Date.now()}`);
     await analyzeAnswers(questionContainer, answers, resolve(outputDirectory, 'results-unfiltered'));
     answers.responses = answers.responses.filter((r) => r['lastpage']! === 29);

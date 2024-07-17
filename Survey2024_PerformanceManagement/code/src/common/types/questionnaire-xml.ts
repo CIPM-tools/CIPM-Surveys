@@ -20,18 +20,20 @@ export type SubQuestion = {
     text: string;
 };
 
+export type AdditionalText = {
+    position: 'title' | 'before' | 'after' | 'during';
+    text: string;
+};
+
 export type Question = {
+    directive?: AdditionalText;
     text: string;
     response: Response[] | Response;
     subQuestion?: SubQuestion[];
 };
 
-export type SectionInfo = {
-    text: string;
-};
-
 export type Section = {
-    sectionInfo: SectionInfo;
+    sectionInfo: AdditionalText | AdditionalText[];
     question: Question[] | Question;
 };
 
@@ -42,7 +44,7 @@ export type QuestionnaireInfo = {
 
 export type Questionnaire = {
     title: string;
-    questionnaireInfo: QuestionnaireInfo[];
+    questionnaireInfo: AdditionalText[];
     section: Section[];
 };
 

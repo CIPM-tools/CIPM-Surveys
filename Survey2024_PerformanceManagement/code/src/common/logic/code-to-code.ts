@@ -1,5 +1,5 @@
 import { Questions } from '../types/questions.js';
-import { unformatCode } from './utility';
+import { unformatCode } from './utility.js';
 
 export function convertCodesToTypeScript(question: Questions): string {
     let questionCodesSourceCode: string = '// This is an automatically generated file.\n\nexport const QUESTION_CODES = {\n\n';

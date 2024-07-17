@@ -9,18 +9,20 @@ export type QuestionEncoding = {
     text: string;
     responses: string[];
     statement?: string;
+    supportingText?: string;
 };
 
 export type QuestionSection = {
     title: string;
+    infoBefore?: string;
     encodings: QuestionEncoding[];
 };
 
 export type Questions = {
     introduction: {
         title: string;
-        infoBefore: string;
-        infoAfter: string;
+        infoBefore?: string;
+        infoAfter?: string;
     };
     sections: QuestionSection[];
     conditions: SimpleCondition[];
