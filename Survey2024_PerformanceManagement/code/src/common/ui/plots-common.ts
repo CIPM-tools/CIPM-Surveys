@@ -15,8 +15,8 @@ export function convertResponseCountToPlotItems(count: ResponseCount, config?: {
 
 export function convertLongCodeToShortCode(code: string) {
     const matchResult: RegExpMatchArray | null = code.match(/^([a-zA-Z]+[0-9]+)[a-zA-Z]+(?:\[[a-zA-Z]+([0-9]+)\])?$/);
-    if (matchResult) {
-        return matchResult[1] + (matchResult[2] ? convertToLowerCaseLetter(Number.parseInt(matchResult[2]) - 1) : '');
+    if (matchResult && matchResult[2]) {
+        return matchResult[1] + convertToLowerCaseLetter(Number.parseInt(matchResult[2]) - 1);
     } else {
         return code;
     }

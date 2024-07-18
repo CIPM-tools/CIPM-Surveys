@@ -64,7 +64,7 @@ export class ResponseCounter {
         }
         const stats: Statistics[] = questionType === 'matrix' ? calculateStatistics(questionContainer, answers, code) : [];
 
-        return { questionCodes: [code], counts: config.limitResponsesBy && singleResults.length >= config.limitResponsesBy ? singleResults.filter((value) => value.count !== 0) : singleResults, stats };
+        return { questionCodes: [code], counts: config.limitResponsesBy && singleResults.length >= config.limitResponsesBy ? singleResults.filter((value) => value.count !== 0) : singleResults, stats: [{ code, stats }] };
     }
 
     countRelatedResponsesForCodes(questionContainer: QuestionContainer, answers: ResponseJson, codeDimensions: string[][]): ResponseCount[] {

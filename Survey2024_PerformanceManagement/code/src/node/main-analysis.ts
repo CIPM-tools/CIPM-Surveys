@@ -19,7 +19,8 @@ import { JSDOM } from 'jsdom';
 import { generateCombinedPlot } from '../common/ui/plots-combined.js';
 import { generateMatrixPlots } from '../common/ui/plots-matrix.js';
 import { generateRelationPlot } from '../common/ui/plots-relations.js';
-import { generateQuestionnaireMarkdown } from './report-generator.js';
+import { generateQuestionnaireMarkdown } from './questionnaire-generator.js';
+import { ReportGenerator } from './report-generator.js';
 
 main();
 
@@ -68,19 +69,19 @@ export async function main(): Promise<void> {
     }
 
     const outputDirectory: string = resolve(dataDirectory, `results-${Date.now()}`);
-    await analyzeAnswers(questionContainer, answers, resolve(outputDirectory, 'results-unfiltered'));
+    const reportGenerator: ReportGenerator = new ReportGenerator();
+    reportGenerator.setTag('all');
+    await analyzeAnswers(questionContainer, answers, resolve(outputDirectory, 'results-unfiltered'), reportGenerator);
     answers.responses = answers.responses.filter((r) => r['lastpage']! === 29);
-    await analyzeAnswers(questionContainer, answers, resolve(outputDirectory, 'results-complete-only'));
+    reportGenerator.setTag('complete');
+    await analyzeAnswers(questionContainer, answers, resolve(outputDirectory, 'results-complete-only'), reportGenerator);
+    await reportGenerator.generateReports(questionnaire, questionContainer, outputDirectory);
 }
 
-async function analyzeAnswers(questionContainer: QuestionContainer, answers: ResponseJson, outputDirectory: string): Promise<void> {
+async function analyzeAnswers(questionContainer: QuestionContainer, answers: ResponseJson, outputDirectory: string, reportGenerator: ReportGenerator): Promise<void> {
     await mkdir(outputDirectory, { recursive: true });
-    const graphicsSingleDirectory: string = resolve(outputDirectory, 'graphs-sinlge');
-    await mkdir(graphicsSingleDirectory);
     const graphicsCombinedDirectory: string = resolve(outputDirectory, 'graphs-combined');
     await mkdir(graphicsCombinedDirectory);
-    const graphicsRelatedDirectory: string = resolve(outputDirectory, 'graphs-related');
-    await mkdir(graphicsRelatedDirectory);
 
     const overallResult: AnalysisResult = {
         relations: [],
@@ -147,16 +148,15 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
         QUESTION_CODES.Co3DevTimeAdoption,
         QUESTION_CODES.Co3PMTimeAdoption
     ];
-    const allSingleResponseCounts: ResponseCount[] = responseCounter.countResponsesForCodes(questionContainer, answers, codesForDescriptiveStatistics, { countRelativeFrequency: true });
+    const allSingleResponseCounts: ResponseCount[] = responseCounter.countResponsesForCodes(questionContainer, answers, codesForDescriptiveStatistics, { countRelativeFrequency: true, limitResponsesBy: 15 });
     for (const count of allSingleResponseCounts) {
         overallResult.relations.push(count);
-        await writeFileContent(resolve(graphicsSingleDirectory, count.questionCodes[0] + '.html'), generateSinglePlot(count, virtualDom));
+        reportGenerator.addSingleGraphic(count.questionCodes[0], count, generateSinglePlot(count, virtualDom));
     }
 
     const combinedCodes: string[][] = [
         [QUESTION_CODES.C9GeneralTrustSQ001, QUESTION_CODES.C9GeneralTrustSQ002, QUESTION_CODES.C9GeneralTrustSQ003],
         [QUESTION_CODES.N2TrustSQ001, QUESTION_CODES.N2TrustSQ002, QUESTION_CODES.N2TrustSQ003],
-        [QUESTION_CODES.C9GeneralTrustSQ003, QUESTION_CODES.N2TrustSQ001, QUESTION_CODES.N2TrustSQ002, QUESTION_CODES.N2TrustSQ003],
         [QUESTION_CODES.C9GeneralTrustSQ001, QUESTION_CODES.C9GeneralTrustSQ002, QUESTION_CODES.C9GeneralTrustSQ003, QUESTION_CODES.N2TrustSQ001, QUESTION_CODES.N2TrustSQ002, QUESTION_CODES.N2TrustSQ003],
         [QUESTION_CODES.C8RelevanceSQ001, QUESTION_CODES.C8RelevanceSQ002],
         [QUESTION_CODES.Co2DevTimeLearn, QUESTION_CODES.Co2PMTimeLearn],
@@ -174,19 +174,18 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
             const countsWithQuestionCode = lodash.cloneDeep(count.counts);
             countsWithQuestionCode.forEach((value) => {
                 value.codes.push(...count.questionCodes);
-                value.relativeFrequency = undefined;
             });
             return countsWithQuestionCode;
         });
-        const combinedResponseCount: ResponseCount = { questionCodes: combination, counts: combinedData, stats: [] };
+        const combinedResponseCount: ResponseCount = { questionCodes: combination, counts: combinedData, stats: combiningCounts.flatMap((count) => count.stats) };
         overallResult.relations.push(combinedResponseCount);
 
-        await writeFileContent(resolve(graphicsCombinedDirectory, combination.join('-') + '-choices.html'), generateCombinedPlot(combinedResponseCount, questionContainer, virtualDom));
+        const combinedPlot: string = generateCombinedPlot(combinedResponseCount, questionContainer, virtualDom)
         if (questionContainer.getQuestionType(combination[0]) === 'matrix') {
             const { absolute, relative, box } = generateMatrixPlots(combinedResponseCount, questionContainer, answers, virtualDom);
-            await writeFileContent(resolve(graphicsCombinedDirectory, combination.join('-') + '-abs.html'), absolute);
-            await writeFileContent(resolve(graphicsCombinedDirectory, combination.join('-') + '-rel.html'), relative);
-            await writeFileContent(resolve(graphicsCombinedDirectory, combination.join('-') + '-box.html'), box);
+            reportGenerator.addMatrixGraphics(combination.join('-'), combinedResponseCount, { absolute, relative, box, graphic: combinedPlot });
+        } else {
+            reportGenerator.addCombinedGraphic(combination.join('-'), combinedResponseCount, combinedPlot);
         }
     }
 
@@ -218,7 +217,7 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
     }
     const mappedResponseCount = { questionCodes: codesToMap, counts: mappedData, stats: [] };
     overallResult.relations.push(mappedResponseCount);
-    await writeFileContent(resolve(graphicsCombinedDirectory, codesToMap.join('-') + '-choices.html'), generateCombinedPlot(mappedResponseCount, questionContainer, virtualDom));
+    reportGenerator.addCombinedGraphic(codesToMap.join('-'), mappedResponseCount, generateCombinedPlot(mappedResponseCount, questionContainer, virtualDom));
 
     overallResult.texts[QUESTION_CODES.Ch2Challenges] = getTexts(answers, QUESTION_CODES.Ch2Challenges);
     overallResult.texts[QUESTION_CODES.Ch3MissingFeatures] = getTexts(answers, QUESTION_CODES.Ch3MissingFeatures);
@@ -249,7 +248,7 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
     const relatedReponseCounts: ResponseCount[] = responseCounter.countRelatedResponsesForCodes(questionContainer, answers, [codesOneDimension, codesOtherDimension]);
     for (const count of relatedReponseCounts) {
         overallResult.relations.push(count);
-        await writeFileContent(resolve(graphicsRelatedDirectory, count.questionCodes.join('x') + '.html'), generateRelationPlot(count, questionContainer, virtualDom));
+        reportGenerator.addRelationGraphic(count.questionCodes.join('x'), count, generateRelationPlot(count, questionContainer, virtualDom));
     }
 
     return writeFileContent(resolve(outputDirectory, 'all-results.json'), JSON.stringify(overallResult, undefined, 4));

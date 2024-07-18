@@ -1,10 +1,11 @@
 import * as Plot from '@observablehq/plot';
 import { QuestionContainer } from '../logic/question-container.js';
+import { MatrixSpecificGraphics } from '../types/matrix-graphics.js';
 import { ResponseCount } from '../types/response-count.js';
 import { ResponseJson } from '../types/responses.js';
 import { convertLongCodeToShortCode, convertResponseCountToPlotItems, fontSize, fontSizeNumber } from './plots-common.js';
 
-export function generateMatrixPlots(count: ResponseCount, questionContainer: QuestionContainer, answers: ResponseJson, dom: any): { absolute: string; relative: string; box: string } {
+export function generateMatrixPlots(count: ResponseCount, questionContainer: QuestionContainer, answers: ResponseJson, dom: any): MatrixSpecificGraphics {
     const items = questionContainer.getResponseValues(count.questionCodes[0]);
     const shortCodes = count.questionCodes.map(convertLongCodeToShortCode);
     

@@ -12,6 +12,10 @@ export class QuestionContainer {
         });
     }
 
+    getQuestion(code: string): QuestionEncoding | undefined {
+        return this.codes.get(code);
+    }
+
     getResponses(code: string): string[] {
         return this.codes.get(code)?.responses ?? [];
     }
