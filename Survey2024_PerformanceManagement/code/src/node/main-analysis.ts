@@ -80,8 +80,6 @@ export async function main(): Promise<void> {
 
 async function analyzeAnswers(questionContainer: QuestionContainer, answers: ResponseJson, outputDirectory: string, reportGenerator: ReportGenerator): Promise<void> {
     await mkdir(outputDirectory, { recursive: true });
-    const graphicsCombinedDirectory: string = resolve(outputDirectory, 'graphs-combined');
-    await mkdir(graphicsCombinedDirectory);
 
     const overallResult: AnalysisResult = {
         relations: [],

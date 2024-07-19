@@ -3,16 +3,19 @@ import { QuestionContainer } from '../logic/question-container.js';
 import { MatrixSpecificGraphics } from '../types/matrix-graphics.js';
 import { ResponseCount } from '../types/response-count.js';
 import { ResponseJson } from '../types/responses.js';
-import { convertLongCodeToShortCode, convertResponseCountToPlotItems, fontSize, fontSizeNumber } from './plots-common.js';
+import { convertLongCodeToShortCode, convertResponseCountToPlotItems, fontSize, fontSizeNumber, getMinimumFontSize } from './plots-common.js';
 
 export function generateMatrixPlots(count: ResponseCount, questionContainer: QuestionContainer, answers: ResponseJson, dom: any): MatrixSpecificGraphics {
     const items = questionContainer.getResponseValues(count.questionCodes[0]);
     const shortCodes = count.questionCodes.map(convertLongCodeToShortCode);
+
+    const height: number = items.length * 1.5 * fontSizeNumber;
+    const marginLeft: number = getMinimumFontSize(shortCodes);
     
     const absolute: string = Plot.plot({
         grid: true,
-        height: items.length * 1.5 * fontSizeNumber,
-        marginLeft: fontSizeNumber * shortCodes.map((value) => value.length).reduce((previousValue, currentValue) => previousValue <= currentValue ? currentValue : previousValue),
+        height,
+        marginLeft,
         style: { fontSize },
         x: { label: '', labelArrow: 'none' },
         fy: { label: '' },
@@ -57,8 +60,11 @@ export function generateMatrixPlots(count: ResponseCount, questionContainer: Que
 
     const relative: string = Plot.plot({
         grid: true,
+        height: height + 3 * fontSizeNumber,
+        marginLeft,
+        marginBottom: 3 * fontSizeNumber,
         style: { fontSize },
-        x: { label: '', labelArrow: 'none' },
+        x: { label: 'Relative Frequency', labelArrow: 'none' },
         fy: { label: '' },
         y: { label: '' },
         color: { scheme: 'RdBu', domain: items, label: '', legend: true },
@@ -81,7 +87,7 @@ export function generateMatrixPlots(count: ResponseCount, questionContainer: Que
                     const responses: { code: string; value: number }[] = [];
                     count.questionCodes.forEach((code) => {
                         if (entry[code]) {
-                            responses.push({ code, value: items.indexOf(entry[code] as string) - items.length / 2 });
+                            responses.push({ code: convertLongCodeToShortCode(code), value: items.indexOf(entry[code] as string) - items.length / 2 });
                         }
                     });
                     return responses;
