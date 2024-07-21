@@ -51,7 +51,8 @@ export class ReportGenerator {
         }
     }
 
-    async generateReports(questionnaire: Questions, questionContainer: QuestionContainer, outputDirectory: string): Promise<void> {
+    async generateReports(questionnaire: Questions, questionContainer: QuestionContainer, outputDirectory: string): Promise<string> {
+        let all: string = '';
         let md: string = `# Results Report for *${questionnaire.introduction.title}* - Single Questions (`;
         let md2: string = md.slice();
         let md3: string = md.slice();
@@ -87,6 +88,7 @@ export class ReportGenerator {
         await writeFileContent(resolve(outputDirectory, 'results-single.md'), md);
         await writeFileContent(resolve(outputDirectory, 'results-single-all.md'), md2);
         await writeFileContent(resolve(outputDirectory, 'results-single-complete.md'), md3);
+        all += md + md2 + md3;
 
         md = `# Results Report for *${questionnaire.introduction.title}* - Combined Questions (`;
         md2 = md.slice();
@@ -114,6 +116,7 @@ export class ReportGenerator {
         }
         await writeFileContent(resolve(outputDirectory, 'results-combined-all.md'), md);
         await writeFileContent(resolve(outputDirectory, 'results-combined-complete.md'), md2);
+        all += md + md2;
 
         md = `# Results Report for *${questionnaire.introduction.title}* - Questions Put Into Relations (`;
         md2 = md.slice();
@@ -129,6 +132,8 @@ export class ReportGenerator {
         }
         await writeFileContent(resolve(outputDirectory, 'results-related-all.md'), md);
         await writeFileContent(resolve(outputDirectory, 'results-related-complete.md'), md2);
+        all += md + md2;
+        return all;
     }
 
     private generateTable(count: ResponseCount, questionContainer: QuestionContainer, additional?: { count2: ResponseCount; tag1: Tag; tag2: Tag }): string {

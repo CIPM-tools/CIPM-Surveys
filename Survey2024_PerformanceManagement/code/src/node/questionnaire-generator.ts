@@ -6,7 +6,7 @@ import { Questions, QuestionTypes } from '../common/types/questions.js';
 import { convertLongCodeToShortCode } from '../common/ui/plots-common.js';
 import { writeFileContent } from './fs-utility.js';
 
-export async function generateQuestionnaireMarkdown(outputDirectory: string, questions: Questions, questionContainer: QuestionContainer): Promise<void> {
+export async function generateQuestionnaireMarkdown(outputDirectory: string, questions: Questions, questionContainer: QuestionContainer): Promise<string> {
     let md: string = `# ${questions.introduction.title}\n\n${questions.introduction.infoBefore}\n\n`;
     questions.sections.forEach((section) => {
         md += `## Section: *${section.title}*\n\n`;
@@ -53,9 +53,10 @@ export async function generateQuestionnaireMarkdown(outputDirectory: string, que
         });
     });
     if (questions.introduction.infoAfter) {
-        md += `## Closing\n\n${questions.introduction.infoAfter}\n`;
+        md += `## Closing\n\n${questions.introduction.infoAfter}\n\n`;
     }
-    return writeFileContent(resolve(outputDirectory, 'questionnaire.md'), md);
+    await writeFileContent(resolve(outputDirectory, 'questionnaire.md'), md);
+    return md;
 }
 
 function convertQuestionType(type: QuestionTypes): string {

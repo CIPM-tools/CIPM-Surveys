@@ -21,6 +21,9 @@ import { generateMatrixPlots } from '../common/ui/plots-matrix.js';
 import { generateRelationPlot } from '../common/ui/plots-relations.js';
 import { generateQuestionnaireMarkdown } from './questionnaire-generator.js';
 import { ReportGenerator } from './report-generator.js';
+import markdownit from 'markdown-it';
+import markdownitAnchor from 'markdown-it-anchor';
+import markdownItTocDoneRight from 'markdown-it-toc-done-right';
 
 main();
 
@@ -49,7 +52,7 @@ export async function main(): Promise<void> {
     }
 
     const questionContainer: QuestionContainer = new QuestionContainer(questionnaire);
-    await generateQuestionnaireMarkdown(dataDirectory, questionnaire, questionContainer);
+    let allInOneReport: string = await generateQuestionnaireMarkdown(dataDirectory, questionnaire, questionContainer);
 
     const originalResponseFile: string = resolve('..', 'actual_responses.json');
     const anonymizedResponseFile: string = resolve(dataDirectory, 'responses-anonymized.json');
@@ -75,7 +78,16 @@ export async function main(): Promise<void> {
     answers.responses = answers.responses.filter((r) => r['lastpage']! === 29);
     reportGenerator.setTag('complete');
     await analyzeAnswers(questionContainer, answers, resolve(outputDirectory, 'results-complete-only'), reportGenerator);
-    await reportGenerator.generateReports(questionnaire, questionContainer, outputDirectory);
+    allInOneReport += await reportGenerator.generateReports(questionnaire, questionContainer, outputDirectory);
+
+    const md = markdownit({ html: true });
+    md.use(markdownitAnchor, { permalink: markdownitAnchor.permalink.headerLink() }).use(markdownItTocDoneRight);
+    await writeFileContent(
+        resolve(outputDirectory, 'results.html'),
+        '<html>\n<head></head>\n<body style="font-family: Arial;">\n'
+            + md.render('# Complete Results Report\n\n# Table of Contents\n\n${toc}\n\n' + allInOneReport)
+            + '</body>\n</html>\n'
+    );
 }
 
 async function analyzeAnswers(questionContainer: QuestionContainer, answers: ResponseJson, outputDirectory: string, reportGenerator: ReportGenerator): Promise<void> {

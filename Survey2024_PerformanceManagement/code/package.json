@@ -13,12 +13,16 @@
         "d3-array": "^3.2.4",
         "fast-xml-parser": "^4.4.0",
         "jsdom": "^24.1.0",
-        "lodash": "^4.17.21"
+        "lodash": "^4.17.21",
+        "markdown-it": "^14.1.0",
+        "markdown-it-anchor": "^9.0.1",
+        "markdown-it-toc-done-right": "^4.2.0"
     },
     "devDependencies": {
         "@types/d3-array": "^3.2.1",
         "@types/jsdom": "^21.1.7",
         "@types/lodash": "^4.17.7",
+        "@types/markdown-it": "^14.1.1",
         "@types/node": "^20.14.2",
         "ts-node": "^10.9.2",
         "tslib": "^2.6.3",
