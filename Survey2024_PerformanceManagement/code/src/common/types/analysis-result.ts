@@ -1,4 +1,5 @@
 import { ResponseCount } from './response-count.js';
+import { TextInputResponses } from './TextInputResponses.js';
 
 export type AnalysisResult = {
     responseNumbers: {
@@ -7,5 +8,5 @@ export type AnalysisResult = {
         neverStarted: number;
     };
     relations: ResponseCount[];
-    texts: { [key: string]: string[] };
+    texts: TextInputResponses;
 };

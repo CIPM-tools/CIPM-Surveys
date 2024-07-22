@@ -1,6 +1,6 @@
 import { existsSync } from 'fs';
 import { mkdir } from 'fs/promises';
-import lodash from 'lodash';
+import lodash, { over } from 'lodash';
 import { resolve } from 'path';
 import { convertCodesToTypeScript } from '../common/logic/code-to-code.js';
 import { QuestionContainer } from '../common/logic/question-container.js';
@@ -251,6 +251,7 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
             overallResult.texts[code] = getTexts(answers, code);
         }
     }
+    reportGenerator.addTexts(overallResult.texts);
 
     const codesOneDimension: string[] = [
         QUESTION_CODES.D2Age,

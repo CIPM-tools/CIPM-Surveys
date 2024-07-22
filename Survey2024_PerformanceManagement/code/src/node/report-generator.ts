@@ -3,6 +3,7 @@ import { QuestionContainer } from '../common/logic/question-container.js';
 import { MatrixGraphics, MatrixSpecificGraphics } from '../common/types/matrix-graphics.js';
 import { QuestionEncoding, Questions } from '../common/types/questions.js';
 import { ResponseCount, SingleResponseCount, Statistics, StatisticsCollection } from '../common/types/response-count.js';
+import { TextInputResponses } from '../common/types/TextInputResponses.js';
 import { convertLongCodeToShortCode } from '../common/ui/plots-common.js';
 import { writeFileContent } from './fs-utility.js';
 
@@ -21,6 +22,7 @@ export class ReportGenerator {
     private combinedGraphics: Map<string, CountGraphicPair[]> = new Map();
     private matrixGraphics: Map<string, CountGraphicPair[]> = new Map();
     private relationGraphics: Map<string, CountGraphicPair[]> = new Map();
+    private texts: Map<Tag, TextInputResponses> = new Map();
 
     setTag(tag: Tag): void {
         this.currentTag = tag;
@@ -42,6 +44,10 @@ export class ReportGenerator {
         this.addNewPair(this.relationGraphics, code, count, graphic);
     }
 
+    addTexts(text: TextInputResponses): void {
+        this.texts.set(this.currentTag, text);
+    }
+
     private addNewPair(map: Map<string, CountGraphicPair[]>, code: string, count: ResponseCount, graphic: string, matrixGraphics?: MatrixSpecificGraphics): void {
         const newPair: CountGraphicPair = { count, graphic, tag: this.currentTag, matrixGraphics };
         if (map.has(code)) {
@@ -61,12 +67,23 @@ export class ReportGenerator {
         md3 += 'Complete Responses Only)\n\n';
         questionnaire.sections.forEach((section) => {
             section.encodings.forEach((encoding) => {
+                const heading = `## \\[${convertLongCodeToShortCode(encoding.code)}\\] ${encoding.statement ? encoding.statement : encoding.text}\n\n`;
+
+                if (encoding.type === 'free-text') {
+                    md2 += heading;
+                    md3 += heading;
+                    md2 += this.generateTextResponseTexts(encoding.code, this.texts.get('all'));
+                    md3 += this.generateTextResponseTexts(encoding.code, this.texts.get('complete'));
+                    return;
+                }
+
                 if (!this.singleGraphics.has(encoding.code)) {
                     return;
                 }
+
                 const pair: CountGraphicPair[] | undefined = this.singleGraphics.get(encoding.code);
                 if (pair) {
-                    const heading = `## \\[${convertLongCodeToShortCode(encoding.code)}\\] ${encoding.statement ? encoding.statement : encoding.text}\n\n`;
+                    
                     md += heading;
                     md2 += heading;
                     md3 += heading;
@@ -79,9 +96,11 @@ export class ReportGenerator {
                     md2 += this.generateTable(pair[md2Index].count, questionContainer);
                     md2 += pair[md2Index].graphic + '\n\n';
                     md2 += this.generateStatisticsTable(pair[md2Index].count);
+                    md2 += this.generateTextResponseTexts(encoding.code, this.texts.get(pair[md2Index].tag));
                     md3 += this.generateTable(pair[md3Index].count, questionContainer);
                     md3 += pair[md3Index].graphic + '\n\n';
                     md3 += this.generateStatisticsTable(pair[md3Index].count);
+                    md3 += this.generateTextResponseTexts(encoding.code, this.texts.get(pair[md3Index].tag));
                 }
             });
         });
@@ -189,5 +208,20 @@ export class ReportGenerator {
             }
             return `\\[${convertLongCodeToShortCode(code)}\\]: ${question.text === '' ? question.statement : question.text}`;
         }).join('\n\n') + '\n\n';
+    }
+
+    private generateTextResponseTexts(code: string, text?: TextInputResponses): string {
+        if (text === undefined) {
+            return '';
+        }
+        if (text[code] !== undefined) {
+            return '* ' + text[code].join('\n* ') + '\n\n';
+        }
+        for (const key in text) {
+            if (key.startsWith(code) && text[key].length > 0) {
+                return `_Other Responses_\n\n* ${text[key].join('\n* ')}\n\n`;
+            }
+        }
+        return '';
     }
 }
