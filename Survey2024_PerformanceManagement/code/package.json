@@ -1,7 +1,7 @@
 {
     "name": "@cipm/surveys-2024-pm-eval",
     "private": true,
-    "version": "1.0.0-dev",
+    "version": "1.0.0",
     "type": "module",
     "scripts": {
         "analyze": "node --loader ts-node/esm ./src/node/main-analysis.ts"
