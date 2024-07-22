@@ -72,27 +72,42 @@ export async function main(): Promise<void> {
     }
 
     const outputDirectory: string = resolve(dataDirectory, `results-${Date.now()}`);
+    await mkdir(outputDirectory, { recursive: true });
+
     const reportGenerator: ReportGenerator = new ReportGenerator();
     reportGenerator.setTag('all');
-    await analyzeAnswers(questionContainer, answers, resolve(outputDirectory, 'results-unfiltered'), reportGenerator);
+    await analyzeAnswers(questionContainer, answers, resolve(outputDirectory, 'results-unfiltered.json'), reportGenerator);
     answers.responses = answers.responses.filter((r) => r['lastpage']! === 29);
     reportGenerator.setTag('complete');
-    await analyzeAnswers(questionContainer, answers, resolve(outputDirectory, 'results-complete-only'), reportGenerator);
+    await analyzeAnswers(questionContainer, answers, resolve(outputDirectory, 'results-complete-only.json'), reportGenerator);
     allInOneReport += await reportGenerator.generateReports(questionnaire, questionContainer, outputDirectory);
 
+    const prefix: string =
+`# Complete Results Report
+
+In 2024, we conducted a survey among software professionals to investigate current performance management techniques, trust, and costs. This file contains the following supplementary material to the survey.
+
+* Complete Questionnaire: We provide the complete questionnaire. It includes our internal codes for the questions and predefined responses. A question code *X0Y* consists of an abbreviation of a section (*X*) in which the question is located, a unique number (*0*) for the question within the section, and a unique identifier (*Y*) for the question which also describes the question. The actual response code *X0YZ* starts with the question code *X0Y*, followed by a unique identifier *Z* for the response (usually contains a unique number for the response within the question). For simplicity, we shorten response codes to *X0a* in visualizations. This short form *X0a* starts with parts of the question code *X0Y* and ends with a lower-case letter based on the response's unique identifier *Z*.
+* Analysis Results: We visualize the analysis results of the survey. For every single choice, multiple choice, and matrix question, we report the absolute and relative frequency of the predefined responses. Furthermore, we calculated quantiles (0 %, 25 %, 50 %, 75 %, and 100 %) for every Matrix question.
+    * Results for Comparing All and Completed Responses: This part shows all single results for single questions including the results for all and completed only responses. This allows comparing their trends.
+    * Results for Single Questions (all): This part visualizes all single results for single questions by considering all responses.
+    * Results for Single Questions (complete): This part visualizes all single results for single questions by considering completed participations only.
+    * Results for Combined Results (all): Beside the previous results, this part displays the combined results of certain questions (e.g., for all statements of a Matrix question). The combined results are based on all responses.
+    * Results for Combined Results (complete): This part displays the combined results of certain questions for completed participations only.
+    * Results for Related Results (all): At last, we put the responses to specific questions into relation to look at them. This part shows the results for all responses.
+    * Results for Related Results (complete): This part shows the results of related responses for completed participations only.
+`;
     const md = markdownit({ html: true });
     md.use(markdownitAnchor, { permalink: markdownitAnchor.permalink.headerLink() }).use(markdownItTocDoneRight);
     await writeFileContent(
         resolve(outputDirectory, 'results.html'),
         '<html>\n<head></head>\n<body style="font-family: Arial;">\n'
-            + md.render('# Complete Results Report\n\n# Table of Contents\n\n${toc}\n\n' + allInOneReport)
+            + md.render(prefix + '# Table of Contents\n\n${toc}\n\n' + allInOneReport)
             + '</body>\n</html>\n'
     );
 }
 
-async function analyzeAnswers(questionContainer: QuestionContainer, answers: ResponseJson, outputDirectory: string, reportGenerator: ReportGenerator): Promise<void> {
-    await mkdir(outputDirectory, { recursive: true });
-
+async function analyzeAnswers(questionContainer: QuestionContainer, answers: ResponseJson, outputFile: string, reportGenerator: ReportGenerator): Promise<void> {
     const overallResult: AnalysisResult = {
         relations: [],
         texts: {},
@@ -261,7 +276,7 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
         reportGenerator.addRelationGraphic(count.questionCodes.join('x'), count, generateRelationPlot(count, questionContainer, virtualDom));
     }
 
-    return writeFileContent(resolve(outputDirectory, 'all-results.json'), JSON.stringify(overallResult, undefined, 4));
+    return writeFileContent(outputFile, JSON.stringify(overallResult, undefined, 4));
 }
 
 function getTexts(answers: ResponseJson, code: string): string[] {
