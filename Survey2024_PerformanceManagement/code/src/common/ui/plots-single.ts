@@ -9,7 +9,7 @@ export function generateSinglePlot(count: ResponseCount, dom: any): string {
         grid: true,
         marginTop: 2 * fontSizeNumber,
         marginBottom: getMinimumFontSize(responses, defaultAngleDeg) * 0.55,
-        marginRight: getMarginRight(responses[responses.length - 1], defaultAngleDeg) * 0.6,
+        marginRight: getMarginRight(responses.length === 0 ? '' : responses[responses.length - 1], defaultAngleDeg) * 0.6,
         style: { fontSize },
         x: { label: '', tickRotate: defaultAngleDeg },
         y: { label: 'Frequency', labelArrow: 'none' },

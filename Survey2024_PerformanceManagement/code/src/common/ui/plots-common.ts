@@ -31,7 +31,7 @@ export function getMinimumFontSize(strings: string[], angleDeg?: number): number
 }
 
 function getMaximumStringLength(strings: string[]): number {
-    return strings.map((value) => value.length).reduce((previousValue, currentValue) => previousValue <= currentValue ? currentValue : previousValue);
+    return strings.length === 0 ? 0 : strings.map((value) => value.length).reduce((previousValue, currentValue) => previousValue <= currentValue ? currentValue : previousValue);
 }
 
 export function getMarginRight(lastOption: string, angleDeg: number): number {
