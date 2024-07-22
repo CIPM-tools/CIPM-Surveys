@@ -1,7 +1,7 @@
 import * as Plot from '@observablehq/plot';
 import { QuestionContainer } from '../logic/question-container.js';
 import { ResponseCount } from '../types/response-count.js';
-import { convertResponseCountToPlotItems, defaultAngleDeg, fontSize, fontSizeNumber, getMarginRight, getMinimumFontSize } from './plots-common.js';
+import { convertLongCodeToShortCode, convertResponseCountToPlotItems, defaultAngleDeg, fontSize, fontSizeNumber, getMarginRight, getMinimumFontSize } from './plots-common.js';
 
 export function generateRelationPlot(count: ResponseCount, questionContainer: QuestionContainer, dom: any): string {
     const xResponses: string[] = questionContainer.getResponseValues(count.questionCodes[0]);
@@ -19,8 +19,8 @@ export function generateRelationPlot(count: ResponseCount, questionContainer: Qu
         height: marginBottom + fontSizeNumber * yResponses.length * 2 + fontSizeNumber * 2,
         width: marginLeft + 2 * fontSizeNumber + 450 + marginRight,
         style: { fontSize },
-        x: { label: count.questionCodes[0],  domain: xResponses, tickRotate: defaultAngleDeg },
-        y: { label: count.questionCodes[1], domain: yResponses, labelArrow: 'none' },
+        x: { label: convertLongCodeToShortCode(count.questionCodes[0]),  domain: xResponses, tickRotate: defaultAngleDeg },
+        y: { label: convertLongCodeToShortCode(count.questionCodes[1]), domain: yResponses, labelArrow: 'none' },
         marks: [
             Plot.frame(),
             Plot.dot(convertResponseCountToPlotItems(count), { x: 'code0', y: 'code1', r: 'count' })

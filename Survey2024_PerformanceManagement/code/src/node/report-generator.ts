@@ -170,7 +170,12 @@ export class ReportGenerator {
             result += count.counts.map((c) => `| ${c.codes[0]} | ${this.getSingleCountAsString(c)} |`).join('\n');
         } else {
             result += `| Predefined Response | ${count.questionCodes.map(convertLongCodeToShortCode).join(' | ')} |\n| - | ${count.questionCodes.map(() => '-').join(' | ')} |\n`;
-            const responses: string[] = questionContainer.getResponseValues(count.questionCodes[0]);
+            const responses: string[] = count.counts.flatMap((c) => c.codes).reduce((previousValue: string[], currentValue: string) => {
+                if (!previousValue.includes(currentValue) && !count.questionCodes.includes(currentValue)) {
+                    previousValue.push(currentValue);
+                }
+                return previousValue;
+            }, []);
             responses.forEach((r) => {
                 const cellValues: SingleResponseCount[] = count.questionCodes.map((code) => count.counts.filter((value) => value.codes.includes(code) && value.codes.includes(r))[0]);
                 result += `| ${r} | ${cellValues.map((value) => this.getSingleCountAsString(value)).join(' | ')} |\n`;

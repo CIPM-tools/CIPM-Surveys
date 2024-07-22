@@ -242,7 +242,7 @@ async function analyzeAnswers(questionContainer: QuestionContainer, answers: Res
     }
     const mappedResponseCount = { questionCodes: codesToMap, counts: mappedData, stats: [] };
     overallResult.relations.push(mappedResponseCount);
-    reportGenerator.addCombinedGraphic(codesToMap.join('-'), mappedResponseCount, generateCombinedPlot(mappedResponseCount, questionContainer, virtualDom));
+    reportGenerator.addCombinedGraphic(codesToMap.join('-'), mappedResponseCount, generateCombinedPlot(mappedResponseCount, questionContainer, virtualDom, newValues));
 
     overallResult.texts[QUESTION_CODES.Ch2Challenges] = getTexts(answers, QUESTION_CODES.Ch2Challenges);
     overallResult.texts[QUESTION_CODES.Ch3MissingFeatures] = getTexts(answers, QUESTION_CODES.Ch3MissingFeatures);

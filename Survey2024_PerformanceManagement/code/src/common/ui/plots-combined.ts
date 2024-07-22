@@ -3,9 +3,9 @@ import { QuestionContainer } from '../logic/question-container.js';
 import { ResponseCount } from '../types/response-count.js';
 import { convertLongCodeToShortCode, convertResponseCountToPlotItems, defaultAngleDeg, fontSize, fontSizeNumber, getMarginRight, getMinimumFontSize } from './plots-common.js';
 
-export function generateCombinedPlot(count: ResponseCount, questionContainer: QuestionContainer, dom: any): string {
+export function generateCombinedPlot(count: ResponseCount, questionContainer: QuestionContainer, dom: any, altResponses?: string[]): string {
     const shortCodes: string[] = count.questionCodes.map(convertLongCodeToShortCode);
-    const responses: string[] = questionContainer.getResponseValues(count.questionCodes[0]);
+    const responses: string[] = altResponses ? altResponses : questionContainer.getResponseValues(count.questionCodes[0]);
     const marginRight: number = getMarginRight(responses[responses.length - 1], defaultAngleDeg) * 0.6;
     const marginTop: number = getMinimumFontSize(shortCodes);
     const marginBottom: number = getMinimumFontSize(responses, defaultAngleDeg) * 0.6;
