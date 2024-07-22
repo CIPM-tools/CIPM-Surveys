@@ -1,0 +1,1694 @@
+{
+    "introduction": {
+        "title": "Survey on Performance Management",
+        "infoBefore": "<p>Welcome to this survey about performance management. It aims to gather information about the current state of performance management for future research and research directions.</p>\n\n<p>We invite you to participate if you are working in the industry, are involved in software development, and at least 18 years old. The participation is voluntarily, and we treat all data confidental.</p>\n\n<p>The survey takes approximately 15-20 minutes to complete with approximately 20 questions. It consists of two parts of which the following first part is about the current state of performance management.</p>\n\n<p>We appreciate your participation and thank you in advance.</p>\n\n<p>For any matter, you can contact us: [redacted].</p>",
+        "infoAfter": "<p>Thank you for your participation!</p>\n\n<p>If you are interested in the results of this survey, you can bookmark our Wiki page about the survey where we will provide the results as soon as they are published.</p>"
+    },
+    "sections": [
+        {
+            "title": "Demographic Information",
+            "encodings": [
+                {
+                    "code": "D1Country",
+                    "type": "single-choice",
+                    "responses": [
+                        "Afghanistan",
+                        "Albania",
+                        "Algeria",
+                        "Andorra",
+                        "Angola",
+                        "Antigua and Barbuda",
+                        "Argentina",
+                        "Armenia",
+                        "Australia",
+                        "Austria",
+                        "Azerbaijan",
+                        "The Bahamas",
+                        "Bahrain",
+                        "Bangladesh",
+                        "Barbados",
+                        "Belarus",
+                        "Belgium",
+                        "Belize",
+                        "Benin",
+                        "Bhutan",
+                        "Bolivia",
+                        "Bosnia and Herzegovina",
+                        "Botswana",
+                        "Brazil",
+                        "Brunei",
+                        "Bulgaria",
+                        "Burkina Faso",
+                        "Burundi",
+                        "Cabo Verde",
+                        "Cambodia",
+                        "Cameroon",
+                        "Canada",
+                        "Central African Republic",
+                        "Chad",
+                        "Chile",
+                        "China",
+                        "Colombia",
+                        "Comoros",
+                        "Congo, Democratic Republic of the",
+                        "Congo, Republic of the",
+                        "Costa Rica",
+                        "Côte d’Ivoire",
+                        "Croatia",
+                        "Cuba",
+                        "Cyprus",
+                        "Czech Republic",
+                        "Denmark",
+                        "Djibouti",
+                        "Dominica",
+                        "Dominican Republic",
+                        "East Timor (Timor-Leste)",
+                        "Ecuador",
+                        "Egypt",
+                        "El Salvador",
+                        "Equatorial Guinea",
+                        "Eritrea",
+                        "Estonia",
+                        "Eswatini",
+                        "Ethiopia",
+                        "Fiji",
+                        "Finland",
+                        "France",
+                        "Gabon",
+                        "The Gambia",
+                        "Georgia",
+                        "Germany",
+                        "Ghana",
+                        "Greece",
+                        "Grenada",
+                        "Guatemala",
+                        "Guinea",
+                        "Guinea-Bissau",
+                        "Guyana",
+                        "Haiti",
+                        "Honduras",
+                        "Hungary",
+                        "Iceland",
+                        "India",
+                        "Indonesia",
+                        "Iran",
+                        "Iraq",
+                        "Ireland",
+                        "Israel",
+                        "Italy",
+                        "Jamaica",
+                        "Japan",
+                        "Jordan",
+                        "Kazakhstan",
+                        "Kenya",
+                        "Kiribati",
+                        "Korea, North",
+                        "Korea, South",
+                        "Kosovo",
+                        "Kuwait",
+                        "Kyrgyzstan",
+                        "Laos",
+                        "Latvia",
+                        "Lebanon",
+                        "Lesotho",
+                        "Liberia",
+                        "Libya",
+                        "Liechtenstein",
+                        "Lithuania",
+                        "Luxembourg",
+                        "Madagascar",
+                        "Malawi",
+                        "Malaysia",
+                        "Maldives",
+                        "Mali",
+                        "Malta",
+                        "Marshall Islands",
+                        "Mauritania",
+                        "Mauritius",
+                        "Mexico",
+                        "Micronesia, Federated States of",
+                        "Moldova",
+                        "Monaco",
+                        "Mongolia",
+                        "Montenegro",
+                        "Morocco",
+                        "Mozambique",
+                        "Myanmar (Burma)",
+                        "Namibia",
+                        "Nauru",
+                        "Nepal",
+                        "Netherlands",
+                        "New Zealand",
+                        "Nicaragua",
+                        "Niger",
+                        "Nigeria",
+                        "North Macedonia",
+                        "Norway",
+                        "Oman",
+                        "Pakistan",
+                        "Palau",
+                        "Panama",
+                        "Papua New Guinea",
+                        "Paraguay",
+                        "Peru",
+                        "Philippines",
+                        "Poland",
+                        "Portugal",
+                        "Qatar",
+                        "Romania",
+                        "Russia",
+                        "Rwanda",
+                        "Saint Kitts and Nevis",
+                        "Saint Lucia",
+                        "Saint Vincent and the Grenadines",
+                        "Samoa",
+                        "San Marino",
+                        "Sao Tome and Principe",
+                        "Saudi Arabia",
+                        "Senegal",
+                        "Serbia",
+                        "Seychelles",
+                        "Sierra Leone",
+                        "Singapore",
+                        "Slovakia",
+                        "Slovenia",
+                        "Solomon Islands",
+                        "Somalia",
+                        "South Africa",
+                        "Spain",
+                        "Sri Lanka",
+                        "Sudan",
+                        "Sudan, South",
+                        "Suriname",
+                        "Sweden",
+                        "Switzerland",
+                        "Syria",
+                        "Taiwan",
+                        "Tajikistan",
+                        "Tanzania",
+                        "Thailand",
+                        "Togo",
+                        "Tonga",
+                        "Trinidad and Tobago",
+                        "Tunisia",
+                        "Turkey",
+                        "Turkmenistan",
+                        "Tuvalu",
+                        "Uganda",
+                        "Ukraine",
+                        "United Arab Emirates",
+                        "United Kingdom",
+                        "United States",
+                        "Uruguay",
+                        "Uzbekistan",
+                        "Vanuatu",
+                        "Vatican City",
+                        "Venezuela",
+                        "Vietnam",
+                        "Yemen",
+                        "Zambia",
+                        "Zimbabwe"
+                    ],
+                    "text": "From which country do you come?"
+                },
+                {
+                    "code": "D2Age",
+                    "type": "single-choice",
+                    "responses": [
+                        "18-25 years old",
+                        "26-35 years old",
+                        "36-45 years old",
+                        "46-55 years old",
+                        "56-65 years old",
+                        "Over 65 years old"
+                    ],
+                    "text": "How old are you?"
+                },
+                {
+                    "code": "D3Experience",
+                    "type": "single-choice",
+                    "responses": [
+                        "Less than 1 year",
+                        "1-5 years",
+                        "6-10 years",
+                        "More than 10 years"
+                    ],
+                    "text": "How much professional experience do you have?",
+                    "supportingText": "Professional experience means all time spans in which you worked for a company or organization in the context of software development (i.e., also in different roles)."
+                },
+                {
+                    "code": "D4Roles[SQ001]",
+                    "type": "mulitple-choice",
+                    "parentCode": "D4Roles",
+                    "responses": [
+                        "Software Developer"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "D4Roles[SQ002]",
+                    "type": "mulitple-choice",
+                    "parentCode": "D4Roles",
+                    "responses": [
+                        "Software Architect"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "D4Roles[SQ003]",
+                    "type": "mulitple-choice",
+                    "parentCode": "D4Roles",
+                    "responses": [
+                        "Project Manager"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "D4Roles[SQ004]",
+                    "type": "mulitple-choice",
+                    "parentCode": "D4Roles",
+                    "responses": [
+                        "Product Owner"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "D4Roles[SQ005]",
+                    "type": "mulitple-choice",
+                    "parentCode": "D4Roles",
+                    "responses": [
+                        "Scrum Master"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "D4Roles[SQ006]",
+                    "type": "mulitple-choice",
+                    "parentCode": "D4Roles",
+                    "responses": [
+                        "QA/Test Engineer"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "D4Roles[other]",
+                    "type": "other-free-text",
+                    "parentCode": "D4Roles",
+                    "responses": [],
+                    "text": ""
+                },
+                {
+                    "code": "D4Roles",
+                    "type": "mulitple-choice",
+                    "responses": [
+                        "D4Roles[SQ001]",
+                        "D4Roles[SQ002]",
+                        "D4Roles[SQ003]",
+                        "D4Roles[SQ004]",
+                        "D4Roles[SQ005]",
+                        "D4Roles[SQ006]"
+                    ],
+                    "text": "What are your roles in your company?",
+                    "supportingText": "For the remainder of this survey, we relate the questions to the company and team in which you are currently working."
+                },
+                {
+                    "code": "D5CompanySize",
+                    "type": "single-choice",
+                    "responses": [
+                        "Up to 9 employees",
+                        "10-100 employees",
+                        "101-250 employees",
+                        "250-10,000 employees",
+                        "More than 10,000 employees"
+                    ],
+                    "text": "How large is your company?"
+                },
+                {
+                    "code": "D6TeamSize",
+                    "type": "single-choice",
+                    "responses": [
+                        "Up to 5 people",
+                        "6-10 people",
+                        "More than 10 people"
+                    ],
+                    "text": "How large is your team?"
+                }
+            ]
+        },
+        {
+            "title": "Contextual Information",
+            "encodings": [
+                {
+                    "code": "C1DevMethod[SQ001]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C1DevMethod",
+                    "responses": [
+                        "Sequential development (e.g., Waterfall)"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C1DevMethod[SQ002]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C1DevMethod",
+                    "responses": [
+                        "Agile development (e.g., Scrum, XP)"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C1DevMethod[SQ003]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C1DevMethod",
+                    "responses": [
+                        "DevOps"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C1DevMethod[other]",
+                    "type": "other-free-text",
+                    "parentCode": "C1DevMethod",
+                    "responses": [],
+                    "text": ""
+                },
+                {
+                    "code": "C1DevMethod",
+                    "type": "mulitple-choice",
+                    "responses": [
+                        "C1DevMethod[SQ001]",
+                        "C1DevMethod[SQ002]",
+                        "C1DevMethod[SQ003]"
+                    ],
+                    "text": "Which of the following software development methods are commonly used in your team?"
+                },
+                {
+                    "code": "C2Technologies[SQ001]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C2Technologies",
+                    "responses": [
+                        "Cloud Computing (e.g., AWS, Azure)"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C2Technologies[SQ002]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C2Technologies",
+                    "responses": [
+                        "Microservices"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C2Technologies[SQ003]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C2Technologies",
+                    "responses": [
+                        "Container (e.g., Docker, Kubernetes)"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C2Technologies[SQ004]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C2Technologies",
+                    "responses": [
+                        "Big Data (e.g., Apache Hadoop)"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C2Technologies[SQ005]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C2Technologies",
+                    "responses": [
+                        "Technologies for CI/CD"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C2Technologies[SQ006]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C2Technologies",
+                    "responses": [
+                        "Databases"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C2Technologies[other]",
+                    "type": "other-free-text",
+                    "parentCode": "C2Technologies",
+                    "responses": [],
+                    "text": ""
+                },
+                {
+                    "code": "C2Technologies",
+                    "type": "mulitple-choice",
+                    "responses": [
+                        "C2Technologies[SQ001]",
+                        "C2Technologies[SQ002]",
+                        "C2Technologies[SQ003]",
+                        "C2Technologies[SQ004]",
+                        "C2Technologies[SQ005]",
+                        "C2Technologies[SQ006]"
+                    ],
+                    "text": "Which technologies and methods do you use for development?"
+                },
+                {
+                    "code": "C3PManagement[C3Mon]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C3PManagement",
+                    "responses": [
+                        "By using monitoring tools"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C3PManagement[C3Tests]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C3PManagement",
+                    "responses": [
+                        "By using performance tests"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C3PManagement[C3Prediction]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C3PManagement",
+                    "responses": [
+                        "By using model-based performance predictions"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C3PManagement[other]",
+                    "type": "other-free-text",
+                    "parentCode": "C3PManagement",
+                    "responses": [],
+                    "text": ""
+                },
+                {
+                    "code": "C3PManagement",
+                    "type": "mulitple-choice",
+                    "responses": [
+                        "C3PManagement[C3Mon]",
+                        "C3PManagement[C3Tests]",
+                        "C3PManagement[C3Prediction]"
+                    ],
+                    "text": "How do you currently manage performance in your team?",
+                    "supportingText": "<p><em>Monitoring tools</em> take measurements of a software during its runtime in the production environment and allow to analyze the software's performance based on these measurements.</p>\n\n<p><em>Performance tests</em> execute a part or the complete software with different workloads to measure the software's performance.</p>\n\n<p><em>Model-based performance predictions</em> employ a performance model (e.g., a Petri net or UML) which represents a software and describes how resources are used. Based on such a performance model, different techniques predict the performance characteristics of the software.</p>"
+                },
+                {
+                    "code": "C4MonHinder[SQ001]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C4MonHinder",
+                    "responses": [
+                        "Not required"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C4MonHinder[SQ002]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C4MonHinder",
+                    "responses": [
+                        "Time constraints"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C4MonHinder[SQ003]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C4MonHinder",
+                    "responses": [
+                        "No expertise in team"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C4MonHinder[SQ004]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C4MonHinder",
+                    "responses": [
+                        "Never used before"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C4MonHinder[SQ005]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C4MonHinder",
+                    "responses": [
+                        "No tool support"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C4MonHinder[SQ006]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C4MonHinder",
+                    "responses": [
+                        "Limited tool support"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C4MonHinder[SQ007]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C4MonHinder",
+                    "responses": [
+                        "Inaccurate results"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C4MonHinder[SQ008]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C4MonHinder",
+                    "responses": [
+                        "High costs"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C4MonHinder[SQ009]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C4MonHinder",
+                    "responses": [
+                        "I don't know what monitoring tools are"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C4MonHinder[other]",
+                    "type": "other-free-text",
+                    "parentCode": "C4MonHinder",
+                    "responses": [],
+                    "text": ""
+                },
+                {
+                    "code": "C4MonHinder",
+                    "type": "mulitple-choice",
+                    "responses": [
+                        "C4MonHinder[SQ001]",
+                        "C4MonHinder[SQ002]",
+                        "C4MonHinder[SQ003]",
+                        "C4MonHinder[SQ004]",
+                        "C4MonHinder[SQ005]",
+                        "C4MonHinder[SQ006]",
+                        "C4MonHinder[SQ007]",
+                        "C4MonHinder[SQ008]",
+                        "C4MonHinder[SQ009]"
+                    ],
+                    "text": "Which reasons hinder you in using monitoring tools?"
+                },
+                {
+                    "code": "C4MonTools[SQ001]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C4MonTools",
+                    "responses": [
+                        "Dynatrace"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C4MonTools[SQ002]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C4MonTools",
+                    "responses": [
+                        "Prometheus"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C4MonTools[SQ003]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C4MonTools",
+                    "responses": [
+                        "Akamai mPulse"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C4MonTools[SQ004]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C4MonTools",
+                    "responses": [
+                        "DataDog"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C4MonTools[SQ005]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C4MonTools",
+                    "responses": [
+                        "GrayLog"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C4MonTools[SQ006]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C4MonTools",
+                    "responses": [
+                        "pyroscope"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C4MonTools[other]",
+                    "type": "other-free-text",
+                    "parentCode": "C4MonTools",
+                    "responses": [],
+                    "text": ""
+                },
+                {
+                    "code": "C4MonTools",
+                    "type": "mulitple-choice",
+                    "responses": [
+                        "C4MonTools[SQ001]",
+                        "C4MonTools[SQ002]",
+                        "C4MonTools[SQ003]",
+                        "C4MonTools[SQ004]",
+                        "C4MonTools[SQ005]",
+                        "C4MonTools[SQ006]"
+                    ],
+                    "text": "Which monitoring tools do you currently use?"
+                },
+                {
+                    "code": "C5TestsHinder[SQ001]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C5TestsHinder",
+                    "responses": [
+                        "Not required"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C5TestsHinder[SQ002]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C5TestsHinder",
+                    "responses": [
+                        "Time constraints"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C5TestsHinder[SQ003]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C5TestsHinder",
+                    "responses": [
+                        "No expertise in team"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C5TestsHinder[SQ004]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C5TestsHinder",
+                    "responses": [
+                        "Never used before"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C5TestsHinder[SQ005]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C5TestsHinder",
+                    "responses": [
+                        "No tool support"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C5TestsHinder[SQ006]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C5TestsHinder",
+                    "responses": [
+                        "Limited tool support"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C5TestsHinder[SQ007]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C5TestsHinder",
+                    "responses": [
+                        "Inaccurate results"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C5TestsHinder[SQ008]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C5TestsHinder",
+                    "responses": [
+                        "High costs"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C5TestsHinder[SQ009]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C5TestsHinder",
+                    "responses": [
+                        "I don't know what performance tests are"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C5TestsHinder[other]",
+                    "type": "other-free-text",
+                    "parentCode": "C5TestsHinder",
+                    "responses": [],
+                    "text": ""
+                },
+                {
+                    "code": "C5TestsHinder",
+                    "type": "mulitple-choice",
+                    "responses": [
+                        "C5TestsHinder[SQ001]",
+                        "C5TestsHinder[SQ002]",
+                        "C5TestsHinder[SQ003]",
+                        "C5TestsHinder[SQ004]",
+                        "C5TestsHinder[SQ005]",
+                        "C5TestsHinder[SQ006]",
+                        "C5TestsHinder[SQ007]",
+                        "C5TestsHinder[SQ008]",
+                        "C5TestsHinder[SQ009]"
+                    ],
+                    "text": "Which reasons hinder you in using performance tests?"
+                },
+                {
+                    "code": "C6PredictionHinder[SQ001]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C6PredictionHinder",
+                    "responses": [
+                        "Not required"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C6PredictionHinder[SQ002]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C6PredictionHinder",
+                    "responses": [
+                        "Time constraints"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C6PredictionHinder[SQ003]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C6PredictionHinder",
+                    "responses": [
+                        "No expertise in team"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C6PredictionHinder[SQ004]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C6PredictionHinder",
+                    "responses": [
+                        "Never used before"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C6PredictionHinder[SQ005]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C6PredictionHinder",
+                    "responses": [
+                        "No tool support"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C6PredictionHinder[SQ006]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C6PredictionHinder",
+                    "responses": [
+                        "Limited tool support"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C6PredictionHinder[SQ007]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C6PredictionHinder",
+                    "responses": [
+                        "Inaccurate results"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C6PredictionHinder[SQ008]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C6PredictionHinder",
+                    "responses": [
+                        "High costs"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C6PredictionHinder[SQ009]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C6PredictionHinder",
+                    "responses": [
+                        "I don't know what model-based performance predictions are"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C6PredictionHinder[other]",
+                    "type": "other-free-text",
+                    "parentCode": "C6PredictionHinder",
+                    "responses": [],
+                    "text": ""
+                },
+                {
+                    "code": "C6PredictionHinder",
+                    "type": "mulitple-choice",
+                    "responses": [
+                        "C6PredictionHinder[SQ001]",
+                        "C6PredictionHinder[SQ002]",
+                        "C6PredictionHinder[SQ003]",
+                        "C6PredictionHinder[SQ004]",
+                        "C6PredictionHinder[SQ005]",
+                        "C6PredictionHinder[SQ006]",
+                        "C6PredictionHinder[SQ007]",
+                        "C6PredictionHinder[SQ008]",
+                        "C6PredictionHinder[SQ009]"
+                    ],
+                    "text": "Which reasons hinder you in using model-based performance predictions?"
+                },
+                {
+                    "code": "C6PredictionTools[SQ001]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C6PredictionTools",
+                    "responses": [
+                        "Analytical models (e.g., Petri nets)"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C6PredictionTools[SQ002]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C6PredictionTools",
+                    "responses": [
+                        "Architecture-based models (e.g., UML or UML Profiles)"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C6PredictionTools[SQ003]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C6PredictionTools",
+                    "responses": [
+                        "Machine Learning"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C6PredictionTools[SQ004]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C6PredictionTools",
+                    "responses": [
+                        "Spreadsheet"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C6PredictionTools[other]",
+                    "type": "other-free-text",
+                    "parentCode": "C6PredictionTools",
+                    "responses": [],
+                    "text": ""
+                },
+                {
+                    "code": "C6PredictionTools",
+                    "type": "mulitple-choice",
+                    "responses": [
+                        "C6PredictionTools[SQ001]",
+                        "C6PredictionTools[SQ002]",
+                        "C6PredictionTools[SQ003]",
+                        "C6PredictionTools[SQ004]"
+                    ],
+                    "text": "Which tools or techniques do you currently use for performance predictions?"
+                },
+                {
+                    "code": "C7Purpose[SQ001]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C7Purpose",
+                    "responses": [
+                        "Improve performance"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C7Purpose[SQ002]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C7Purpose",
+                    "responses": [
+                        "Analyze performance behavior"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C7Purpose[SQ003]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C7Purpose",
+                    "responses": [
+                        "Observe performance over time"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C7Purpose[SQ004]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C7Purpose",
+                    "responses": [
+                        "Evaluate performance for design alternatives"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C7Purpose[SQ005]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C7Purpose",
+                    "responses": [
+                        "Find performance regressions"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C7Purpose[SQ006]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C7Purpose",
+                    "responses": [
+                        "Find performance bottlenecks"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C7Purpose[SQ007]",
+                    "type": "mulitple-choice",
+                    "parentCode": "C7Purpose",
+                    "responses": [
+                        "Fulfill regulations"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "C7Purpose[other]",
+                    "type": "other-free-text",
+                    "parentCode": "C7Purpose",
+                    "responses": [],
+                    "text": ""
+                },
+                {
+                    "code": "C7Purpose",
+                    "type": "mulitple-choice",
+                    "responses": [
+                        "C7Purpose[SQ001]",
+                        "C7Purpose[SQ002]",
+                        "C7Purpose[SQ003]",
+                        "C7Purpose[SQ004]",
+                        "C7Purpose[SQ005]",
+                        "C7Purpose[SQ006]",
+                        "C7Purpose[SQ007]"
+                    ],
+                    "text": "For which purposes do you use the performance management tools or tests?",
+                    "supportingText": "Performance management tools include monitoring tools and model-based performance prediction tools."
+                },
+                {
+                    "code": "C8Relevance[SQ001]",
+                    "parentCode": "C8Relevance",
+                    "type": "matrix",
+                    "responses": [
+                        "Very unimportant",
+                        "Unimportant",
+                        "Neutral",
+                        "Important",
+                        "Very important"
+                    ],
+                    "statement": "Performance management is important in our company.",
+                    "text": ""
+                },
+                {
+                    "code": "C8Relevance[SQ002]",
+                    "parentCode": "C8Relevance",
+                    "type": "matrix",
+                    "responses": [
+                        "Very unimportant",
+                        "Unimportant",
+                        "Neutral",
+                        "Important",
+                        "Very important"
+                    ],
+                    "statement": "Performance management is important in our team.",
+                    "text": ""
+                },
+                {
+                    "code": "C8Relevance",
+                    "type": "matrix",
+                    "responses": [
+                        "C8Relevance[SQ001]",
+                        "C8Relevance[SQ002]"
+                    ],
+                    "text": "How important is the performance management? Please indicate on a scale from very unimportant to very important."
+                },
+                {
+                    "code": "C9GeneralTrust[SQ001]",
+                    "parentCode": "C9GeneralTrust",
+                    "type": "matrix",
+                    "responses": [
+                        "Strongly disagree",
+                        "Disagree",
+                        "Slightly disagree",
+                        "Neutral",
+                        "Slightly agree",
+                        "Agree",
+                        "Strongly agree"
+                    ],
+                    "statement": "I would trust monitoring data from monitoring tools.",
+                    "text": ""
+                },
+                {
+                    "code": "C9GeneralTrust[SQ002]",
+                    "parentCode": "C9GeneralTrust",
+                    "type": "matrix",
+                    "responses": [
+                        "Strongly disagree",
+                        "Disagree",
+                        "Slightly disagree",
+                        "Neutral",
+                        "Slightly agree",
+                        "Agree",
+                        "Strongly agree"
+                    ],
+                    "statement": "I would trust the results of performance tests.",
+                    "text": ""
+                },
+                {
+                    "code": "C9GeneralTrust[SQ003]",
+                    "parentCode": "C9GeneralTrust",
+                    "type": "matrix",
+                    "responses": [
+                        "Strongly disagree",
+                        "Disagree",
+                        "Slightly disagree",
+                        "Neutral",
+                        "Slightly agree",
+                        "Agree",
+                        "Strongly agree"
+                    ],
+                    "statement": "I would trust the results of model-based performance predictions.",
+                    "text": ""
+                },
+                {
+                    "code": "C9GeneralTrust",
+                    "type": "matrix",
+                    "responses": [
+                        "C9GeneralTrust[SQ001]",
+                        "C9GeneralTrust[SQ002]",
+                        "C9GeneralTrust[SQ003]"
+                    ],
+                    "text": "Do you agree to the following statements? Please indicate on a scale from strongly disagree to strongly agree."
+                }
+            ]
+        },
+        {
+            "title": "Challenges",
+            "encodings": [
+                {
+                    "code": "Ch1Quality[SQ001]",
+                    "parentCode": "Ch1Quality",
+                    "type": "matrix",
+                    "responses": [
+                        "Very unsatisfied",
+                        "Unsatisfied",
+                        "Neutral",
+                        "Satisfied",
+                        "Very satisfied"
+                    ],
+                    "statement": "Accuracy",
+                    "text": ""
+                },
+                {
+                    "code": "Ch1Quality[SQ002]",
+                    "parentCode": "Ch1Quality",
+                    "type": "matrix",
+                    "responses": [
+                        "Very unsatisfied",
+                        "Unsatisfied",
+                        "Neutral",
+                        "Satisfied",
+                        "Very satisfied"
+                    ],
+                    "statement": "Reliability",
+                    "text": ""
+                },
+                {
+                    "code": "Ch1Quality[SQ003]",
+                    "parentCode": "Ch1Quality",
+                    "type": "matrix",
+                    "responses": [
+                        "Very unsatisfied",
+                        "Unsatisfied",
+                        "Neutral",
+                        "Satisfied",
+                        "Very satisfied"
+                    ],
+                    "statement": "User-friendliness",
+                    "text": ""
+                },
+                {
+                    "code": "Ch1Quality[SQ004]",
+                    "parentCode": "Ch1Quality",
+                    "type": "matrix",
+                    "responses": [
+                        "Very unsatisfied",
+                        "Unsatisfied",
+                        "Neutral",
+                        "Satisfied",
+                        "Very satisfied"
+                    ],
+                    "statement": "Performance",
+                    "text": ""
+                },
+                {
+                    "code": "Ch1Quality[SQ005]",
+                    "parentCode": "Ch1Quality",
+                    "type": "matrix",
+                    "responses": [
+                        "Very unsatisfied",
+                        "Unsatisfied",
+                        "Neutral",
+                        "Satisfied",
+                        "Very satisfied"
+                    ],
+                    "statement": "Effort to apply",
+                    "text": ""
+                },
+                {
+                    "code": "Ch1Quality",
+                    "type": "matrix",
+                    "responses": [
+                        "Ch1Quality[SQ001]",
+                        "Ch1Quality[SQ002]",
+                        "Ch1Quality[SQ003]",
+                        "Ch1Quality[SQ004]",
+                        "Ch1Quality[SQ005]"
+                    ],
+                    "text": "How satisfied are you with the following quality attributes of the performance management tools that you use? Please indicate on a scale from very unsatisfied to very satisfied."
+                },
+                {
+                    "code": "Ch2Challenges",
+                    "type": "free-text",
+                    "responses": [],
+                    "text": "Are there any issues or challenges when you use the performance management tools and/or tests? If so, please name them."
+                },
+                {
+                    "code": "Ch3MissingFeatures",
+                    "type": "free-text",
+                    "responses": [],
+                    "text": "Do you miss features in performance management tools and/or tests? If so, please name them."
+                },
+                {
+                    "code": "Ch4PredictionFeature[SQ001]",
+                    "parentCode": "Ch4PredictionFeature",
+                    "type": "matrix",
+                    "responses": [
+                        "Strongly disagree",
+                        "Disagree",
+                        "Neutral",
+                        "Agree",
+                        "Strongly agree"
+                    ],
+                    "statement": "Support for design decisions (e.g., deployment or system composition)",
+                    "text": ""
+                },
+                {
+                    "code": "Ch4PredictionFeature[SQ002]",
+                    "parentCode": "Ch4PredictionFeature",
+                    "type": "matrix",
+                    "responses": [
+                        "Strongly disagree",
+                        "Disagree",
+                        "Neutral",
+                        "Agree",
+                        "Strongly agree"
+                    ],
+                    "statement": "Statements about the prediction accuracy",
+                    "text": ""
+                },
+                {
+                    "code": "Ch4PredictionFeature[SQ003]",
+                    "parentCode": "Ch4PredictionFeature",
+                    "type": "matrix",
+                    "responses": [
+                        "Strongly disagree",
+                        "Disagree",
+                        "Neutral",
+                        "Agree",
+                        "Strongly agree"
+                    ],
+                    "statement": "Visualization",
+                    "text": ""
+                },
+                {
+                    "code": "Ch4PredictionFeature[SQ004]",
+                    "parentCode": "Ch4PredictionFeature",
+                    "type": "matrix",
+                    "responses": [
+                        "Strongly disagree",
+                        "Disagree",
+                        "Neutral",
+                        "Agree",
+                        "Strongly agree"
+                    ],
+                    "statement": "Support for the software architecture and architectural design",
+                    "text": ""
+                },
+                {
+                    "code": "Ch4PredictionFeature[SQ005]",
+                    "parentCode": "Ch4PredictionFeature",
+                    "type": "matrix",
+                    "responses": [
+                        "Strongly disagree",
+                        "Disagree",
+                        "Neutral",
+                        "Agree",
+                        "Strongly agree"
+                    ],
+                    "statement": "Fast feedback",
+                    "text": ""
+                },
+                {
+                    "code": "Ch4PredictionFeature",
+                    "type": "matrix",
+                    "responses": [
+                        "Ch4PredictionFeature[SQ001]",
+                        "Ch4PredictionFeature[SQ002]",
+                        "Ch4PredictionFeature[SQ003]",
+                        "Ch4PredictionFeature[SQ004]",
+                        "Ch4PredictionFeature[SQ005]"
+                    ],
+                    "text": "Which of the following features do you want to have in a model-based performance prediction tool? Please indicate on a scale from strongly disagree to strongly agree."
+                }
+            ]
+        },
+        {
+            "title": "New Tool",
+            "encodings": [
+                {
+                    "code": "N2Trust[SQ001]",
+                    "parentCode": "N2Trust",
+                    "type": "matrix",
+                    "responses": [
+                        "Strongly disagree",
+                        "Disagree",
+                        "Slightly disagree",
+                        "Neutral",
+                        "Slightly agree",
+                        "Agree",
+                        "Strongly agree"
+                    ],
+                    "statement": "metrics about the accuracy of the performance prediction are available.",
+                    "text": ""
+                },
+                {
+                    "code": "N2Trust[SQ002]",
+                    "parentCode": "N2Trust",
+                    "type": "matrix",
+                    "responses": [
+                        "Strongly disagree",
+                        "Disagree",
+                        "Slightly disagree",
+                        "Neutral",
+                        "Slightly agree",
+                        "Agree",
+                        "Strongly agree"
+                    ],
+                    "statement": "the calibration of the performance model is based on monitoring data.",
+                    "text": ""
+                },
+                {
+                    "code": "N2Trust[SQ003]",
+                    "parentCode": "N2Trust",
+                    "type": "matrix",
+                    "responses": [
+                        "Strongly disagree",
+                        "Disagree",
+                        "Slightly disagree",
+                        "Neutral",
+                        "Slightly agree",
+                        "Agree",
+                        "Strongly agree"
+                    ],
+                    "statement": "the prediction results are validated with monitoring data.",
+                    "text": ""
+                },
+                {
+                    "code": "N2Trust",
+                    "type": "matrix",
+                    "responses": [
+                        "N2Trust[SQ001]",
+                        "N2Trust[SQ002]",
+                        "N2Trust[SQ003]"
+                    ],
+                    "text": "<p>Do you agree to the following statements? Please indicate on a scale from strongly disagree to strongly agree.</p>\n\n<p> </p>\n\n<p>I would trust the results of model-based performance predictions when...</p>"
+                }
+            ],
+            "infoBefore": "Welcome to the second part. It consists of four questions about a new model-based performance prediction tool. This tool extracts a performance model from code and monitors the code in a test or production environment. Based on a training set from these measurements, the performance model is calibrated (i.e., its parameters are estimated). Afterwards, the tool performs a self-validation by predicting the performance and comparing the results with a validation set from the measurements. The comparison is based on statistical measures which express the accuracy of the performance prediction. If the prediction is accurate enough, the model can be used to analyze the software system. Otherwise, the monitoring and calibration continues until the self-validation estimates the prediction as sufficiently accurate."
+        },
+        {
+            "title": "Costs",
+            "encodings": [
+                {
+                    "code": "Co1PMFactors[SQ001]",
+                    "type": "mulitple-choice",
+                    "parentCode": "Co1PMFactors",
+                    "responses": [
+                        "Easy setup"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "Co1PMFactors[SQ002]",
+                    "type": "mulitple-choice",
+                    "parentCode": "Co1PMFactors",
+                    "responses": [
+                        "Learning curve"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "Co1PMFactors[SQ003]",
+                    "type": "mulitple-choice",
+                    "parentCode": "Co1PMFactors",
+                    "responses": [
+                        "Effort to adapt the tool for the team"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "Co1PMFactors[SQ004]",
+                    "type": "mulitple-choice",
+                    "parentCode": "Co1PMFactors",
+                    "responses": [
+                        "Possibilities for extensions to the tool"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "Co1PMFactors[SQ005]",
+                    "type": "mulitple-choice",
+                    "parentCode": "Co1PMFactors",
+                    "responses": [
+                        "License costs"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "Co1PMFactors[SQ006]",
+                    "type": "mulitple-choice",
+                    "parentCode": "Co1PMFactors",
+                    "responses": [
+                        "Setup costs"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "Co1PMFactors[SQ007]",
+                    "type": "mulitple-choice",
+                    "parentCode": "Co1PMFactors",
+                    "responses": [
+                        "Maintenance costs"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "Co1PMFactors[SQ008]",
+                    "type": "mulitple-choice",
+                    "parentCode": "Co1PMFactors",
+                    "responses": [
+                        "Benefits and Quality"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "Co1PMFactors[other]",
+                    "type": "other-free-text",
+                    "parentCode": "Co1PMFactors",
+                    "responses": [],
+                    "text": ""
+                },
+                {
+                    "code": "Co1PMFactors",
+                    "type": "mulitple-choice",
+                    "responses": [
+                        "Co1PMFactors[SQ001]",
+                        "Co1PMFactors[SQ002]",
+                        "Co1PMFactors[SQ003]",
+                        "Co1PMFactors[SQ004]",
+                        "Co1PMFactors[SQ005]",
+                        "Co1PMFactors[SQ006]",
+                        "Co1PMFactors[SQ007]",
+                        "Co1PMFactors[SQ008]"
+                    ],
+                    "text": "What factors would you consider when introducing a new performance prediction tool?"
+                },
+                {
+                    "code": "Co1DevFactors[SQ001]",
+                    "type": "mulitple-choice",
+                    "parentCode": "Co1DevFactors",
+                    "responses": [
+                        "Easy setup"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "Co1DevFactors[SQ002]",
+                    "type": "mulitple-choice",
+                    "parentCode": "Co1DevFactors",
+                    "responses": [
+                        "Learning curve"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "Co1DevFactors[SQ003]",
+                    "type": "mulitple-choice",
+                    "parentCode": "Co1DevFactors",
+                    "responses": [
+                        "Effort to adapt the tool for the team"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "Co1DevFactors[SQ004]",
+                    "type": "mulitple-choice",
+                    "parentCode": "Co1DevFactors",
+                    "responses": [
+                        "Possibilities for extensions to the tool"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "Co1DevFactors[SQ005]",
+                    "type": "mulitple-choice",
+                    "parentCode": "Co1DevFactors",
+                    "responses": [
+                        "License costs"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "Co1DevFactors[SQ006]",
+                    "type": "mulitple-choice",
+                    "parentCode": "Co1DevFactors",
+                    "responses": [
+                        "Setup costs"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "Co1DevFactors[SQ007]",
+                    "type": "mulitple-choice",
+                    "parentCode": "Co1DevFactors",
+                    "responses": [
+                        "Maintenance costs"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "Co1DevFactors[SQ008]",
+                    "type": "mulitple-choice",
+                    "parentCode": "Co1DevFactors",
+                    "responses": [
+                        "Benefits and Quality"
+                    ],
+                    "text": ""
+                },
+                {
+                    "code": "Co1DevFactors[other]",
+                    "type": "other-free-text",
+                    "parentCode": "Co1DevFactors",
+                    "responses": [],
+                    "text": ""
+                },
+                {
+                    "code": "Co1DevFactors",
+                    "type": "mulitple-choice",
+                    "responses": [
+                        "Co1DevFactors[SQ001]",
+                        "Co1DevFactors[SQ002]",
+                        "Co1DevFactors[SQ003]",
+                        "Co1DevFactors[SQ004]",
+                        "Co1DevFactors[SQ005]",
+                        "Co1DevFactors[SQ006]",
+                        "Co1DevFactors[SQ007]",
+                        "Co1DevFactors[SQ008]"
+                    ],
+                    "text": "What factors would you consider when adopting a new performance prediction tool?"
+                },
+                {
+                    "code": "Co2PMTimeLearn",
+                    "type": "single-choice",
+                    "responses": [
+                        "Less than 1 working day",
+                        "1 working day",
+                        "2-3 working days",
+                        "4-5 working days",
+                        "6-10 working days",
+                        "More than 10 working days"
+                    ],
+                    "text": "How much overall time would you be willing that people of your team invest in setting up and learning a new performance prediction tool?"
+                },
+                {
+                    "code": "Co2DevTimeLearn",
+                    "type": "single-choice",
+                    "responses": [
+                        "Less than 1 working day",
+                        "1 working day",
+                        "2-3 working days",
+                        "4-5 working days",
+                        "6-10 working days",
+                        "More than 10 working days"
+                    ],
+                    "text": "How much time would you be willing to invest in setting up and learning a new performance prediction tool?"
+                },
+                {
+                    "code": "Co3PMTimeAdoption",
+                    "type": "single-choice",
+                    "responses": [
+                        "Less than 1 week",
+                        "1-2 weeks",
+                        "2-3 weeks",
+                        "3-4 weeks",
+                        "More than 4 weeks"
+                    ],
+                    "text": "If a new performance prediction tool requires adoption to your team's specific technologies and programming languages, how much overall time would you be willing that people of your team invest in this adoption?"
+                },
+                {
+                    "code": "Co3DevTimeAdoption",
+                    "type": "single-choice",
+                    "responses": [
+                        "Less than 1 week",
+                        "1-2 weeks",
+                        "2-3 weeks",
+                        "3-4 weeks",
+                        "More than 4 weeks"
+                    ],
+                    "text": "If a new performance prediction tool requires adoption to your specific technologies and programming languages, how much time would you be willing to invest in this adoption?"
+                }
+            ]
+        }
+    ],
+    "conditions": [
+        {
+            "conditionedCode": "C4MonHinder",
+            "required": {
+                "code": "C3PManagement[C3Mon]",
+                "value": "No"
+            }
+        },
+        {
+            "conditionedCode": "C4MonTools",
+            "required": {
+                "code": "C3PManagement[C3Mon]",
+                "value": "Yes"
+            }
+        },
+        {
+            "conditionedCode": "C5TestsHinder",
+            "required": {
+                "code": "C3PManagement[C3Tests]",
+                "value": "No"
+            }
+        },
+        {
+            "conditionedCode": "C6PredictionHinder",
+            "required": {
+                "code": "C3PManagement[C3Prediction]",
+                "value": "No"
+            }
+        },
+        {
+            "conditionedCode": "C6PredictionTools",
+            "required": {
+                "code": "C3PManagement[C3Prediction]",
+                "value": "Yes"
+            }
+        },
+        {
+            "conditionedCode": "Co1DevFactors",
+            "required": {
+                "code": "D4Roles[SQ003]",
+                "value": "No"
+            }
+        },
+        {
+            "conditionedCode": "Co1PMFactors",
+            "required": {
+                "code": "D4Roles[SQ003]",
+                "value": "Yes"
+            }
+        },
+        {
+            "conditionedCode": "Co2DevTimeLearn",
+            "required": {
+                "code": "D4Roles[SQ003]",
+                "value": "No"
+            }
+        },
+        {
+            "conditionedCode": "Co2PMTimeLearn",
+            "required": {
+                "code": "D4Roles[SQ003]",
+                "value": "Yes"
+            }
+        },
+        {
+            "conditionedCode": "Co3DevTimeAdoption",
+            "required": {
+                "code": "D4Roles[SQ003]",
+                "value": "No"
+            }
+        },
+        {
+            "conditionedCode": "Co3PMTimeAdoption",
+            "required": {
+                "code": "D4Roles[SQ003]",
+                "value": "Yes"
+            }
+        }
+    ]
+}
